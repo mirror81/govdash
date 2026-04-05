@@ -4,6 +4,7 @@ import { Demo } from "@/components/demo"
 import { DespesaMunicipal } from "@/components/despesa-municipal"
 import { ReceitaMunicipal } from "@/components/receita-municipal"
 import { FinanceiroMunicipal } from "@/components/financeiro-municipal"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon, BankIcon } from "@hugeicons/core-free-icons"
@@ -11,6 +12,11 @@ import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon, BankIcon } from "@hugeic
 export default function Page() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-start bg-muted p-4 sm:p-6 lg:p-12 dark:bg-background">
+      {/* Theme Toggle - Fixed Position */}
+      <div className="fixed right-4 top-4 z-50 sm:right-6 lg:right-12">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-6xl space-y-6">
         {/* Header */}
         <div className="text-center">
