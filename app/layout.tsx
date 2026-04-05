@@ -7,9 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Demonstração de componentes — shadcn/ui",
-  description:
-    "Catálogo de componentes shadcn/ui com exemplos de gestão municipal (receita, despesa, financeiro, compras, RH, tributação e prestação de contas).",
+  title: "Analytics Dash",
+  description: "Portal de Gestão Pública Municipal",
 };
 
 export default function RootLayout({

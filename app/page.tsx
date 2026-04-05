@@ -1,5 +1,6 @@
 "use client"
 
+import { VisaoGeral } from "@/components/visao-geral"
 import { Demo } from "@/components/demo"
 import { DespesaMunicipal } from "@/components/despesa-municipal"
 import { ReceitaMunicipal } from "@/components/receita-municipal"
@@ -11,25 +12,33 @@ import { TributacaoMunicipal } from "@/components/tributacao-municipal"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon } from "@hugeicons/core-free-icons"
+import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon, Home01Icon } from "@hugeicons/core-free-icons"
 
 export default function Page() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-start bg-muted p-4 sm:p-6 lg:p-12 dark:bg-background">
-      {/* Theme Toggle - Fixed Position */}
-      <div className="fixed right-4 top-4 z-50 sm:right-6 lg:right-12">
-        <ThemeToggle />
-      </div>
-
       <div className="w-full max-w-6xl space-y-8">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Analytics Dash</h1>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <HugeiconsIcon icon={Analytics01Icon} strokeWidth={2} className="size-6" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Analytics Dash</h1>
+              <p className="text-sm text-muted-foreground">Portal de Gestão Pública Municipal</p>
+            </div>
+          </div>
+          <ThemeToggle />
         </div>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="receita" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 gap-1 sm:w-auto sm:grid-cols-none sm:flex lg:grid-cols-8">
+        <Tabs defaultValue="visao-geral" className="w-full">
+          <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-2 sm:w-auto sm:grid-cols-none sm:flex sm:rounded-full sm:p-1">
+            <TabsTrigger value="visao-geral" className="gap-2">
+              <HugeiconsIcon icon={Home01Icon} strokeWidth={2} className="size-4" />
+              Visão Geral
+            </TabsTrigger>
             <TabsTrigger value="receita" className="gap-2">
               <HugeiconsIcon icon={MoneyAdd01Icon} strokeWidth={2} className="size-4" />
               Receita
@@ -63,6 +72,10 @@ export default function Page() {
               Componentes
             </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="visao-geral" className="mt-6">
+            <VisaoGeral />
+          </TabsContent>
           
           <TabsContent value="receita" className="mt-6">
             <ReceitaMunicipal />
