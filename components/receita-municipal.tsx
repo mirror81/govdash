@@ -359,7 +359,7 @@ export function ReceitaMunicipal() {
   const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024")
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header com Filtros */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -874,59 +874,6 @@ export function ReceitaMunicipal() {
                       <Badge variant="outline" className="text-xs">{contribuinte.tipo}</Badge>
                     </div>
                     <Progress value={(contribuinte.valor / topContribuintes[0].valor) * 100} className="h-1.5" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Alertas e Timeline */}
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Alertas */}
-        <div className="lg:col-span-2 space-y-3">
-          <h3 className="text-lg font-semibold text-foreground">Alertas e Notificacoes</h3>
-          {alertasReceita.map((alerta, index) => (
-            <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
-              <HugeiconsIcon 
-                icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
-                strokeWidth={2} 
-                className="size-4" 
-              />
-              <AlertTitle className="flex items-center gap-2">
-                {alerta.titulo}
-                <Badge variant="outline" className="text-xs">{alerta.tributo}</Badge>
-              </AlertTitle>
-              <AlertDescription>{alerta.descricao}</AlertDescription>
-            </Alert>
-          ))}
-        </div>
-
-        {/* Timeline */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
-              Eventos Recentes
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {eventosReceita.map((evento, index) => (
-                <div key={index} className="flex gap-3">
-                  <div className="flex flex-col items-center">
-                    <div className={`size-2.5 rounded-full ${
-                      evento.tipo === "credito" ? "bg-green-500" : "bg-blue-500"
-                    }`} />
-                    {index < eventosReceita.length - 1 && (
-                      <div className="w-px flex-1 bg-border" />
-                    )}
-                  </div>
-                  <div className="flex-1 pb-4">
-                    <p className="text-xs text-muted-foreground">{evento.data}</p>
-                    <p className="text-sm">{evento.evento}</p>
-                    <Badge variant="outline" className="mt-1 text-xs">{evento.origem}</Badge>
                   </div>
                 </div>
               ))}
@@ -1550,6 +1497,59 @@ export function ReceitaMunicipal() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Alertas e Timeline */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        {/* Alertas */}
+        <div className="lg:col-span-2 space-y-3">
+          <h3 className="text-lg font-semibold text-foreground">Alertas e Notificacoes</h3>
+          {alertasReceita.map((alerta, index) => (
+            <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+              <HugeiconsIcon 
+                icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
+                strokeWidth={2} 
+                className="size-4" 
+              />
+              <AlertTitle className="flex items-center gap-2">
+                {alerta.titulo}
+                <Badge variant="outline" className="text-xs">{alerta.tributo}</Badge>
+              </AlertTitle>
+              <AlertDescription>{alerta.descricao}</AlertDescription>
+            </Alert>
+          ))}
+        </div>
+
+        {/* Timeline */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
+              Eventos Recentes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {eventosReceita.map((evento, index) => (
+                <div key={index} className="flex gap-3">
+                  <div className="flex flex-col items-center">
+                    <div className={`size-2.5 rounded-full ${
+                      evento.tipo === "credito" ? "bg-green-500" : "bg-blue-500"
+                    }`} />
+                    {index < eventosReceita.length - 1 && (
+                      <div className="w-px flex-1 bg-border" />
+                    )}
+                  </div>
+                  <div className="flex-1 pb-4">
+                    <p className="text-xs text-muted-foreground">{evento.data}</p>
+                    <p className="text-sm">{evento.evento}</p>
+                    <Badge variant="outline" className="mt-1 text-xs">{evento.origem}</Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

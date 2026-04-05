@@ -423,7 +423,7 @@ export function DespesaMunicipal() {
   const [viewMode, setViewMode] = React.useState("orgao")
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header com filtros */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -456,7 +456,7 @@ export function DespesaMunicipal() {
       </div>
 
       {/* KPIs Principais */}
-      <div className="grid gap-4 md:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
@@ -974,80 +974,6 @@ export function DespesaMunicipal() {
               ))}
           </CardContent>
         </Card>
-      </div>
-
-      {/* Resumo Analitico */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Resumo Analitico</CardTitle>
-          <CardDescription>Indicadores de desempenho da execucao orcamentaria</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-4">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Taxa de Execucao</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">{calcPercent(totais.empenhada, totais.atualizada)}%</span>
-                <Badge variant="secondary" className="text-xs">
-                  <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3" />
-                  +5.2%
-                </Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">Comparado ao mesmo periodo do ano anterior</p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Taxa de Pagamento</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">{calcPercent(totais.pago, totais.empenhada)}%</span>
-                <Badge variant="secondary" className="text-xs">
-                  <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3" />
-                  +2.8%
-                </Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">Do total empenhado foi efetivamente pago</p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Restos a Pagar</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">{formatMillions(totais.aPagar)}</span>
-                <Badge variant="outline" className="text-xs text-amber-600">
-                  <HugeiconsIcon icon={ArrowDown01Icon} strokeWidth={2} className="size-3" />
-                  -12%
-                </Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">Reducao em relacao ao ano anterior</p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Saldo Disponivel</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">{formatMillions(totais.aEmpenhar)}</span>
-              </div>
-              <p className="text-xs text-muted-foreground">{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orcamento ainda disponivel</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Alertas de Gestao */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificacoes</h3>
-        {alertasGestao.map((alerta, index) => (
-          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
-            <HugeiconsIcon 
-              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
-              strokeWidth={2} 
-              className="size-4" 
-            />
-            <AlertTitle className="flex items-center gap-2">
-              {alerta.titulo}
-              <Badge variant="outline" className="text-xs">{alerta.orgao}</Badge>
-            </AlertTitle>
-            <AlertDescription>{alerta.descricao}</AlertDescription>
-          </Alert>
-        ))}
       </div>
 
       {/* Comparativo Anual e Categorias de Despesa */}
@@ -1840,6 +1766,80 @@ export function DespesaMunicipal() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Resumo Analitico */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Resumo Analitico</CardTitle>
+          <CardDescription>Indicadores de desempenho da execucao orcamentaria</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 md:grid-cols-4">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Taxa de Execucao</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">{calcPercent(totais.empenhada, totais.atualizada)}%</span>
+                <Badge variant="secondary" className="text-xs">
+                  <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3" />
+                  +5.2%
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">Comparado ao mesmo periodo do ano anterior</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Taxa de Pagamento</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">{calcPercent(totais.pago, totais.empenhada)}%</span>
+                <Badge variant="secondary" className="text-xs">
+                  <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3" />
+                  +2.8%
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">Do total empenhado foi efetivamente pago</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Restos a Pagar</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">{formatMillions(totais.aPagar)}</span>
+                <Badge variant="outline" className="text-xs text-amber-600">
+                  <HugeiconsIcon icon={ArrowDown01Icon} strokeWidth={2} className="size-3" />
+                  -12%
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">Reducao em relacao ao ano anterior</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Saldo Disponivel</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">{formatMillions(totais.aEmpenhar)}</span>
+              </div>
+              <p className="text-xs text-muted-foreground">{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orcamento ainda disponivel</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Alertas de Gestao */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificacoes</h3>
+        {alertasGestao.map((alerta, index) => (
+          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+            <HugeiconsIcon 
+              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
+              strokeWidth={2} 
+              className="size-4" 
+            />
+            <AlertTitle className="flex items-center gap-2">
+              {alerta.titulo}
+              <Badge variant="outline" className="text-xs">{alerta.orgao}</Badge>
+            </AlertTitle>
+            <AlertDescription>{alerta.descricao}</AlertDescription>
+          </Alert>
+        ))}
+      </div>
     </div>
   )
 }

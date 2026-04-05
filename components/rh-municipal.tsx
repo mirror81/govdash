@@ -513,7 +513,7 @@ export function RHMunicipal() {
   const totalVagas = dadosSecretarias.reduce((acc, s) => acc + s.vagas, 0)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header com filtros */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -546,7 +546,7 @@ export function RHMunicipal() {
       </div>
 
       {/* KPIs Principais */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
@@ -1832,25 +1832,6 @@ export function RHMunicipal() {
         </CardContent>
       </Card>
 
-      {/* Alertas e Notificações */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
-        {alertasRH.map((alerta, index) => (
-          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
-            <HugeiconsIcon 
-              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
-              strokeWidth={2} 
-              className="size-4" 
-            />
-            <AlertTitle className="flex items-center gap-2">
-              {alerta.titulo}
-              <Badge variant="outline" className="text-xs">{alerta.setor}</Badge>
-            </AlertTitle>
-            <AlertDescription>{alerta.descricao}</AlertDescription>
-          </Alert>
-        ))}
-      </div>
-
       {/* Resumo Analítico */}
       <Card>
         <CardHeader>
@@ -2158,6 +2139,25 @@ export function RHMunicipal() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Alertas e Notificações */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
+        {alertasRH.map((alerta, index) => (
+          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+            <HugeiconsIcon 
+              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
+              strokeWidth={2} 
+              className="size-4" 
+            />
+            <AlertTitle className="flex items-center gap-2">
+              {alerta.titulo}
+              <Badge variant="outline" className="text-xs">{alerta.setor}</Badge>
+            </AlertTitle>
+            <AlertDescription>{alerta.descricao}</AlertDescription>
+          </Alert>
+        ))}
+      </div>
     </div>
   )
 }

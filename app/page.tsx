@@ -21,19 +21,15 @@ export default function Page() {
         <ThemeToggle />
       </div>
 
-      <div className="w-full max-w-6xl space-y-6">
+      <div className="w-full max-w-6xl space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Demonstração de Componentes</h1>
+          <h1 className="text-3xl font-bold text-foreground">Analytics Dash</h1>
         </div>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="demo" className="w-full">
+        <Tabs defaultValue="receita" className="w-full">
           <TabsList className="grid w-full grid-cols-2 gap-1 sm:w-auto sm:grid-cols-none sm:flex lg:grid-cols-8">
-            <TabsTrigger value="demo" className="gap-2">
-              <HugeiconsIcon icon={GridViewIcon} strokeWidth={2} className="size-4" />
-              Demo
-            </TabsTrigger>
             <TabsTrigger value="receita" className="gap-2">
               <HugeiconsIcon icon={MoneyAdd01Icon} strokeWidth={2} className="size-4" />
               Receita
@@ -62,11 +58,11 @@ export default function Page() {
               <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-4" />
               Prestação de Contas
             </TabsTrigger>
+            <TabsTrigger value="demo" className="gap-2">
+              <HugeiconsIcon icon={GridViewIcon} strokeWidth={2} className="size-4" />
+              Componentes
+            </TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="demo" className="mt-6">
-            <Demo />
-          </TabsContent>
           
           <TabsContent value="receita" className="mt-6">
             <ReceitaMunicipal />
@@ -94,6 +90,10 @@ export default function Page() {
           
           <TabsContent value="prestacao-contas" className="mt-6">
             <PrestacaoContas />
+          </TabsContent>
+          
+          <TabsContent value="demo" className="mt-6">
+            <Demo />
           </TabsContent>
         </Tabs>
       </div>

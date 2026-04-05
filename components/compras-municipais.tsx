@@ -425,7 +425,7 @@ export function ComprasMunicipais() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header com Filtros */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -459,7 +459,7 @@ export function ComprasMunicipais() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -763,25 +763,6 @@ export function ComprasMunicipais() {
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Alertas e Notificações */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
-        {alertasCompras.map((alerta, index) => (
-          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
-            <HugeiconsIcon 
-              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
-              strokeWidth={2} 
-              className="size-4" 
-            />
-            <AlertTitle className="flex items-center gap-2">
-              {alerta.titulo}
-              <Badge variant="outline" className="text-xs">{alerta.categoria}</Badge>
-            </AlertTitle>
-            <AlertDescription>{alerta.descricao}</AlertDescription>
-          </Alert>
-        ))}
-      </div>
 
       {/* Comparativo Anual e Top Fornecedores */}
       <div className="grid gap-4 lg:grid-cols-2">
@@ -1523,6 +1504,77 @@ export function ComprasMunicipais() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Resumo Analítico */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
+            Resumo Analítico
+          </CardTitle>
+          <CardDescription>Indicadores consolidados da gestão de compras</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Economia Gerada</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-green-600">{totaisCompras.taxaEconomia}%</span>
+              </div>
+              <Progress value={(totaisCompras.taxaEconomia / 10) * 100} className="h-2 [&>div]:bg-green-500" />
+              <p className="text-xs text-muted-foreground">{formatCompactCurrency(totaisCompras.economiaTotal)} economizados — meta: 5%</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Prazo Médio Processo</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-green-600">{prazoTotalMedio}d</span>
+              </div>
+              <Progress value={(prazoTotalMedio / prazoTotalMeta) * 100} className="h-2 [&>div]:bg-green-500" />
+              <p className="text-xs text-muted-foreground">Meta: {prazoTotalMeta} dias — {prazoTotalMedio} dias realizados</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Participação MPE</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-amber-600">{participacaoMPE[participacaoMPE.length - 1].percentualMPE}%</span>
+              </div>
+              <Progress value={participacaoMPE[participacaoMPE.length - 1].percentualMPE} className="h-2" />
+              <p className="text-xs text-muted-foreground">Meta: 25% — abaixo da meta em 3 p.p.</p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Contratos Ativos</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">{totaisCompras.contratosAtivos.toLocaleString('pt-BR')}</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className="text-amber-600 font-medium">{totaisCompras.contratosVencendo30Dias} vencendo</span> em 30 dias ·{" "}
+                <span className="text-red-600 font-medium">{totaisCompras.contratosVencidos} vencidos</span>
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Alertas e Notificações */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
+        {alertasCompras.map((alerta, index) => (
+          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+            <HugeiconsIcon 
+              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
+              strokeWidth={2} 
+              className="size-4" 
+            />
+            <AlertTitle className="flex items-center gap-2">
+              {alerta.titulo}
+              <Badge variant="outline" className="text-xs">{alerta.categoria}</Badge>
+            </AlertTitle>
+            <AlertDescription>{alerta.descricao}</AlertDescription>
+          </Alert>
+        ))}
+      </div>
     </div>
   )
 }

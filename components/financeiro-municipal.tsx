@@ -350,7 +350,7 @@ export function FinanceiroMunicipal() {
   const [abaSelecionada, setAbaSelecionada] = React.useState("fontes")
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header com filtros */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -490,24 +490,6 @@ export function FinanceiroMunicipal() {
           </ChartContainer>
         </CardContent>
       </Card>
-
-      {/* Alertas Financeiros */}
-      <div className="grid gap-3 lg:grid-cols-2">
-        {alertasFinanceiros.map((alerta, index) => (
-          <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
-            <HugeiconsIcon 
-              icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
-              strokeWidth={2} 
-              className="size-4" 
-            />
-            <AlertTitle className="flex items-center gap-2">
-              {alerta.titulo}
-              {alerta.conta && <Badge variant="outline" className="text-xs">{alerta.conta}</Badge>}
-            </AlertTitle>
-            <AlertDescription>{alerta.descricao}</AlertDescription>
-          </Alert>
-        ))}
-      </div>
 
       {/* Metas de Gestão Financeira */}
       <Card>
@@ -1648,6 +1630,27 @@ export function FinanceiroMunicipal() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Alertas Financeiros */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Alertas e Notificacoes</h3>
+        <div className="grid gap-3 lg:grid-cols-2">
+          {alertasFinanceiros.map((alerta, index) => (
+            <Alert key={index} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+              <HugeiconsIcon 
+                icon={alerta.tipo === "warning" ? Alert02Icon : alerta.tipo === "success" ? CheckmarkCircle02Icon : InformationCircleIcon} 
+                strokeWidth={2} 
+                className="size-4" 
+              />
+              <AlertTitle className="flex items-center gap-2">
+                {alerta.titulo}
+                {alerta.conta && <Badge variant="outline" className="text-xs">{alerta.conta}</Badge>}
+              </AlertTitle>
+              <AlertDescription>{alerta.descricao}</AlertDescription>
+            </Alert>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
