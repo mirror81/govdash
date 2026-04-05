@@ -30,6 +30,12 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -276,11 +282,104 @@ const topFornecedores = [
 ]
 
 // Metas e indicadores
+const metasExecucao = [
+  { indicador: "Taxa de Execucao", meta: 95, realizado: 91, unidade: "%", status: "atencao", descricao: "Meta de execucao orcamentaria" },
+  { indicador: "Despesa com Pessoal", meta: 45, realizado: 42, unidade: "%", status: "atingido", descricao: "% da receita corrente liquida" },
+  { indicador: "Restos a Pagar", meta: 8000000, realizado: 6500000, unidade: "R$", status: "atingido", descricao: "Meta de restos a pagar controlada" },
+  { indicador: "Contratacoes Diretas", meta: 15, realizado: 18, unidade: "%", status: "atencao", descricao: "% maximo permitido (superado)" },
+  { indicador: "Investimentos", meta: 20, realizado: 22, unidade: "%", status: "atingido", descricao: "% aplicado em obras e equipamentos" },
+  { indicador: "Despesas Capital", meta: 45000000, realizado: 48000000, unidade: "R$", status: "atingido", descricao: "Meta anual superada" },
+]
+
 const metasODS = [
   { ods: "ODS 3", titulo: "Saude e Bem-estar", meta: 52400000, realizado: 49800000, percentual: 95 },
   { ods: "ODS 4", titulo: "Educacao de Qualidade", meta: 45600000, realizado: 42300000, percentual: 93 },
   { ods: "ODS 11", titulo: "Cidades Sustentaveis", meta: 18900000, realizado: 16200000, percentual: 86 },
   { ods: "ODS 1", titulo: "Erradicacao da Pobreza", meta: 8750000, realizado: 7890000, percentual: 90 },
+]
+
+// Rigidez Orcamentaria
+const rigidezOrcamentaria = [
+  { categoria: "Pessoal e Encargos", valor: 68500000, tipo: "obrigatoria" },
+  { categoria: "Servico da Divida", valor: 1144500, tipo: "obrigatoria" },
+  { categoria: "Precatorios", valor: 2100000, tipo: "obrigatoria" },
+  { categoria: "Transferencias Constitucionais", valor: 8200000, tipo: "obrigatoria" },
+  { categoria: "Outras Despesas Correntes", valor: 42300000, tipo: "discricionaria" },
+  { categoria: "Investimentos", valor: 14200000, tipo: "discricionaria" },
+  { categoria: "Outras de Capital", valor: 3000000, tipo: "discricionaria" },
+]
+
+const totalObrigatoria = rigidezOrcamentaria.filter(r => r.tipo === "obrigatoria").reduce((acc, r) => acc + r.valor, 0)
+const totalDiscricionaria = rigidezOrcamentaria.filter(r => r.tipo === "discricionaria").reduce((acc, r) => acc + r.valor, 0)
+const percentualRigidez = ((totalObrigatoria / totais.empenhada) * 100).toFixed(1)
+
+// Limite de Pessoal - Lei de Responsabilidade Fiscal (LRF)
+const receitaCorrenteLiquida = 210500000
+const despesaPessoalTotal = 68500000
+const percentualPessoalRCL = ((despesaPessoalTotal / receitaCorrenteLiquida) * 100).toFixed(1)
+const limitePrudencial = 51.3 // 95% do limite maximo
+const limiteMaximo = 54.0 // Limite maximo para Executivo
+
+const evolucaoPessoalRCL = [
+  { periodo: "1o Quad 2023", pessoal: 30.8 },
+  { periodo: "2o Quad 2023", pessoal: 31.2 },
+  { periodo: "3o Quad 2023", pessoal: 31.5 },
+  { periodo: "1o Quad 2024", pessoal: 31.9 },
+  { periodo: "2o Quad 2024", pessoal: 32.5 },
+  { periodo: "3o Quad 2024", pessoal: Number(percentualPessoalRCL) },
+]
+
+// Despesa Corrente vs Capital
+const despesaCorrenteCapital = [
+  { tipo: "Despesas Correntes", valor: 112044500, percentual: 87.4, subcategorias: [
+    { nome: "Pessoal e Encargos", valor: 68500000 },
+    { nome: "Juros e Encargos da Divida", valor: 1144500 },
+    { nome: "Outras Despesas Correntes", valor: 42400000 },
+  ]},
+  { tipo: "Despesas de Capital", valor: 16200000, percentual: 12.6, subcategorias: [
+    { nome: "Investimentos", valor: 14200000 },
+    { nome: "Inversoes Financeiras", valor: 500000 },
+    { nome: "Amortizacao da Divida", valor: 1500000 },
+  ]},
+]
+
+const despesaCorrenteCapitalChart = [
+  { nome: "Correntes", valor: 112044500, fill: "var(--chart-1)" },
+  { nome: "Capital", valor: 16200000, fill: "var(--chart-3)" },
+]
+
+// Restos a Pagar - Aging
+const restosAPagarAging = [
+  { faixa: "Ate 30 dias", processados: 4200000, naoProcessados: 1800000, total: 6000000, risco: "baixo" },
+  { faixa: "31-60 dias", processados: 2100000, naoProcessados: 950000, total: 3050000, risco: "baixo" },
+  { faixa: "61-90 dias", processados: 890000, naoProcessados: 420000, total: 1310000, risco: "medio" },
+  { faixa: "91-180 dias", processados: 650000, naoProcessados: 380000, total: 1030000, risco: "alto" },
+  { faixa: "Acima de 180 dias", processados: 520000, naoProcessados: 374500, total: 894500, risco: "critico" },
+]
+
+const totalRestosProcessados = restosAPagarAging.reduce((acc, r) => acc + r.processados, 0)
+const totalRestosNaoProcessados = restosAPagarAging.reduce((acc, r) => acc + r.naoProcessados, 0)
+const totalRestosGeral = restosAPagarAging.reduce((acc, r) => acc + r.total, 0)
+
+// Projecao de Execucao por Secretaria
+const projecaoExecucao = [
+  { secretaria: "SEMSA", atual: 95, projetado: 97, meta: 95, status: "atingido" },
+  { secretaria: "SEMED", atual: 93, projetado: 95, meta: 95, status: "atencao" },
+  { secretaria: "SEMINF", atual: 86, projetado: 90, meta: 95, status: "critico" },
+  { secretaria: "SEMAS", atual: 90, projetado: 93, meta: 95, status: "atencao" },
+  { secretaria: "SEMAD", atual: 90, projetado: 94, meta: 95, status: "atencao" },
+  { secretaria: "SEMFAZ", atual: 93, projetado: 96, meta: 95, status: "atingido" },
+  { secretaria: "GAB", atual: 78, projetado: 85, meta: 95, status: "critico" },
+  { secretaria: "SEMMA", atual: 85, projetado: 91, meta: 95, status: "atencao" },
+]
+
+// Benchmark Municipal
+const benchmarkDespesa = [
+  { municipio: "Municipio Atual", execucao: 92, pessoalRCL: Number(percentualPessoalRCL), investimento: 12.6, restosAPagar: 9.6, destaque: true },
+  { municipio: "Municipio A (Similar)", execucao: 89, pessoalRCL: 38.2, investimento: 10.1, restosAPagar: 14.2, destaque: false },
+  { municipio: "Municipio B (Similar)", execucao: 94, pessoalRCL: 35.5, investimento: 14.8, restosAPagar: 7.8, destaque: false },
+  { municipio: "Municipio C (Similar)", execucao: 86, pessoalRCL: 42.1, investimento: 8.5, restosAPagar: 18.5, destaque: false },
+  { municipio: "Media Regional", execucao: 90, pessoalRCL: 37.8, investimento: 11.5, restosAPagar: 12.5, destaque: false },
 ]
 
 // Alertas e recomendacoes
@@ -343,15 +442,15 @@ export function DespesaMunicipal() {
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm">
-            <HugeiconsIcon icon={FilterIcon} strokeWidth={2} data-icon="inline-start" />
+            <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="mr-2 size-4" />
             Filtros
           </Button>
           <Button variant="outline" size="sm">
-            <HugeiconsIcon icon={Download01Icon} strokeWidth={2} data-icon="inline-start" />
+            <HugeiconsIcon icon={Download01Icon} strokeWidth={2} className="mr-2 size-4" />
             Exportar
           </Button>
-          <Button variant="outline" size="icon-sm">
-            <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} />
+          <Button variant="outline" size="icon" className="size-8">
+            <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4" />
           </Button>
         </div>
       </div>
@@ -1169,6 +1268,363 @@ export function DespesaMunicipal() {
                   </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Rigidez Orcamentaria e Limite de Pessoal LRF */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Rigidez Orcamentaria */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-5" />
+              Rigidez Orcamentaria
+            </CardTitle>
+            <CardDescription>
+              Indice de rigidez: <strong className={Number(percentualRigidez) > 70 ? "text-red-600" : "text-amber-600"}>{percentualRigidez}%</strong> — 
+              Despesas obrigatorias sobre o total empenhado
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg border p-3 text-center">
+                  <p className="text-xs text-muted-foreground">Obrigatorias</p>
+                  <p className="text-lg font-bold text-red-600">{formatMillions(totalObrigatoria)}</p>
+                  <p className="text-xs text-muted-foreground">{percentualRigidez}%</p>
+                </div>
+                <div className="rounded-lg border p-3 text-center">
+                  <p className="text-xs text-muted-foreground">Discricionarias</p>
+                  <p className="text-lg font-bold text-green-600">{formatMillions(totalDiscricionaria)}</p>
+                  <p className="text-xs text-muted-foreground">{(100 - Number(percentualRigidez)).toFixed(1)}%</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {rigidezOrcamentaria.map((item) => (
+                  <div key={item.categoria} className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className={`size-2 rounded-full ${item.tipo === "obrigatoria" ? "bg-red-500" : "bg-green-500"}`} />
+                      <span className="text-muted-foreground">{item.categoria}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{formatMillions(item.valor)}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {((item.valor / totais.empenhada) * 100).toFixed(1)}%
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Limite de Pessoal - LRF */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={UserMultipleIcon} strokeWidth={2} className="size-5" />
+              Limite de Pessoal (LRF)
+            </CardTitle>
+            <CardDescription>
+              Despesa com pessoal: <strong className="text-green-600">{percentualPessoalRCL}%</strong> da RCL — 
+              Limite maximo: {limiteMaximo}%
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Atual ({percentualPessoalRCL}%)</span>
+                  <span className="text-muted-foreground">Limite Prudencial ({limitePrudencial}%)</span>
+                  <span className="text-muted-foreground">Maximo ({limiteMaximo}%)</span>
+                </div>
+                <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted">
+                  <div 
+                    className="absolute h-full rounded-full bg-green-500 transition-all" 
+                    style={{ width: `${(Number(percentualPessoalRCL) / limiteMaximo) * 100}%` }} 
+                  />
+                  <div 
+                    className="absolute h-full w-px bg-amber-500" 
+                    style={{ left: `${(limitePrudencial / limiteMaximo) * 100}%` }} 
+                  />
+                  <div 
+                    className="absolute h-full w-px bg-red-500" 
+                    style={{ left: '100%' }} 
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>0%</span>
+                  <span>Margem: {(limiteMaximo - Number(percentualPessoalRCL)).toFixed(1)} p.p.</span>
+                </div>
+              </div>
+              <Separator />
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-lg border p-3 text-center">
+                  <p className="text-xs text-muted-foreground">Desp. Pessoal</p>
+                  <p className="text-sm font-bold">{formatMillions(despesaPessoalTotal)}</p>
+                </div>
+                <div className="rounded-lg border p-3 text-center">
+                  <p className="text-xs text-muted-foreground">RCL</p>
+                  <p className="text-sm font-bold">{formatMillions(receitaCorrenteLiquida)}</p>
+                </div>
+                <div className="rounded-lg border p-3 text-center bg-green-50 dark:bg-green-950/20">
+                  <p className="text-xs text-muted-foreground">Situacao</p>
+                  <p className="text-sm font-bold text-green-600">Adequado</p>
+                </div>
+              </div>
+              <ChartContainer
+                config={{
+                  pessoal: { label: "% Pessoal/RCL", color: "var(--chart-1)" },
+                } satisfies ChartConfig}
+                className="h-[140px] w-full"
+              >
+                <LineChart data={evolucaoPessoalRCL} margin={{ left: 0, right: 12 }}>
+                  <CartesianGrid vertical={false} />
+                  <XAxis dataKey="periodo" tickLine={false} axisLine={false} tickMargin={8} tick={{ fontSize: 10 }} />
+                  <YAxis tickLine={false} axisLine={false} tickMargin={8} domain={[28, 56]} tickFormatter={(v: number) => `${v}%`} />
+                  <ChartTooltip content={<ChartTooltipContent formatter={(value) => `${value}%`} />} />
+                  <Line dataKey="pessoal" type="monotone" stroke="var(--color-pessoal)" strokeWidth={2} dot={{ r: 3 }} />
+                </LineChart>
+              </ChartContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Despesa Corrente vs Capital e Restos a Pagar Aging */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Despesa Corrente vs Capital */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={PieChart02Icon} strokeWidth={2} className="size-5" />
+              Despesa Corrente vs Capital
+            </CardTitle>
+            <CardDescription>Composicao por categoria economica</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ChartContainer
+                config={{
+                  correntes: { label: "Correntes", color: "var(--chart-1)" },
+                  capital: { label: "Capital", color: "var(--chart-3)" },
+                } satisfies ChartConfig}
+                className="mx-auto aspect-square h-[180px]"
+              >
+                <PieChart>
+                  <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} hideLabel />} />
+                  <Pie
+                    data={despesaCorrenteCapitalChart}
+                    dataKey="valor"
+                    nameKey="nome"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={75}
+                    label={({ percent }: { percent: number }) => `${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  />
+                  <ChartLegend content={<ChartLegendContent nameKey="nome" />} />
+                </PieChart>
+              </ChartContainer>
+              <div className="space-y-3">
+                {despesaCorrenteCapital.map((cat) => (
+                  <div key={cat.tipo} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium">{cat.tipo}</p>
+                      <Badge variant="outline">{cat.percentual}%</Badge>
+                    </div>
+                    <p className="text-lg font-bold">{formatMillions(cat.valor)}</p>
+                    <div className="space-y-1">
+                      {cat.subcategorias.map((sub) => (
+                        <div key={sub.nome} className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">{sub.nome}</span>
+                          <span className="font-medium">{formatMillions(sub.valor)}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <Separator />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Restos a Pagar - Aging */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
+              Restos a Pagar — Aging
+            </CardTitle>
+            <CardDescription>
+              Total: <strong>{formatCurrency(totalRestosGeral)}</strong> — 
+              Processados: {formatMillions(totalRestosProcessados)} | Nao processados: {formatMillions(totalRestosNaoProcessados)}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Faixa</TableHead>
+                  <TableHead className="text-right">Processados</TableHead>
+                  <TableHead className="text-right">Nao Proc.</TableHead>
+                  <TableHead className="text-right">Total</TableHead>
+                  <TableHead className="text-center">Risco</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {restosAPagarAging.map((item) => (
+                  <TableRow key={item.faixa}>
+                    <TableCell className="font-medium">{item.faixa}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(item.processados)}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(item.naoProcessados)}</TableCell>
+                    <TableCell className="text-right font-medium">{formatCurrency(item.total)}</TableCell>
+                    <TableCell className="text-center">
+                      <Badge 
+                        variant={item.risco === "critico" ? "destructive" : item.risco === "alto" ? "destructive" : item.risco === "medio" ? "outline" : "secondary"}
+                        className={item.risco === "critico" ? "" : item.risco === "alto" ? "" : item.risco === "medio" ? "text-amber-600" : "text-green-600"}
+                      >
+                        {item.risco.charAt(0).toUpperCase() + item.risco.slice(1)}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell className="font-bold">Total</TableCell>
+                  <TableCell className="text-right font-bold">{formatCurrency(totalRestosProcessados)}</TableCell>
+                  <TableCell className="text-right font-bold">{formatCurrency(totalRestosNaoProcessados)}</TableCell>
+                  <TableCell className="text-right font-bold">{formatCurrency(totalRestosGeral)}</TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Projecao de Execucao e Benchmark */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Projecao de Execucao por Secretaria */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
+              Projecao de Execucao
+            </CardTitle>
+            <CardDescription>Execucao atual e projetada por secretaria — Meta: 95%</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {projecaoExecucao.map((item) => (
+                <div key={item.secretaria} className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="font-mono text-xs">{item.secretaria}</Badge>
+                      {item.status === "critico" && (
+                        <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-3.5 text-red-500" />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="text-muted-foreground">Atual: {item.atual}%</span>
+                      <span className="font-medium">→ Proj: {item.projetado}%</span>
+                      <Badge 
+                        variant={item.status === "atingido" ? "secondary" : item.status === "atencao" ? "outline" : "destructive"}
+                        className={item.status === "atingido" ? "text-green-600" : item.status === "atencao" ? "text-amber-600" : ""}
+                      >
+                        {item.status === "atingido" ? "OK" : item.status === "atencao" ? "Atencao" : "Critico"}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div 
+                      className={`absolute h-full rounded-full transition-all ${
+                        item.status === "atingido" ? "bg-green-500" : item.status === "atencao" ? "bg-amber-500" : "bg-red-500"
+                      }`}
+                      style={{ width: `${item.atual}%` }} 
+                    />
+                    <div 
+                      className="absolute h-full rounded-full bg-primary/20"
+                      style={{ left: `${item.atual}%`, width: `${item.projetado - item.atual}%` }} 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Benchmark Municipal */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-5" />
+              Benchmark Municipal
+            </CardTitle>
+            <CardDescription>Comparacao com municipios de porte similar</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Municipio</TableHead>
+                  <TableHead className="text-right">Execucao</TableHead>
+                  <TableHead className="text-right">Pessoal/RCL</TableHead>
+                  <TableHead className="text-right">Investim.</TableHead>
+                  <TableHead className="text-right">Restos AP</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {benchmarkDespesa.map((mun) => (
+                  <TableRow key={mun.municipio} className={mun.destaque ? "bg-primary/5 font-medium" : ""}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {mun.destaque && <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-3.5 text-amber-500" />}
+                        {mun.municipio}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">{mun.execucao}%</TableCell>
+                    <TableCell className="text-right">
+                      <Badge 
+                        variant={mun.pessoalRCL > 40 ? "destructive" : "secondary"}
+                        className={mun.pessoalRCL > 40 ? "" : "text-green-600"}
+                      >
+                        {mun.pessoalRCL}%
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">{mun.investimento}%</TableCell>
+                    <TableCell className="text-right">
+                      <Badge 
+                        variant={mun.restosAPagar > 15 ? "destructive" : mun.restosAPagar > 10 ? "outline" : "secondary"}
+                        className={mun.restosAPagar > 15 ? "" : mun.restosAPagar > 10 ? "text-amber-600" : "text-green-600"}
+                      >
+                        {mun.restosAPagar}%
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-lg border p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Posicao Geral</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold text-green-600">2o</span>
+                  <span className="text-xs text-muted-foreground">de 5 municipios</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Destaque em controle de pessoal e restos a pagar</p>
+              </div>
+              <div className="rounded-lg border p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Ponto de Melhoria</p>
+                <p className="text-sm font-medium text-amber-600">Investimentos</p>
+                <p className="text-xs text-muted-foreground">12.6% vs 14.8% do melhor comparado — oportunidade de ampliacao</p>
+              </div>
             </div>
           </CardContent>
         </Card>

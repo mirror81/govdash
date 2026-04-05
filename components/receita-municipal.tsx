@@ -30,6 +30,12 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -220,12 +226,134 @@ const alertasReceita = [
 
 // Timeline de eventos
 const eventosReceita = [
-  { data: "29/11/2024", evento: "Repasse FPM de R$ 2.8M creditado", tipo: "credito", origem: "Federal" },
-  { data: "27/11/2024", evento: "Vencimento IPTU 10a parcela - R$ 1.2M arrecadado", tipo: "arrecadacao", origem: "Propria" },
-  { data: "25/11/2024", evento: "Transferencia ICMS de R$ 3.1M", tipo: "credito", origem: "Estadual" },
-  { data: "22/11/2024", evento: "Liberacao parcela FUNDEB R$ 2.9M", tipo: "credito", origem: "Federal" },
-  { data: "20/11/2024", evento: "Arrecadacao ISS competencia outubro R$ 2.1M", tipo: "arrecadacao", origem: "Propria" },
+  { data: "29/11/2024", evento: "Repasse FPM de R$ 2.8M creditado", tipo: "credito", origem: "Federal", valor: 2850000 },
+  { data: "27/11/2024", evento: "Vencimento IPTU 10a parcela - R$ 1.2M arrecadado", tipo: "arrecadacao", origem: "Propria", valor: 1200000 },
+  { data: "25/11/2024", evento: "Transferencia ICMS de R$ 3.1M", tipo: "credito", origem: "Estadual", valor: 3100000 },
+  { data: "22/11/2024", evento: "Liberacao parcela FUNDEB R$ 2.9M", tipo: "credito", origem: "Federal", valor: 2900000 },
+  { data: "20/11/2024", evento: "Arrecadacao ISS competencia outubro R$ 2.1M", tipo: "arrecadacao", origem: "Propria", valor: 2100000 },
+  { data: "18/11/2024", evento: "Recuperacao Divida Ativa R$ 450K", tipo: "arrecadacao", origem: "Divida", valor: 450000 },
 ]
+
+// Metas de arrecadação
+const metasArrecadacao = [
+  { indicador: "Taxa de Realizacao", meta: 95, realizado: 94, unidade: "%", status: "atencao", descricao: "Meta de arrecadacao total" },
+  { indicador: "Receitas Proprias", meta: 28, realizado: 26.5, unidade: "%", status: "atingido", descricao: "% do total arrecadado" },
+  { indicador: "Convenios Liberados", meta: 100, realizado: 61, unidade: "%", status: "atencao", descricao: "% dos convenios federais" },
+  { indicador: "Divida Ativa Recuperada", meta: 2500000, realizado: 2800000, unidade: "R$", status: "atingido", descricao: "Meta anual superada" },
+  { indicador: "Inadimplencia IPTU", meta: 15, realizado: 12, unidade: "%", status: "atingido", descricao: "Taxa maxima permitida" },
+  { indicador: "Auto de Infracao Emitido", meta: 450, realizado: 523, unidade: "", status: "atingido", descricao: "Fiscalizacao tributaria" },
+]
+// Inadimplencia por tributo
+const inadimplencia = [
+  { tributo: "IPTU", lancado: 18500000, arrecadado: 16800000, inadimplente: 1700000, percentual: 9.2, contribuintes: 3420 },
+  { tributo: "ISS", lancado: 24200000, arrecadado: 26500000, inadimplente: 0, percentual: 0, contribuintes: 0 },
+  { tributo: "ITBI", lancado: 8900000, arrecadado: 7200000, inadimplente: 1700000, percentual: 19.1, contribuintes: 285 },
+  { tributo: "Taxas", lancado: 5600000, arrecadado: 4800000, inadimplente: 800000, percentual: 14.3, contribuintes: 1850 },
+  { tributo: "COSIP", lancado: 3800000, arrecadado: 3650000, inadimplente: 150000, percentual: 3.9, contribuintes: 620 },
+  { tributo: "Contrib. Melhoria", lancado: 1200000, arrecadado: 890000, inadimplente: 310000, percentual: 25.8, contribuintes: 145 },
+]
+
+const totalInadimplencia = inadimplencia.reduce((acc, i) => acc + i.inadimplente, 0)
+const totalLancado = inadimplencia.reduce((acc, i) => acc + i.lancado, 0)
+const taxaInadimplenciaGeral = ((totalInadimplencia / totalLancado) * 100).toFixed(1)
+
+// Sazonalidade (heatmap data - arrecadacao por mes e categoria)
+const sazonalidadeData = [
+  { mes: "Jan", proprias: 4800000, estaduais: 3900000, federais: 7200000, outras: 1300000 },
+  { mes: "Fev", proprias: 3200000, estaduais: 3700000, federais: 7800000, outras: 1100000 },
+  { mes: "Mar", proprias: 6100000, estaduais: 4200000, federais: 8100000, outras: 1500000 },
+  { mes: "Abr", proprias: 5800000, estaduais: 4000000, federais: 7500000, outras: 1200000 },
+  { mes: "Mai", proprias: 5500000, estaduais: 4100000, federais: 7900000, outras: 1400000 },
+  { mes: "Jun", proprias: 5200000, estaduais: 3800000, federais: 7600000, outras: 1300000 },
+  { mes: "Jul", proprias: 5900000, estaduais: 4300000, federais: 8200000, outras: 1500000 },
+  { mes: "Ago", proprias: 6200000, estaduais: 4500000, federais: 8500000, outras: 1600000 },
+  { mes: "Set", proprias: 5700000, estaduais: 4200000, federais: 7800000, outras: 1400000 },
+  { mes: "Out", proprias: 5400000, estaduais: 4100000, federais: 7700000, outras: 1350000 },
+  { mes: "Nov", proprias: 5900000, estaduais: 4400000, federais: 8300000, outras: 1500000 },
+]
+
+// Receita Corrente vs Capital
+const receitaCorrenteCapital = [
+  { tipo: "Receitas Correntes", valor: 210500000, percentual: 92.1, subcategorias: [
+    { nome: "Tributaria", valor: 62200000 },
+    { nome: "Contribuicoes", valor: 5000000 },
+    { nome: "Patrimonial", valor: 3100000 },
+    { nome: "Transferencias Correntes", valor: 131850000 },
+    { nome: "Outras Correntes", valor: 8350000 },
+  ]},
+  { tipo: "Receitas de Capital", valor: 18180000, percentual: 7.9, subcategorias: [
+    { nome: "Operacoes de Credito", valor: 5000000 },
+    { nome: "Alienacao de Bens", valor: 1200000 },
+    { nome: "Transferencias de Capital", valor: 8500000 },
+    { nome: "Outras de Capital", valor: 3480000 },
+  ]},
+]
+
+const receitaCorrenteCapitalChart = [
+  { nome: "Correntes", valor: 210500000, fill: "var(--chart-1)" },
+  { nome: "Capital", valor: 18180000, fill: "var(--chart-3)" },
+]
+
+// Projecao de receita (forecast)
+const projecaoReceita = [
+  { mes: "Jan", real: 17200000, projetado: null },
+  { mes: "Fev", real: 16500000, projetado: null },
+  { mes: "Mar", real: 20100000, projetado: null },
+  { mes: "Abr", real: 17800000, projetado: null },
+  { mes: "Mai", real: 19500000, projetado: null },
+  { mes: "Jun", real: 18900000, projetado: null },
+  { mes: "Jul", real: 20800000, projetado: null },
+  { mes: "Ago", real: 21500000, projetado: null },
+  { mes: "Set", real: 21200000, projetado: null },
+  { mes: "Out", real: 20900000, projetado: null },
+  { mes: "Nov", real: 22100000, projetado: 22100000 },
+  { mes: "Dez", real: null, projetado: 23400000 },
+]
+
+const totalProjetado = projecaoReceita.reduce((acc, m) => acc + (m.real || m.projetado || 0), 0)
+
+// Benchmark com municipios similares
+const benchmarkMunicipios = [
+  { municipio: "Municipio Atual", receitaPerCapita: 2286, autonomia: 26.5, realizacao: 93.8, inadimplencia: 7.6, destaque: true },
+  { municipio: "Municipio A (Similar)", receitaPerCapita: 2150, autonomia: 22.3, realizacao: 91.2, inadimplencia: 12.4, destaque: false },
+  { municipio: "Municipio B (Similar)", receitaPerCapita: 2420, autonomia: 29.8, realizacao: 95.1, inadimplencia: 8.9, destaque: false },
+  { municipio: "Municipio C (Similar)", receitaPerCapita: 1980, autonomia: 19.5, realizacao: 89.5, inadimplencia: 15.2, destaque: false },
+  { municipio: "Media Regional", receitaPerCapita: 2180, autonomia: 24.2, realizacao: 92.4, inadimplencia: 11.0, destaque: false },
+]
+
+const benchmarkChart = [
+  { indicador: "Rec. Per Capita", atual: 100, mediaRegional: 95.4 },
+  { indicador: "Autonomia", atual: 100, mediaRegional: 91.3 },
+  { indicador: "Realizacao", atual: 100, mediaRegional: 98.5 },
+  { indicador: "Inadimplencia", atual: 100, mediaRegional: 144.7 },
+]
+
+// Dados por período para filtros
+const dadosPorPeriodo: Record<string, { receitasProprias: typeof receitasProprias; receitasEstaduais: typeof receitasEstaduais; receitasFederais: typeof receitasFederais; outrasReceitas: typeof outrasReceitas; evolucaoMensal: typeof evolucaoMensal; topContribuintes: typeof topContribuintes; alertasReceita: typeof alertasReceita; eventosReceita: typeof eventosReceita; comparativoAnual: typeof comparativoAnual; }> = {
+  "2024": { receitasProprias, receitasEstaduais, receitasFederais, outrasReceitas, evolucaoMensal, topContribuintes, alertasReceita, eventosReceita, comparativoAnual },
+  "2023": {
+    receitasProprias: receitasProprias.map(r => ({ ...r, prevista: r.prevista * 0.92, arrecadada: r.arrecadada * 0.89, aArrecadar: r.prevista * 0.92 - r.arrecadada * 0.89 })),
+    receitasEstaduais: receitasEstaduais.map(r => ({ ...r, prevista: r.prevista * 0.90, arrecadada: r.arrecadada * 0.88, aArrecadar: r.prevista * 0.90 - r.arrecadada * 0.88 })),
+    receitasFederais: receitasFederais.map(r => ({ ...r, prevista: r.prevista * 0.88, arrecadada: r.arrecadada * 0.87, aArrecadar: r.prevista * 0.88 - r.arrecadada * 0.87 })),
+    outrasReceitas: outrasReceitas.map(r => ({ ...r, prevista: r.prevista * 0.95, arrecadada: r.arrecadada * 0.93, aArrecadar: r.prevista * 0.95 - r.arrecadada * 0.93 })),
+    evolucaoMensal: evolucaoMensal.map(e => ({ ...e, prevista: e.prevista * 0.92, arrecadada: e.arrecadada * 0.89 })),
+    topContribuintes: topContribuintes.map(t => ({ ...t, valor: t.valor * 0.91 })),
+    alertasReceita: alertasReceita.map(a => ({ ...a, descricao: a.descricao.replace(/2024/g, '2023') })),
+    eventosReceita: eventosReceita.map(e => ({ ...e, data: e.data.replace(/2024/g, '2023') })),
+    comparativoAnual: comparativoAnual.filter(c => c.ano !== "2024")
+  },
+  "2022": {
+    receitasProprias: receitasProprias.map(r => ({ ...r, prevista: r.prevista * 0.84, arrecadada: r.arrecadada * 0.81, aArrecadar: r.prevista * 0.84 - r.arrecadada * 0.81 })),
+    receitasEstaduais: receitasEstaduais.map(r => ({ ...r, prevista: r.prevista * 0.82, arrecadada: r.arrecadada * 0.80, aArrecadar: r.prevista * 0.82 - r.arrecadada * 0.80 })),
+    receitasFederais: receitasFederais.map(r => ({ ...r, prevista: r.prevista * 0.80, arrecadada: r.arrecadada * 0.79, aArrecadar: r.prevista * 0.80 - r.arrecadada * 0.79 })),
+    outrasReceitas: outrasReceitas.map(r => ({ ...r, prevista: r.prevista * 0.88, arrecadada: r.arrecadada * 0.86, aArrecadar: r.prevista * 0.88 - r.arrecadada * 0.86 })),
+    evolucaoMensal: evolucaoMensal.map(e => ({ ...e, prevista: e.prevista * 0.84, arrecadada: e.arrecadada * 0.81 })),
+    topContribuintes: topContribuintes.map(t => ({ ...t, valor: t.valor * 0.83 })),
+    alertasReceita: alertasReceita.map(a => ({ ...a, descricao: a.descricao.replace(/2024/g, '2022') })),
+    eventosReceita: eventosReceita.map(e => ({ ...e, data: e.data.replace(/2024/g, '2022') })),
+    comparativoAnual: comparativoAnual.filter(c => c.ano !== "2024" && c.ano !== "2023")
+  }
+}
 
 export function ReceitaMunicipal() {
   const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024")
@@ -257,7 +385,7 @@ export function ReceitaMunicipal() {
             <HugeiconsIcon icon={Download01Icon} strokeWidth={2} className="mr-2 size-4" />
             Exportar
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="icon" className="size-8">
             <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4" />
           </Button>
         </div>
@@ -274,7 +402,13 @@ export function ReceitaMunicipal() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatMillions(totaisGerais.prevista)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Orcamento atualizado {periodoSelecionado}</p>
+            <div className="flex items-center gap-1 mt-1">
+              <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950/30">
+                <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 mr-1" />
+                +4.9%
+              </Badge>
+              <span className="text-xs text-muted-foreground">vs {Number(periodoSelecionado) - 1}</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -292,6 +426,10 @@ export function ReceitaMunicipal() {
                 {calcPercent(totaisGerais.arrecadada, totaisGerais.prevista)}%
               </Badge>
               <span className="text-xs text-muted-foreground">da previsao</span>
+              <Badge variant="outline" className="text-xs bg-green-50 dark:bg-green-950/30 ml-1">
+                <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 mr-1" />
+                +2.1%
+              </Badge>
             </div>
           </CardContent>
         </Card>
@@ -792,6 +930,362 @@ export function ReceitaMunicipal() {
                   </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Metas de Arrecadação */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
+            Metas de Arrecadação
+          </CardTitle>
+          <CardDescription>Acompanhamento dos indicadores de desempenho</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {metasArrecadacao.map((meta, index) => (
+              <div key={index} className="rounded-lg border p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">{meta.indicador}</p>
+                  <Badge 
+                    variant={meta.status === "atingido" ? "secondary" : "outline"}
+                    className={meta.status === "atingido" ? "text-green-600" : "text-amber-600"}
+                  >
+                    {meta.status === "atingido" ? "Atingido" : "Atenção"}
+                  </Badge>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Meta: {meta.unidade === "R$" ? formatCurrency(meta.meta) : `${meta.meta}${meta.unidade}`}</span>
+                    <span className="font-medium">
+                      {meta.status === "atingido" ? (
+                        <span className="text-green-600 flex items-center gap-1">
+                          <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-3" />
+                          {meta.unidade === "R$" ? formatCurrency(meta.realizado) : `${meta.realizado}${meta.unidade}`}
+                        </span>
+                      ) : (
+                        <span className="text-amber-600">
+                          {meta.unidade === "R$" ? formatCurrency(meta.realizado) : `${meta.realizado}${meta.unidade}`}
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(meta.realizado / meta.meta) * 100} 
+                    className={`h-2 ${meta.status === "atingido" ? "[&>div]:bg-green-500" : ""}`}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">{meta.descricao}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Inadimplencia por Tributo */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-5" />
+            Inadimplencia por Tributo
+          </CardTitle>
+          <CardDescription>
+            Taxa geral de inadimplencia: <strong className="text-red-600">{taxaInadimplenciaGeral}%</strong> — 
+            Total inadimplente: <strong>{formatCurrency(totalInadimplencia)}</strong>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tributo</TableHead>
+                <TableHead className="text-right">Lancado</TableHead>
+                <TableHead className="text-right">Arrecadado</TableHead>
+                <TableHead className="text-right">Inadimplente</TableHead>
+                <TableHead className="text-right">% Inadimpl.</TableHead>
+                <TableHead className="text-right">Contribuintes</TableHead>
+                <TableHead className="text-center">Risco</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {inadimplencia.map((item) => (
+                <TableRow key={item.tributo}>
+                  <TableCell className="font-medium">{item.tributo}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.lancado)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.arrecadado)}</TableCell>
+                  <TableCell className="text-right text-red-600 font-medium">
+                    {item.inadimplente > 0 ? formatCurrency(item.inadimplente) : "-"}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {item.percentual > 0 ? (
+                      <Badge 
+                        variant={item.percentual > 15 ? "destructive" : item.percentual > 10 ? "outline" : "secondary"}
+                        className={item.percentual > 15 ? "" : item.percentual > 10 ? "text-amber-600" : "text-green-600"}
+                      >
+                        {item.percentual}%
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="text-green-600">0%</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">{item.contribuintes > 0 ? item.contribuintes.toLocaleString('pt-BR') : "-"}</TableCell>
+                  <TableCell className="text-center">
+                    {item.percentual > 15 ? (
+                      <div className="flex items-center justify-center gap-1">
+                        <div className="size-2 rounded-full bg-red-500" />
+                        <span className="text-xs text-red-600">Alto</span>
+                      </div>
+                    ) : item.percentual > 10 ? (
+                      <div className="flex items-center justify-center gap-1">
+                        <div className="size-2 rounded-full bg-amber-500" />
+                        <span className="text-xs text-amber-600">Medio</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-1">
+                        <div className="size-2 rounded-full bg-green-500" />
+                        <span className="text-xs text-green-600">Baixo</span>
+                      </div>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell className="font-bold">Total</TableCell>
+                <TableCell className="text-right font-bold">{formatCurrency(totalLancado)}</TableCell>
+                <TableCell className="text-right font-bold">{formatCurrency(totalLancado - totalInadimplencia)}</TableCell>
+                <TableCell className="text-right font-bold text-red-600">{formatCurrency(totalInadimplencia)}</TableCell>
+                <TableCell className="text-right font-bold">{taxaInadimplenciaGeral}%</TableCell>
+                <TableCell className="text-right font-bold">{inadimplencia.reduce((acc, i) => acc + i.contribuintes, 0).toLocaleString('pt-BR')}</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Sazonalidade e Receita Corrente vs Capital */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Sazonalidade */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-5" />
+              Sazonalidade da Arrecadacao
+            </CardTitle>
+            <CardDescription>Distribuicao mensal por origem dos recursos</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                proprias: { label: "Proprias", color: "var(--chart-1)" },
+                estaduais: { label: "Estaduais", color: "var(--chart-2)" },
+                federais: { label: "Federais", color: "var(--chart-3)" },
+                outras: { label: "Outras", color: "var(--chart-4)" },
+              } satisfies ChartConfig}
+              className="h-[280px] w-full"
+            >
+              <BarChart data={sazonalidadeData} margin={{ left: 0, right: 12 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="mes" tickLine={false} axisLine={false} tickMargin={8} />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(v: number) => `${(v/1000000).toFixed(0)}M`} />
+                <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
+                <Bar dataKey="proprias" stackId="a" fill="var(--color-proprias)" />
+                <Bar dataKey="estaduais" stackId="a" fill="var(--color-estaduais)" />
+                <Bar dataKey="federais" stackId="a" fill="var(--color-federais)" />
+                <Bar dataKey="outras" stackId="a" fill="var(--color-outras)" radius={[4, 4, 0, 0]} />
+                <ChartLegend content={<ChartLegendContent />} />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        {/* Receita Corrente vs Capital */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={PieChart02Icon} strokeWidth={2} className="size-5" />
+              Receita Corrente vs Capital
+            </CardTitle>
+            <CardDescription>Composicao por categoria economica</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ChartContainer
+                config={{
+                  correntes: { label: "Correntes", color: "var(--chart-1)" },
+                  capital: { label: "Capital", color: "var(--chart-3)" },
+                } satisfies ChartConfig}
+                className="mx-auto aspect-square h-[180px]"
+              >
+                <PieChart>
+                  <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} hideLabel />} />
+                  <Pie
+                    data={receitaCorrenteCapitalChart}
+                    dataKey="valor"
+                    nameKey="nome"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={75}
+                    label={({ percent }: { percent: number }) => `${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  />
+                  <ChartLegend content={<ChartLegendContent nameKey="nome" />} />
+                </PieChart>
+              </ChartContainer>
+              <div className="space-y-3">
+                {receitaCorrenteCapital.map((cat) => (
+                  <div key={cat.tipo} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium">{cat.tipo}</p>
+                      <Badge variant="outline">{cat.percentual}%</Badge>
+                    </div>
+                    <p className="text-lg font-bold">{formatMillions(cat.valor)}</p>
+                    <div className="space-y-1">
+                      {cat.subcategorias.map((sub) => (
+                        <div key={sub.nome} className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">{sub.nome}</span>
+                          <span className="font-medium">{formatMillions(sub.valor)}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <Separator />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Projecao de Receita e Benchmark */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Projecao de Receita */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
+              Projecao de Receita
+            </CardTitle>
+            <CardDescription>
+              Realizado + forecast para encerramento — Projetado total: <strong>{formatCurrency(totalProjetado)}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                real: { label: "Realizado", color: "var(--chart-1)" },
+                projetado: { label: "Projetado", color: "var(--chart-5)" },
+              } satisfies ChartConfig}
+              className="h-[280px] w-full"
+            >
+              <LineChart data={projecaoReceita} margin={{ left: 0, right: 12 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="mes" tickLine={false} axisLine={false} tickMargin={8} />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(v: number) => `${(v/1000000).toFixed(0)}M`} />
+                <ChartTooltip content={<ChartTooltipContent formatter={(value) => value ? formatCurrency(Number(value)) : "-"} />} />
+                <Line
+                  dataKey="real"
+                  type="monotone"
+                  stroke="var(--color-real)"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  connectNulls={false}
+                />
+                <Line
+                  dataKey="projetado"
+                  type="monotone"
+                  stroke="var(--color-projetado)"
+                  strokeWidth={2}
+                  strokeDasharray="6 3"
+                  dot={{ r: 3, strokeDasharray: "0" }}
+                  connectNulls={false}
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+              </LineChart>
+            </ChartContainer>
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              <div className="rounded-lg border p-3 text-center">
+                <p className="text-xs text-muted-foreground">Realizado (Jan-Nov)</p>
+                <p className="text-sm font-bold">{formatMillions(projecaoReceita.filter(m => m.real).reduce((acc, m) => acc + (m.real || 0), 0))}</p>
+              </div>
+              <div className="rounded-lg border p-3 text-center bg-primary/5">
+                <p className="text-xs text-muted-foreground">Projecao Dez</p>
+                <p className="text-sm font-bold">{formatMillions(23400000)}</p>
+              </div>
+              <div className="rounded-lg border p-3 text-center">
+                <p className="text-xs text-muted-foreground">Total Projetado</p>
+                <p className="text-sm font-bold text-green-600">{formatMillions(totalProjetado)}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Benchmark com Municipios Similares */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-5" />
+              Benchmark Municipal
+            </CardTitle>
+            <CardDescription>Comparacao com municipios de porte similar</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Municipio</TableHead>
+                  <TableHead className="text-right">Rec. Per Capita</TableHead>
+                  <TableHead className="text-right">Autonomia</TableHead>
+                  <TableHead className="text-right">Realizacao</TableHead>
+                  <TableHead className="text-right">Inadimpl.</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {benchmarkMunicipios.map((mun) => (
+                  <TableRow key={mun.municipio} className={mun.destaque ? "bg-primary/5 font-medium" : ""}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {mun.destaque && <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-3.5 text-amber-500" />}
+                        {mun.municipio}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      R$ {mun.receitaPerCapita.toLocaleString('pt-BR')}
+                    </TableCell>
+                    <TableCell className="text-right">{mun.autonomia}%</TableCell>
+                    <TableCell className="text-right">{mun.realizacao}%</TableCell>
+                    <TableCell className="text-right">
+                      <Badge 
+                        variant={mun.inadimplencia > 12 ? "destructive" : mun.inadimplencia > 9 ? "outline" : "secondary"}
+                        className={mun.inadimplencia > 12 ? "" : mun.inadimplencia > 9 ? "text-amber-600" : "text-green-600"}
+                      >
+                        {mun.inadimplencia}%
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-lg border p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Posicao no Ranking</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold text-green-600">2o</span>
+                  <span className="text-xs text-muted-foreground">de 5 municipios</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Acima da media regional em 3 de 4 indicadores</p>
+              </div>
+              <div className="rounded-lg border p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Destaque Positivo</p>
+                <p className="text-sm font-medium text-green-600">Menor inadimplencia</p>
+                <p className="text-xs text-muted-foreground">7.6% vs 11.0% da media regional — melhor entre os comparados</p>
+              </div>
             </div>
           </CardContent>
         </Card>

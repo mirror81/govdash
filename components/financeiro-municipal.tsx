@@ -30,6 +30,12 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -272,6 +278,73 @@ const alertasFinanceiros = [
   { tipo: "success", titulo: "Conciliacao em dia", descricao: "4 de 5 contas bancarias estao com a conciliacao atualizada e sem divergencias.", percentual: "80%" },
 ]
 
+// Metas financeiras
+const metasFinanceiro = [
+  { indicador: "Liquidez Imediata", meta: 1.5, realizado: 2.26, unidade: "", status: "atingido", descricao: "Disponível / A Pagar" },
+  { indicador: "Contas Conciliadas", meta: 95, realizado: 80, unidade: "%", status: "atencao", descricao: "Atualizadas mensalmente" },
+  { indicador: "Aplicacoes Financeiras", meta: 5000000, realizado: 5715500, unidade: "R$", status: "atingido", descricao: "Meta de investimento superada" },
+  { indicador: "Pagamentos em Dia", meta: 98, realizado: 96, unidade: "%", status: "atencao", descricao: "Pontualidade nos pagamentos" },
+  { indicador: "Receita em Conta", meta: 90, realizado: 92, unidade: "%", descricao: "Arrecadação disponível vs total" },
+  { indicador: "Provisão Mensal", meta: 15000000, realizado: 15400000, unidade: "R$", status: "atingido", descricao: "Reserva para pagamentos" },
+]
+
+// Disponibilidade por Fonte de Recurso (chart)
+const disponibilidadePorFonte = [
+  { nome: "Recursos Ordinarios", valor: 16000000, fill: "var(--chart-1)" },
+  { nome: "Educacao", valor: 5300000, fill: "var(--chart-2)" },
+  { nome: "Saude", valor: 4600000, fill: "var(--chart-3)" },
+  { nome: "FUNDEB", valor: 3400000, fill: "var(--chart-4)" },
+  { nome: "SUS", valor: 2500000, fill: "var(--chart-5)" },
+  { nome: "Convenios", valor: 2970000, fill: "var(--chart-6)" },
+]
+
+// Projecao de Fluxo de Caixa (proximos meses)
+const projecaoFluxoCaixa = [
+  { mes: "Dez/24", entradasPrevistas: 15200000, saidasPrevistas: 16800000, saldoProjetado: -1600000, confianca: "alta" },
+  { mes: "Jan/25", entradasPrevistas: 10500000, saidasPrevistas: 11200000, saldoProjetado: -700000, confianca: "media" },
+  { mes: "Fev/25", entradasPrevistas: 11800000, saidasPrevistas: 10900000, saldoProjetado: 900000, confianca: "media" },
+  { mes: "Mar/25", entradasPrevistas: 13200000, saidasPrevistas: 12100000, saldoProjetado: 1100000, confianca: "baixa" },
+]
+
+const saldoAcumuladoProjetado = projecaoFluxoCaixa.reduce((acc, item) => {
+  const novoSaldo = acc + item.saldoProjetado
+  return novoSaldo
+}, totaisFinanceiros.saldoTotal)
+
+// Cobertura de Compromissos
+const mediaSaidasMensal = totaisFinanceiros.totalSaidas / 11 // 11 meses ate novembro
+const mesesCobertura = (totaisFinanceiros.saldoTotal / mediaSaidasMensal)
+const coberturaComPromissos = [
+  { indicador: "Saldo Disponivel", valor: totaisFinanceiros.saldoTotal, formatado: formatCurrency(totaisFinanceiros.saldoTotal) },
+  { indicador: "Media Mensal Saidas", valor: mediaSaidasMensal, formatado: formatCurrency(mediaSaidasMensal) },
+  { indicador: "Meses de Cobertura", valor: mesesCobertura, formatado: `${mesesCobertura.toFixed(1)} meses` },
+  { indicador: "Compromissos Vencidos", valor: 1250000, formatado: formatCurrency(1250000) },
+  { indicador: "Compromissos Prox. 30 dias", valor: 6000000, formatado: formatCurrency(6000000) },
+  { indicador: "Compromissos Prox. 60 dias", valor: 10500000, formatado: formatCurrency(10500000) },
+]
+
+// Concentracao de Fornecedores (Analise Pareto / HHI)
+const totalPagoFornecedores = maioresFornecedores.reduce((a, b) => a + b.totalPago, 0)
+const concentracaoFornecedores = maioresFornecedores.map((forn, index) => {
+  const percentual = (forn.totalPago / totalPagoFornecedores) * 100
+  const acumulado = maioresFornecedores.slice(0, index + 1).reduce((a, b) => a + b.totalPago, 0) / totalPagoFornecedores * 100
+  return { ...forn, percentual: Number(percentual.toFixed(1)), acumulado: Number(acumulado.toFixed(1)) }
+})
+const hhi = maioresFornecedores.reduce((acc, forn) => {
+  const share = (forn.totalPago / totalPagoFornecedores) * 100
+  return acc + share * share
+}, 0)
+const riscoConcentracao = hhi > 2500 ? "alto" : hhi > 1500 ? "moderado" : "baixo"
+
+// Benchmark Financeiro Municipal
+const benchmarkFinanceiro = [
+  { municipio: "Municipio Atual", liquidez: 2.26, conciliacao: 80, rendimento: 7.8, cobertura: Number(mesesCobertura.toFixed(1)), inadimplencia: 24.2, destaque: true },
+  { municipio: "Municipio A (Similar)", liquidez: 1.85, conciliacao: 92, rendimento: 6.5, cobertura: 2.1, inadimplencia: 18.5, destaque: false },
+  { municipio: "Municipio B (Similar)", liquidez: 1.42, conciliacao: 88, rendimento: 7.2, cobertura: 1.8, inadimplencia: 32.1, destaque: false },
+  { municipio: "Municipio C (Similar)", liquidez: 2.58, conciliacao: 75, rendimento: 5.9, cobertura: 3.5, inadimplencia: 28.7, destaque: false },
+  { municipio: "Media Regional", liquidez: 1.92, conciliacao: 84, rendimento: 6.5, cobertura: 2.4, inadimplencia: 25.8, destaque: false },
+]
+
 export function FinanceiroMunicipal() {
   const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024")
   const [abaSelecionada, setAbaSelecionada] = React.useState("fontes")
@@ -435,6 +508,56 @@ export function FinanceiroMunicipal() {
           </Alert>
         ))}
       </div>
+
+      {/* Metas de Gestão Financeira */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
+            Metas de Gestão Financeira
+          </CardTitle>
+          <CardDescription>Acompanhamento dos indicadores de desempenho</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {metasFinanceiro.map((meta, index) => (
+              <div key={index} className="rounded-lg border p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">{meta.indicador}</p>
+                  <Badge 
+                    variant={meta.status === "atingido" ? "secondary" : "outline"}
+                    className={meta.status === "atingido" ? "text-green-600" : "text-amber-600"}
+                  >
+                    {meta.status === "atingido" ? "Atingido" : "Atenção"}
+                  </Badge>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Meta: {meta.unidade === "R$" ? formatCurrency(meta.meta) : `${meta.meta}${meta.unidade}`}</span>
+                    <span className="font-medium">
+                      {meta.status === "atingido" ? (
+                        <span className="text-green-600 flex items-center gap-1">
+                          <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-3" />
+                          {meta.unidade === "R$" ? formatCurrency(meta.realizado) : `${meta.realizado}${meta.unidade}`}
+                        </span>
+                      ) : (
+                        <span className="text-amber-600">
+                          {meta.unidade === "R$" ? formatCurrency(meta.realizado) : `${meta.realizado}${meta.unidade}`}
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(meta.realizado / meta.meta) * 100} 
+                    className={`h-2 ${meta.status === "atingido" ? "[&>div]:bg-green-500" : ""}`}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">{meta.descricao}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Controles Detalhados em Tabs */}
       <Tabs value={abaSelecionada} onValueChange={setAbaSelecionada} className="w-full">
@@ -994,6 +1117,297 @@ export function FinanceiroMunicipal() {
               </div>
             </TabsContent>
           </Tabs>
+        </CardContent>
+      </Card>
+
+      {/* Disponibilidade por Fonte e Projecao de Fluxo de Caixa */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Disponibilidade por Fonte */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={PieChart02Icon} strokeWidth={2} className="size-5" />
+              Disponibilidade por Fonte
+            </CardTitle>
+            <CardDescription>Distribuicao do saldo disponivel por fonte de recurso</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ChartContainer
+                config={{
+                  ordinarios: { label: "Ordinarios", color: "var(--chart-1)" },
+                  educacao: { label: "Educacao", color: "var(--chart-2)" },
+                  saude: { label: "Saude", color: "var(--chart-3)" },
+                  fundeb: { label: "FUNDEB", color: "var(--chart-4)" },
+                  sus: { label: "SUS", color: "var(--chart-5)" },
+                  convenios: { label: "Convenios", color: "var(--chart-6)" },
+                } satisfies ChartConfig}
+                className="mx-auto aspect-square h-[180px]"
+              >
+                <PieChart>
+                  <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} hideLabel />} />
+                  <Pie
+                    data={disponibilidadePorFonte}
+                    dataKey="valor"
+                    nameKey="nome"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={75}
+                    label={({ percent }: { percent: number }) => `${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  />
+                  <ChartLegend content={<ChartLegendContent nameKey="nome" />} />
+                </PieChart>
+              </ChartContainer>
+              <div className="space-y-2">
+                {disponibilidadePorFonte.map((fonte) => (
+                  <div key={fonte.nome} className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{fonte.nome}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{formatMillions(fonte.valor)}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {((fonte.valor / totaisFinanceiros.saldoTotal) * 100).toFixed(1)}%
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+                <Separator />
+                <div className="flex items-center justify-between text-sm font-bold">
+                  <span>Total Disponivel</span>
+                  <span>{formatCurrency(totaisFinanceiros.saldoTotal)}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Projecao de Fluxo de Caixa */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
+              Projecao de Fluxo de Caixa
+            </CardTitle>
+            <CardDescription>
+              Saldo projetado ao final: <strong className={saldoAcumuladoProjetado > 0 ? "text-green-600" : "text-red-600"}>
+                {formatCurrency(saldoAcumuladoProjetado)}
+              </strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {projecaoFluxoCaixa.map((item) => (
+                <div key={item.mes} className="rounded-lg border p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="font-mono text-xs">{item.mes}</Badge>
+                      <Badge 
+                        variant={item.confianca === "alta" ? "secondary" : item.confianca === "media" ? "outline" : "destructive"}
+                        className={`text-xs ${item.confianca === "alta" ? "text-green-600" : item.confianca === "media" ? "text-amber-600" : ""}`}
+                      >
+                        Conf. {item.confianca}
+                      </Badge>
+                    </div>
+                    <span className={`text-sm font-bold ${item.saldoProjetado >= 0 ? "text-green-600" : "text-red-600"}`}>
+                      {item.saldoProjetado >= 0 ? "+" : ""}{formatCurrency(item.saldoProjetado)}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Entradas</span>
+                      <span className="text-green-600 font-medium">{formatMillions(item.entradasPrevistas)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Saidas</span>
+                      <span className="text-red-600 font-medium">{formatMillions(item.saidasPrevistas)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Alert className="mt-3" variant={projecaoFluxoCaixa[0].saldoProjetado < 0 ? "destructive" : "default"}>
+              <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4" />
+              <AlertTitle>Atencao: Dezembro com deficit projetado</AlertTitle>
+              <AlertDescription>
+                Saidas elevadas previstas para dezembro (13o salario + fornecedores). Saldo disponivel e suficiente para cobertura.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Cobertura de Compromissos e Concentracao de Fornecedores */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Cobertura de Compromissos */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-5" />
+              Cobertura de Compromissos
+            </CardTitle>
+            <CardDescription>
+              O saldo atual cobre <strong className="text-green-600">{mesesCobertura.toFixed(1)} meses</strong> de saidas medias
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="relative h-6 w-full overflow-hidden rounded-full bg-muted">
+                <div 
+                  className="absolute h-full rounded-full bg-green-500 transition-all" 
+                  style={{ width: `${Math.min((mesesCobertura / 4) * 100, 100)}%` }} 
+                />
+                <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
+                  {mesesCobertura.toFixed(1)} meses de cobertura
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {coberturaComPromissos.map((item) => (
+                  <div key={item.indicador} className="rounded-lg border p-3 text-center">
+                    <p className="text-xs text-muted-foreground">{item.indicador}</p>
+                    <p className="text-sm font-bold mt-1">{item.formatado}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-lg bg-green-50 dark:bg-green-950/20 p-3">
+                <div className="flex items-center gap-2">
+                  <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4 text-green-600" />
+                  <p className="text-sm">
+                    <strong className="text-green-600">Situacao adequada.</strong>{" "}
+                    <span className="text-muted-foreground">
+                      O municipio possui liquidez para honrar compromissos dos proximos {mesesCobertura.toFixed(0)} meses sem novas entradas.
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Concentracao de Fornecedores */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-5" />
+              Concentracao de Fornecedores
+            </CardTitle>
+            <CardDescription>
+              Indice HHI: <strong>{hhi.toFixed(0)}</strong> — Risco: {" "}
+              <Badge variant={riscoConcentracao === "alto" ? "destructive" : riscoConcentracao === "moderado" ? "outline" : "secondary"}
+                className={riscoConcentracao === "alto" ? "" : riscoConcentracao === "moderado" ? "text-amber-600" : "text-green-600"}>
+                {riscoConcentracao.charAt(0).toUpperCase() + riscoConcentracao.slice(1)}
+              </Badge>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {concentracaoFornecedores.map((forn, index) => (
+                <div key={forn.cnpj} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs w-6 justify-center">{index + 1}</Badge>
+                      <span className="text-muted-foreground truncate max-w-[180px]">{forn.nome}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{formatMillions(forn.totalPago)}</span>
+                      <Badge variant="outline" className="text-xs">{forn.percentual}%</Badge>
+                    </div>
+                  </div>
+                  <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div 
+                      className="absolute h-full rounded-full bg-primary transition-all" 
+                      style={{ width: `${forn.percentual}%` }} 
+                    />
+                    <div 
+                      className="absolute h-full rounded-full bg-amber-300/40" 
+                      style={{ width: `${forn.acumulado}%` }} 
+                    />
+                  </div>
+                  <div className="flex justify-end text-xs text-muted-foreground">
+                    Acumulado: {forn.acumulado}%
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 rounded-lg bg-muted/50 p-3">
+              <p className="text-xs text-muted-foreground">
+                <strong className="text-foreground">Analise Pareto:</strong> Os 5 maiores fornecedores concentram{" "}
+                <strong>100%</strong> dos pagamentos analisados. O indice HHI de {hhi.toFixed(0)} indica concentracao{" "}
+                {riscoConcentracao === "alto" ? "alta — recomenda-se diversificar" : riscoConcentracao === "moderado" ? "moderada — monitorar" : "baixa — adequado"}.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Benchmark Financeiro Municipal */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-5" />
+            Benchmark Financeiro Municipal
+          </CardTitle>
+          <CardDescription>Comparacao de indicadores financeiros com municipios de porte similar</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Municipio</TableHead>
+                <TableHead className="text-right">Liquidez</TableHead>
+                <TableHead className="text-right">Conciliacao</TableHead>
+                <TableHead className="text-right">Rendimento</TableHead>
+                <TableHead className="text-right">Cobertura</TableHead>
+                <TableHead className="text-right">Inadimpl.</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {benchmarkFinanceiro.map((mun) => (
+                <TableRow key={mun.municipio} className={mun.destaque ? "bg-primary/5 font-medium" : ""}>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-2">
+                      {mun.destaque && <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-3.5 text-amber-500" />}
+                      {mun.municipio}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Badge 
+                      variant={mun.liquidez >= 2 ? "secondary" : mun.liquidez >= 1.5 ? "outline" : "destructive"}
+                      className={mun.liquidez >= 2 ? "text-green-600" : mun.liquidez >= 1.5 ? "text-amber-600" : ""}
+                    >
+                      {mun.liquidez}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">{mun.conciliacao}%</TableCell>
+                  <TableCell className="text-right">{mun.rendimento}%</TableCell>
+                  <TableCell className="text-right">{mun.cobertura} meses</TableCell>
+                  <TableCell className="text-right">
+                    <Badge 
+                      variant={mun.inadimplencia > 30 ? "destructive" : mun.inadimplencia > 20 ? "outline" : "secondary"}
+                      className={mun.inadimplencia > 30 ? "" : mun.inadimplencia > 20 ? "text-amber-600" : "text-green-600"}
+                    >
+                      {mun.inadimplencia}%
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="rounded-lg border p-3 space-y-2">
+              <p className="text-xs font-medium text-muted-foreground">Posicao Geral</p>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-green-600">1o</span>
+                <span className="text-xs text-muted-foreground">de 5 municipios</span>
+              </div>
+              <p className="text-xs text-muted-foreground">Destaque em liquidez e rendimento de aplicacoes</p>
+            </div>
+            <div className="rounded-lg border p-3 space-y-2">
+              <p className="text-xs font-medium text-muted-foreground">Ponto de Melhoria</p>
+              <p className="text-sm font-medium text-amber-600">Conciliacao Bancaria</p>
+              <p className="text-xs text-muted-foreground">80% vs 92% do melhor comparado — regularizar contas pendentes</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
