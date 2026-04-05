@@ -131,22 +131,92 @@ import {
   TextAlignRightIcon,
 } from "@hugeicons/core-free-icons"
 
+// Funcao para converter oklch para hex
+function oklchToHex(oklchStr: string): string {
+  // Parse oklch string: oklch(L C H) or oklch(L C H / A)
+  const match = oklchStr.match(/oklch\(([^)]+)\)/)
+  if (!match) return "#000000"
+  
+  const parts = match[1].split(/[\s/]+/).map(p => parseFloat(p))
+  const [L, C, H] = parts
+  
+  if (isNaN(L) || isNaN(C)) return "#000000"
+  
+  // Convert OKLCH to OKLab
+  const hRad = ((H || 0) * Math.PI) / 180
+  const a = C * Math.cos(hRad)
+  const b = C * Math.sin(hRad)
+  
+  // OKLab to linear sRGB
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b
+  const s_ = L - 0.0894841775 * a - 1.2914855480 * b
+  
+  const l = l_ * l_ * l_
+  const m = m_ * m_ * m_
+  const s = s_ * s_ * s_
+  
+  let r = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s
+  let g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s
+  let bVal = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+  
+  // Linear sRGB to sRGB
+  const toSrgb = (c: number) => {
+    c = Math.max(0, Math.min(1, c))
+    return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055
+  }
+  
+  r = Math.round(toSrgb(r) * 255)
+  g = Math.round(toSrgb(g) * 255)
+  bVal = Math.round(toSrgb(bVal) * 255)
+  
+  const toHex = (n: number) => Math.max(0, Math.min(255, n)).toString(16).padStart(2, '0')
+  return `#${toHex(r)}${toHex(g)}${toHex(bVal)}`.toUpperCase()
+}
+
+// Funcao para obter valor de CSS variable
+function getCssVarValue(varName: string): string {
+  if (typeof window === 'undefined') return ''
+  const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
+  return value
+}
+
 export function Demo() {
   const [sliderValue, setSliderValue] = React.useState<number[]>([500])
   const [progressValue, setProgressValue] = React.useState(66)
+  const [colorHexValues, setColorHexValues] = React.useState<Record<string, string>>({})
+  
   const handleSliderValueChange = React.useCallback((value: number[]) => {
     setSliderValue(value)
   }, [])
 
-  return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-start bg-muted p-4 sm:p-6 lg:p-12 dark:bg-background">
-      <div className="w-full max-w-6xl space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Radix Luma Components</h1>
-          <p className="mt-2 text-muted-foreground">Todas as variantes de cada componente do preset</p>
-        </div>
+  // Calcular valores hex das cores
+  React.useEffect(() => {
+    const colorVars = [
+      "--background",
+      "--foreground",
+      "--primary",
+      "--secondary",
+      "--muted",
+      "--accent",
+      "--border",
+      "--chart-1",
+      "--chart-2",
+      "--chart-3",
+      "--chart-4",
+      "--chart-5",
+    ]
+    
+    const hexValues: Record<string, string> = {}
+    colorVars.forEach(varName => {
+      const oklchValue = getCssVarValue(varName)
+      hexValues[varName] = oklchToHex(oklchValue)
+    })
+    setColorHexValues(hexValues)
+  }, [])
 
+  return (
+    <div className="space-y-8">
         {/* Style Overview & Icons */}
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
@@ -184,8 +254,13 @@ export function Demo() {
                         } as React.CSSProperties
                       }
                     />
-                    <div className="hidden max-w-14 truncate font-mono text-[0.60rem] md:block">
-                      {variant}
+                    <div className="flex flex-col items-center gap-0.5">
+                      <div className="hidden max-w-14 truncate font-mono text-[0.55rem] text-muted-foreground md:block">
+                        {variant.replace('--', '')}
+                      </div>
+                      <div className="font-mono text-[0.65rem] font-medium">
+                        {colorHexValues[variant] || '...'}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -1595,7 +1670,6 @@ export function Demo() {
             </Table>
           </CardContent>
         </Card>
-      </div>
     </div>
   )
 }
