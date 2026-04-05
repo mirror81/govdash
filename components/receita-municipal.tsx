@@ -76,11 +76,11 @@ import {
   Alert02Icon,
   MoneyAdd01Icon,
   MoneySend01Icon,
-  Bank02Icon,
-  CityIcon,
+  BankIcon,
+  Building04Icon,
   Home01Icon,
-  Store01Icon,
-  TaxIcon,
+  Store04Icon,
+  Invoice02Icon,
 } from "@hugeicons/core-free-icons"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -454,7 +454,7 @@ export function ReceitaMunicipal() {
         <Card className="border-l-4 border-l-[var(--chart-3)]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <HugeiconsIcon icon={Bank02Icon} strokeWidth={2} className="size-4" />
+              <HugeiconsIcon icon={BankIcon} strokeWidth={2} className="size-4" />
               Transf. Federais
             </CardTitle>
           </CardHeader>
@@ -714,7 +714,7 @@ export function ReceitaMunicipal() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={Store01Icon} strokeWidth={2} className="size-5" />
+              <HugeiconsIcon icon={Store04Icon} strokeWidth={2} className="size-5" />
               Maiores Contribuintes
             </CardTitle>
             <CardDescription>Top 5 contribuintes por arrecadacao</CardDescription>
@@ -918,7 +918,7 @@ export function ReceitaMunicipal() {
             <AccordionItem value="transferencias">
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
-                  <HugeiconsIcon icon={Bank02Icon} strokeWidth={2} className="size-4 text-green-600" />
+                  <HugeiconsIcon icon={BankIcon} strokeWidth={2} className="size-4 text-green-600" />
                   <span>Analise das Transferencias</span>
                 </div>
               </AccordionTrigger>
