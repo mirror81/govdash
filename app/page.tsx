@@ -2,9 +2,10 @@
 
 import { Demo } from "@/components/demo"
 import { DespesaMunicipal } from "@/components/despesa-municipal"
+import { ReceitaMunicipal } from "@/components/receita-municipal"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { GridViewIcon, Analytics01Icon } from "@hugeicons/core-free-icons"
+import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon } from "@hugeicons/core-free-icons"
 
 export default function Page() {
   return (
@@ -18,10 +19,14 @@ export default function Page() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="demo" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:grid-cols-none sm:flex">
+          <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:grid-cols-none sm:flex">
             <TabsTrigger value="demo" className="gap-2">
               <HugeiconsIcon icon={GridViewIcon} strokeWidth={2} className="size-4" />
               Demo
+            </TabsTrigger>
+            <TabsTrigger value="receita" className="gap-2">
+              <HugeiconsIcon icon={MoneyAdd01Icon} strokeWidth={2} className="size-4" />
+              Receita
             </TabsTrigger>
             <TabsTrigger value="despesa" className="gap-2">
               <HugeiconsIcon icon={Analytics01Icon} strokeWidth={2} className="size-4" />
@@ -31,6 +36,10 @@ export default function Page() {
           
           <TabsContent value="demo" className="mt-6">
             <Demo />
+          </TabsContent>
+          
+          <TabsContent value="receita" className="mt-6">
+            <ReceitaMunicipal />
           </TabsContent>
           
           <TabsContent value="despesa" className="mt-6">
