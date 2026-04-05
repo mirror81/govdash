@@ -63,6 +63,39 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Avatar, AvatarFallback, AvatarImage, AvatarGroup, AvatarBadge } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableFooter,
+} from '@/components/ui/table'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from '@/components/ui/chart'
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  RadialBar,
+  RadialBarChart,
+  XAxis,
+  YAxis,
+  Cell,
+} from "recharts"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { 
   Copy01Icon, 
@@ -958,6 +991,608 @@ export function Demo() {
                 </CardContent>
               </Card>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Charts Section */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground">Charts</h2>
+          <p className="mt-2 text-muted-foreground">Graficos com Recharts e ChartContainer</p>
+        </div>
+
+        {/* Area Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Area Chart</CardTitle>
+            <CardDescription>Visualizacao de dados com area preenchida</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                desktop: {
+                  label: "Desktop",
+                  color: "var(--chart-1)",
+                },
+                mobile: {
+                  label: "Mobile",
+                  color: "var(--chart-2)",
+                },
+              } satisfies ChartConfig}
+              className="h-[300px] w-full"
+            >
+              <AreaChart
+                data={[
+                  { month: "Jan", desktop: 186, mobile: 80 },
+                  { month: "Feb", desktop: 305, mobile: 200 },
+                  { month: "Mar", desktop: 237, mobile: 120 },
+                  { month: "Apr", desktop: 73, mobile: 190 },
+                  { month: "May", desktop: 209, mobile: 130 },
+                  { month: "Jun", desktop: 214, mobile: 140 },
+                ]}
+                margin={{ left: 12, right: 12 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area
+                  dataKey="desktop"
+                  type="natural"
+                  fill="var(--color-desktop)"
+                  fillOpacity={0.4}
+                  stroke="var(--color-desktop)"
+                  stackId="a"
+                />
+                <Area
+                  dataKey="mobile"
+                  type="natural"
+                  fill="var(--color-mobile)"
+                  fillOpacity={0.4}
+                  stroke="var(--color-mobile)"
+                  stackId="a"
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+              </AreaChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        {/* Bar Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Bar Chart</CardTitle>
+            <CardDescription>Grafico de barras com multiplas series</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                revenue: {
+                  label: "Revenue",
+                  color: "var(--chart-1)",
+                },
+                expenses: {
+                  label: "Expenses",
+                  color: "var(--chart-3)",
+                },
+              } satisfies ChartConfig}
+              className="h-[300px] w-full"
+            >
+              <BarChart
+                data={[
+                  { month: "Jan", revenue: 4500, expenses: 3200 },
+                  { month: "Feb", revenue: 5200, expenses: 3800 },
+                  { month: "Mar", revenue: 4800, expenses: 4100 },
+                  { month: "Apr", revenue: 6100, expenses: 4500 },
+                  { month: "May", revenue: 5800, expenses: 4200 },
+                  { month: "Jun", revenue: 7200, expenses: 5100 },
+                ]}
+                margin={{ left: 12, right: 12 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="expenses" fill="var(--color-expenses)" radius={[4, 4, 0, 0]} />
+                <ChartLegend content={<ChartLegendContent />} />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        {/* Line Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Line Chart</CardTitle>
+            <CardDescription>Grafico de linhas para tendencias</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                visitors: {
+                  label: "Visitors",
+                  color: "var(--chart-2)",
+                },
+                pageViews: {
+                  label: "Page Views",
+                  color: "var(--chart-4)",
+                },
+              } satisfies ChartConfig}
+              className="h-[300px] w-full"
+            >
+              <LineChart
+                data={[
+                  { day: "Mon", visitors: 1200, pageViews: 3400 },
+                  { day: "Tue", visitors: 1400, pageViews: 4100 },
+                  { day: "Wed", visitors: 1100, pageViews: 2900 },
+                  { day: "Thu", visitors: 1800, pageViews: 5200 },
+                  { day: "Fri", visitors: 2100, pageViews: 6100 },
+                  { day: "Sat", visitors: 900, pageViews: 2400 },
+                  { day: "Sun", visitors: 750, pageViews: 1800 },
+                ]}
+                margin={{ left: 12, right: 12 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Line
+                  type="monotone"
+                  dataKey="visitors"
+                  stroke="var(--color-visitors)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="pageViews"
+                  stroke="var(--color-pageViews)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        {/* Pie and Radial Charts */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Pie Chart</CardTitle>
+              <CardDescription>Distribuicao de categorias</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  chrome: { label: "Chrome", color: "var(--chart-1)" },
+                  safari: { label: "Safari", color: "var(--chart-2)" },
+                  firefox: { label: "Firefox", color: "var(--chart-3)" },
+                  edge: { label: "Edge", color: "var(--chart-4)" },
+                  other: { label: "Other", color: "var(--chart-5)" },
+                } satisfies ChartConfig}
+                className="mx-auto aspect-square h-[280px]"
+              >
+                <PieChart>
+                  <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                  <Pie
+                    data={[
+                      { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+                      { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+                      { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+                      { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+                      { browser: "other", visitors: 90, fill: "var(--color-other)" },
+                    ]}
+                    dataKey="visitors"
+                    nameKey="browser"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                  />
+                  <ChartLegend content={<ChartLegendContent nameKey="browser" />} />
+                </PieChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Radial Bar Chart</CardTitle>
+              <CardDescription>Progresso em formato radial</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  safari: { label: "Safari", color: "var(--chart-2)" },
+                } satisfies ChartConfig}
+                className="mx-auto aspect-square h-[280px]"
+              >
+                <RadialBarChart
+                  data={[{ browser: "safari", visitors: 73, fill: "var(--color-safari)" }]}
+                  startAngle={90}
+                  endAngle={90 + 73 * 3.6}
+                  innerRadius={80}
+                  outerRadius={140}
+                >
+                  <RadialBar dataKey="visitors" background cornerRadius={10} />
+                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-foreground text-3xl font-bold">
+                    73%
+                  </text>
+                </RadialBarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Tables Section */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground">Tables</h2>
+          <p className="mt-2 text-muted-foreground">Tabelas com diferentes estilos</p>
+        </div>
+
+        {/* Basic Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Basic Table</CardTitle>
+            <CardDescription>Tabela simples com dados</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Invoice</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Method</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">INV001</TableCell>
+                  <TableCell><Badge variant="secondary">Paid</Badge></TableCell>
+                  <TableCell>Credit Card</TableCell>
+                  <TableCell className="text-right">$250.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">INV002</TableCell>
+                  <TableCell><Badge variant="outline">Pending</Badge></TableCell>
+                  <TableCell>PayPal</TableCell>
+                  <TableCell className="text-right">$150.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">INV003</TableCell>
+                  <TableCell><Badge variant="destructive">Unpaid</Badge></TableCell>
+                  <TableCell>Bank Transfer</TableCell>
+                  <TableCell className="text-right">$350.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">INV004</TableCell>
+                  <TableCell><Badge variant="secondary">Paid</Badge></TableCell>
+                  <TableCell>Credit Card</TableCell>
+                  <TableCell className="text-right">$450.00</TableCell>
+                </TableRow>
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={3}>Total</TableCell>
+                  <TableCell className="text-right font-bold">$1,200.00</TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Mixed: Chart + Table */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground">Mixed Components</h2>
+          <p className="mt-2 text-muted-foreground">Combinacoes de graficos e tabelas</p>
+        </div>
+
+        {/* Sales Dashboard */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Sales Dashboard</CardTitle>
+            <CardDescription>Visao geral de vendas com grafico e tabela</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Chart Section */}
+            <ChartContainer
+              config={{
+                sales: {
+                  label: "Sales",
+                  color: "var(--chart-1)",
+                },
+              } satisfies ChartConfig}
+              className="h-[200px] w-full"
+            >
+              <BarChart
+                data={[
+                  { product: "Widget A", sales: 4500 },
+                  { product: "Widget B", sales: 3200 },
+                  { product: "Widget C", sales: 5800 },
+                  { product: "Widget D", sales: 2100 },
+                  { product: "Widget E", sales: 6700 },
+                ]}
+                layout="vertical"
+                margin={{ left: 80, right: 12 }}
+              >
+                <CartesianGrid horizontal={false} />
+                <XAxis type="number" tickLine={false} axisLine={false} />
+                <YAxis
+                  dataKey="product"
+                  type="category"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="sales" fill="var(--color-sales)" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ChartContainer>
+
+            <Separator />
+
+            {/* Table Section */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead className="text-right">Revenue</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Widget A</TableCell>
+                  <TableCell>Electronics</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={75} className="h-2 w-16" />
+                      <span className="text-xs text-muted-foreground">75%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$4,500</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Widget B</TableCell>
+                  <TableCell>Hardware</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={45} className="h-2 w-16" />
+                      <span className="text-xs text-muted-foreground">45%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$3,200</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Widget C</TableCell>
+                  <TableCell>Software</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={90} className="h-2 w-16" />
+                      <span className="text-xs text-muted-foreground">90%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$5,800</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Widget D</TableCell>
+                  <TableCell>Accessories</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={20} className="h-2 w-16" />
+                      <span className="text-xs text-muted-foreground">20%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$2,100</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Widget E</TableCell>
+                  <TableCell>Premium</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={60} className="h-2 w-16" />
+                      <span className="text-xs text-muted-foreground">60%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$6,700</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Analytics Overview */}
+        <div className="grid gap-4 md:grid-cols-3">
+          {/* Stat Cards */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>Total Revenue</CardDescription>
+              <CardTitle className="text-3xl">$45,231.89</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-4 text-green-500" />
+                <span className="text-green-500">+20.1%</span>
+                <span>from last month</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>Active Users</CardDescription>
+              <CardTitle className="text-3xl">+2,350</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-4 text-green-500" />
+                <span className="text-green-500">+180.1%</span>
+                <span>from last month</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>Sales</CardDescription>
+              <CardTitle className="text-3xl">+12,234</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-4 text-green-500" />
+                <span className="text-green-500">+19%</span>
+                <span>from last month</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Overview with Chart and Recent Sales Table */}
+        <div className="grid gap-4 md:grid-cols-7">
+          <Card className="md:col-span-4">
+            <CardHeader>
+              <CardTitle>Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  total: {
+                    label: "Total",
+                    color: "var(--chart-1)",
+                  },
+                } satisfies ChartConfig}
+                className="h-[300px] w-full"
+              >
+                <BarChart
+                  data={[
+                    { name: "Jan", total: 1800 },
+                    { name: "Feb", total: 2400 },
+                    { name: "Mar", total: 1900 },
+                    { name: "Apr", total: 3200 },
+                    { name: "May", total: 2800 },
+                    { name: "Jun", total: 3600 },
+                    { name: "Jul", total: 3100 },
+                    { name: "Aug", total: 2900 },
+                    { name: "Sep", total: 4200 },
+                    { name: "Oct", total: 3800 },
+                    { name: "Nov", total: 4600 },
+                    { name: "Dec", total: 5200 },
+                  ]}
+                  margin={{ left: 12, right: 12 }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="name"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                  />
+                  <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="total" fill="var(--color-total)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          <Card className="md:col-span-3">
+            <CardHeader>
+              <CardTitle>Recent Sales</CardTitle>
+              <CardDescription>You made 265 sales this month.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {[
+                { name: "Olivia Martin", email: "olivia@email.com", amount: "+$1,999.00", avatar: "OM" },
+                { name: "Jackson Lee", email: "jackson@email.com", amount: "+$39.00", avatar: "JL" },
+                { name: "Isabella Nguyen", email: "isabella@email.com", amount: "+$299.00", avatar: "IN" },
+                { name: "William Kim", email: "will@email.com", amount: "+$99.00", avatar: "WK" },
+                { name: "Sofia Davis", email: "sofia@email.com", amount: "+$39.00", avatar: "SD" },
+              ].map((sale, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Avatar size="sm">
+                    <AvatarFallback>{sale.avatar}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">{sale.name}</p>
+                    <p className="text-xs text-muted-foreground">{sale.email}</p>
+                  </div>
+                  <div className="font-medium">{sale.amount}</div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Performance Table with Sparklines */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Performance Metrics</CardTitle>
+            <CardDescription>Metricas com mini graficos inline</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Metric</TableHead>
+                  <TableHead>Current</TableHead>
+                  <TableHead>Trend</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Change</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {[
+                  { metric: "Page Views", current: "12.4K", change: "+12.5%", status: "success", data: [10, 12, 8, 15, 11, 14, 16] },
+                  { metric: "Bounce Rate", current: "42.3%", change: "-3.2%", status: "success", data: [45, 43, 44, 42, 41, 43, 42] },
+                  { metric: "Session Duration", current: "3m 24s", change: "+8.1%", status: "success", data: [180, 190, 185, 200, 195, 210, 204] },
+                  { metric: "Conversion Rate", current: "2.8%", change: "-0.5%", status: "warning", data: [3.2, 3.0, 2.9, 2.8, 2.7, 2.9, 2.8] },
+                ].map((item, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="font-medium">{item.metric}</TableCell>
+                    <TableCell>{item.current}</TableCell>
+                    <TableCell>
+                      <ChartContainer
+                        config={{ value: { label: "Value", color: item.status === "success" ? "var(--chart-2)" : "var(--chart-4)" } }}
+                        className="h-8 w-24"
+                      >
+                        <LineChart data={item.data.map((v, idx) => ({ idx, value: v }))} margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
+                          <Line type="monotone" dataKey="value" stroke="var(--color-value)" strokeWidth={2} dot={false} />
+                        </LineChart>
+                      </ChartContainer>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={item.status === "success" ? "secondary" : "outline"}>
+                        {item.status === "success" ? "Good" : "Attention"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <span className={item.change.startsWith("+") ? "text-green-600" : item.change.startsWith("-") && item.status === "success" ? "text-green-600" : "text-amber-600"}>
+                        {item.change}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>
