@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { VisaoGeral } from "@/components/visao-geral"
-import { Demo } from "@/components/demo"
 import { DespesaMunicipal } from "@/components/despesa-municipal"
 import { ReceitaMunicipal } from "@/components/receita-municipal"
 import { FinanceiroMunicipal } from "@/components/financeiro-municipal"
@@ -11,16 +10,18 @@ import { ComprasMunicipais } from "@/components/compras-municipais"
 import { RHMunicipal } from "@/components/rh-municipal"
 import { PrestacaoContas } from "@/components/prestacao-contas"
 import { TributacaoMunicipal } from "@/components/tributacao-municipal"
+import { OrcamentoMunicipal } from "@/components/orcamento-municipal"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { GridViewIcon, Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon, Home01Icon, UserIcon, Cancel01Icon, Settings01Icon } from "@hugeicons/core-free-icons"
+import { Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon, Home01Icon, UserIcon, Cancel01Icon, Settings01Icon, Wallet01Icon } from "@hugeicons/core-free-icons"
 
 const TAB_ORDER = [
   "visao-geral",
+  "orcamento",
   "receita",
   "despesa",
   "financeiro",
@@ -28,7 +29,6 @@ const TAB_ORDER = [
   "rh",
   "tributacao",
   "prestacao-contas",
-  "demo",
 ]
 const SCROLL_DELAY_MS = 5000
 const SCROLL_SPEED_PX = 0.75
@@ -161,6 +161,10 @@ export default function Page() {
               <HugeiconsIcon icon={Home01Icon} strokeWidth={2} className="size-4" />
               Visão Geral
             </TabsTrigger>
+            <TabsTrigger value="orcamento" className="gap-2">
+              <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-4" />
+              Orçamento
+            </TabsTrigger>
             <TabsTrigger value="receita" className="gap-2">
               <HugeiconsIcon icon={MoneyAdd01Icon} strokeWidth={2} className="size-4" />
               Receita
@@ -189,14 +193,14 @@ export default function Page() {
               <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-4" />
               Prestação de Contas
             </TabsTrigger>
-            <TabsTrigger value="demo" className="gap-2">
-              <HugeiconsIcon icon={GridViewIcon} strokeWidth={2} className="size-4" />
-              Componentes
-            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="visao-geral" className="mt-6">
             <VisaoGeral />
+          </TabsContent>
+          
+          <TabsContent value="orcamento" className="mt-6">
+            <OrcamentoMunicipal />
           </TabsContent>
           
           <TabsContent value="receita" className="mt-6">
@@ -225,10 +229,6 @@ export default function Page() {
           
           <TabsContent value="prestacao-contas" className="mt-6">
             <PrestacaoContas />
-          </TabsContent>
-          
-          <TabsContent value="demo" className="mt-6">
-            <Demo />
           </TabsContent>
         </Tabs>
       </div>
