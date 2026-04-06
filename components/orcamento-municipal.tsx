@@ -38,8 +38,6 @@ import {
   Pie,
   PieChart,
   Cell,
-  Treemap,
-  ResponsiveContainer,
 } from "recharts"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
@@ -55,9 +53,33 @@ import {
   BulbIcon,
   CheckmarkCircle02Icon,
   ArrowRight01Icon,
-  PieChart02Icon,
-  GridViewIcon,
 } from "@hugeicons/core-free-icons"
+import {
+  receitaPrevista,
+  receitaDeduzida,
+  receitaOrcada,
+  receitaAlterada,
+  receitaAtualizada,
+  despesaOrcada,
+  despesaSuplementado,
+  despesaReduzido,
+  despesaAtualizado,
+  receitaArrecadada,
+  despesaEmpenhada,
+  metaRealizacaoReceitaPct,
+  despesaPessoalOrcado,
+  pctShare,
+  realizacaoReceitaVsAtualizada,
+  comprometimentoDespesaVsAtualizada,
+  saldoEmpenhoDisponivelPct,
+  gapEstruturalLoa,
+  rigidezPessoalSobreOrcado,
+} from "@/lib/demo-orcamento"
+import { KpiOrcamentoCard } from "@/components/orcamento/kpi-orcamento-card"
+import { OrcamentoPonteEquilibrio } from "@/components/orcamento/orcamento-ponte-equilibrio"
+import { OrcamentoRealizacaoGauge } from "@/components/orcamento/orcamento-realizacao-gauge"
+import { OrcamentoWaterfallLoa } from "@/components/orcamento/orcamento-waterfall-loa"
+import { OrcamentoTreemapOrcado } from "@/components/orcamento/orcamento-treemap-orcado"
 
 // Formatadores
 const fmtCurrency = (v: number) =>
@@ -74,20 +96,9 @@ const pctDiff = (atual: number, anterior: number) => {
   return (atual - anterior) / anterior * 100
 }
 
-const pctShare = (valor: number, total: number) => {
-  if (total === 0) return 0
-  return (valor / total) * 100
-}
-
 // =============================================
 // DADOS DA RECEITA
 // =============================================
-
-const receitaPrevista = 580_000_000
-const receitaDeduzida = 45_000_000
-const receitaOrcada = receitaPrevista - receitaDeduzida
-const receitaAlterada = 12_000_000
-const receitaAtualizada = receitaOrcada + receitaAlterada
 
 const evolucaoReceitaAnual = [
   { ano: "2020", orcada: 420_000_000, atualizada: 435_000_000 },
@@ -133,11 +144,6 @@ const receitaOrigem = [
 // =============================================
 // DADOS DA DESPESA
 // =============================================
-
-const despesaOrcada = 535_000_000
-const despesaSuplementado = 42_000_000
-const despesaReduzido = 28_000_000
-const despesaAtualizado = despesaOrcada + despesaSuplementado - despesaReduzido
 
 const evolucaoDespesaAnual = [
   { ano: "2020", orcada: 418_000_000, atualizada: 430_000_000 },
@@ -530,6 +536,82 @@ export function OrcamentoMunicipal() {
           </Card>
         </div>
 
+        <div className="space-y-2">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            Orçado em foco (execução x planejamento)
+          </h4>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <KpiOrcamentoCard
+              title="Realização vs receita atualizada"
+              icon={MoneyAdd01Icon}
+              iconClassName="text-emerald-600"
+              iconWrapperClassName="bg-emerald-100 dark:bg-emerald-900/30"
+              value={`${realizacaoReceitaVsAtualizada.toFixed(1)}%`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Arrecadação {fmtMillions(receitaArrecadada)} frente ao orçamento atualizado
+                </p>
+              }
+            />
+            <KpiOrcamentoCard
+              title="Gap estrutural (LOA)"
+              icon={Target01Icon}
+              iconClassName="text-blue-600"
+              iconWrapperClassName="bg-blue-100 dark:bg-blue-900/30"
+              value={`${gapEstruturalLoa >= 0 ? "+" : ""}${fmtMillions(gapEstruturalLoa)}`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Receita orçada ({fmtMillions(receitaOrcada)}) menos despesa orçada ({fmtMillions(despesaOrcada)})
+                </p>
+              }
+            />
+            <KpiOrcamentoCard
+              title="Meta de realização"
+              icon={CheckmarkCircle02Icon}
+              iconClassName="text-violet-600"
+              iconWrapperClassName="bg-violet-100 dark:bg-violet-900/30"
+              value={`${metaRealizacaoReceitaPct}%`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Situação: {realizacaoReceitaVsAtualizada >= metaRealizacaoReceitaPct ? "Meta atingida" : "Abaixo da meta"} (
+                  {(realizacaoReceitaVsAtualizada - metaRealizacaoReceitaPct).toFixed(1)} p.p.)
+                </p>
+              }
+            />
+          </div>
+        </div>
+
+        <OrcamentoRealizacaoGauge
+          variant="receita"
+          titulo="Realização da arrecadação"
+          subtitulo="Percentual da arrecadação acumulada em relação à receita orçamentária atualizada"
+          realizado={receitaArrecadada}
+          baseOrcamentaria={receitaAtualizada}
+          metaPct={metaRealizacaoReceitaPct}
+          fmtMillions={fmtMillions}
+        />
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <OrcamentoWaterfallLoa
+            variant="receita"
+            fmtCurrency={fmtCurrency}
+            receita={{
+              prevista: receitaPrevista,
+              deduzida: receitaDeduzida,
+              orcada: receitaOrcada,
+              alterada: receitaAlterada,
+              atualizada: receitaAtualizada,
+            }}
+          />
+          <OrcamentoTreemapOrcado
+            variant="receita"
+            title="Mapa da receita orçada (LOA)"
+            description="Peso de cada origem da natureza no valor orçado inicial"
+            itens={receitaOrigemNatureza.map((r) => ({ nome: r.nome, orcado: r.orcado }))}
+            fmtCurrency={fmtCurrency}
+          />
+        </div>
+
         <div className="grid gap-4 lg:grid-cols-2">
           <MixBreakdownCard
             title="Composição Dinâmica da Receita"
@@ -611,6 +693,14 @@ export function OrcamentoMunicipal() {
           data={receitaOrigem}
           title="Receita por Origem"
           description="Próprias, Estaduais, Federais e Outras"
+        />
+
+        <OrcamentoPonteEquilibrio
+          receitaOrcada={receitaOrcada}
+          despesaOrcada={despesaOrcada}
+          receitaAtualizada={receitaAtualizada}
+          despesaAtualizada={despesaAtualizado}
+          fmtMillions={fmtMillions}
         />
       </div>
 
@@ -737,6 +827,79 @@ export function OrcamentoMunicipal() {
               <p className="text-xs text-muted-foreground">{pctShare(despesaNatureza[0].atualizado, despesaAtualizado).toFixed(1)}% da despesa atualizada</p>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="space-y-2">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            Orçado em foco (execução x planejamento)
+          </h4>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <KpiOrcamentoCard
+              title="Comprometimento (empenho)"
+              icon={Invoice02Icon}
+              iconClassName="text-orange-600"
+              iconWrapperClassName="bg-orange-100 dark:bg-orange-900/30"
+              value={`${comprometimentoDespesaVsAtualizada.toFixed(1)}%`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Empenho {fmtMillions(despesaEmpenhada)} sobre despesa atualizada {fmtMillions(despesaAtualizado)}
+                </p>
+              }
+            />
+            <KpiOrcamentoCard
+              title="Saldo disponível p/ empenhar"
+              icon={MoneySend01Icon}
+              iconClassName="text-amber-600"
+              iconWrapperClassName="bg-amber-100 dark:bg-amber-900/30"
+              value={`${saldoEmpenhoDisponivelPct.toFixed(1)}%`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Margem ainda não empenhada do orçamento atualizado
+                </p>
+              }
+            />
+            <KpiOrcamentoCard
+              title="Rigidez: pessoal sobre LOA"
+              icon={Target01Icon}
+              iconClassName="text-red-600"
+              iconWrapperClassName="bg-red-100 dark:bg-red-900/30"
+              value={`${rigidezPessoalSobreOrcado.toFixed(1)}%`}
+              footer={
+                <p className="text-xs text-muted-foreground">
+                  Pessoal e encargos ({fmtMillions(despesaPessoalOrcado)}) sobre despesa orçada inicial
+                </p>
+              }
+            />
+          </div>
+        </div>
+
+        <OrcamentoRealizacaoGauge
+          variant="despesa"
+          titulo="Comprometimento do empenho"
+          subtitulo="Empenho acumulado em relação à despesa orçamentária atualizada"
+          realizado={despesaEmpenhada}
+          baseOrcamentaria={despesaAtualizado}
+          fmtMillions={fmtMillions}
+        />
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <OrcamentoWaterfallLoa
+            variant="despesa"
+            fmtCurrency={fmtCurrency}
+            despesa={{
+              orcada: despesaOrcada,
+              suplementado: despesaSuplementado,
+              reduzido: despesaReduzido,
+              atualizado: despesaAtualizado,
+            }}
+          />
+          <OrcamentoTreemapOrcado
+            variant="despesa"
+            title="Mapa da despesa orçada (LOA)"
+            description="Peso de cada natureza econômica no valor orçado inicial"
+            itens={despesaNatureza.map((d) => ({ nome: d.nome, orcado: d.orcado }))}
+            fmtCurrency={fmtCurrency}
+          />
         </div>
 
         {/* Evolução Anual Despesa */}

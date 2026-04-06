@@ -1026,6 +1026,17 @@ export function PrestacaoContas() {
         </TabsContent>
       </Tabs>
 
+      {/* ======================================================= */}
+      {/* SEPARADOR ANÁLISES                                       */}
+      {/* ======================================================= */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Análises</span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
       {/* Alertas e Notificações */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
@@ -1305,6 +1316,7 @@ export function PrestacaoContas() {
           </div>
         </CardContent>
       </Card>
+      </div>
 
         </TabsContent>
 

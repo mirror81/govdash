@@ -1393,6 +1393,17 @@ export function FinanceiroMunicipal() {
         </CardContent>
       </Card>
 
+      {/* ======================================================= */}
+      {/* SEPARADOR ANÁLISES                                       */}
+      {/* ======================================================= */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Análises</span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
       {/* Resumo Analitico */}
       <Card>
         <CardHeader>
@@ -1650,6 +1661,7 @@ export function FinanceiroMunicipal() {
             </Alert>
           ))}
         </div>
+      </div>
       </div>
     </div>
   )

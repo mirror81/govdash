@@ -1119,10 +1119,9 @@ export function DespesaMunicipal() {
         </Card>
       </div>
 
-      {/* Metas ODS e Timeline */}
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Metas ODS */}
-        <Card className="lg:col-span-2">
+      {/* Metas ODS */}
+      <div>
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
@@ -1163,40 +1162,6 @@ export function DespesaMunicipal() {
           </CardContent>
         </Card>
 
-        {/* Timeline de Eventos */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
-              Eventos Recentes
-            </CardTitle>
-            <CardDescription>Ultimas movimentacoes</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {eventosRecentes.map((evento, index) => (
-                <div key={index} className="flex gap-3">
-                  <div className="flex flex-col items-center">
-                    <div className={`size-2.5 rounded-full ${
-                      evento.tipo === "empenho" ? "bg-blue-500" :
-                      evento.tipo === "pagamento" ? "bg-green-500" :
-                      evento.tipo === "licitacao" ? "bg-amber-500" :
-                      evento.tipo === "liquidacao" ? "bg-purple-500" : "bg-gray-500"
-                    }`} />
-                    {index < eventosRecentes.length - 1 && (
-                      <div className="w-px flex-1 bg-border" />
-                    )}
-                  </div>
-                  <div className="flex-1 pb-4">
-                    <p className="text-xs text-muted-foreground">{evento.data}</p>
-                    <p className="text-sm">{evento.evento}</p>
-                    <Badge variant="outline" className="mt-1 text-xs">{evento.secretaria}</Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Rigidez Orcamentaria e Limite de Pessoal LRF */}
@@ -1556,6 +1521,52 @@ export function DespesaMunicipal() {
         </Card>
       </div>
 
+      {/* Timeline de Eventos */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
+            Eventos Recentes
+          </CardTitle>
+          <CardDescription>Ultimas movimentacoes</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {eventosRecentes.map((evento, index) => (
+              <div key={index} className="flex gap-3">
+                <div className="flex flex-col items-center">
+                  <div className={`size-2.5 rounded-full ${
+                    evento.tipo === "empenho" ? "bg-blue-500" :
+                    evento.tipo === "pagamento" ? "bg-green-500" :
+                    evento.tipo === "licitacao" ? "bg-amber-500" :
+                    evento.tipo === "liquidacao" ? "bg-purple-500" : "bg-gray-500"
+                  }`} />
+                  {index < eventosRecentes.length - 1 && (
+                    <div className="w-px flex-1 bg-border" />
+                  )}
+                </div>
+                <div className="flex-1 pb-4">
+                  <p className="text-xs text-muted-foreground">{evento.data}</p>
+                  <p className="text-sm">{evento.evento}</p>
+                  <Badge variant="outline" className="mt-1 text-xs">{evento.secretaria}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ======================================================= */}
+      {/* SEPARADOR ANÁLISES                                       */}
+      {/* ======================================================= */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Análises</span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
       {/* Secao de Analise Inteligente - Estilo IA */}
       <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
@@ -1839,6 +1850,7 @@ export function DespesaMunicipal() {
             <AlertDescription>{alerta.descricao}</AlertDescription>
           </Alert>
         ))}
+      </div>
       </div>
     </div>
   )

@@ -1238,6 +1238,48 @@ export function ReceitaMunicipal() {
         </Card>
       </div>
 
+      {/* Timeline */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
+            Eventos Recentes
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {eventosReceita.map((evento, index) => (
+              <div key={index} className="flex gap-3">
+                <div className="flex flex-col items-center">
+                  <div className={`size-2.5 rounded-full ${
+                    evento.tipo === "credito" ? "bg-green-500" : "bg-blue-500"
+                  }`} />
+                  {index < eventosReceita.length - 1 && (
+                    <div className="w-px flex-1 bg-border" />
+                  )}
+                </div>
+                <div className="flex-1 pb-4">
+                  <p className="text-xs text-muted-foreground">{evento.data}</p>
+                  <p className="text-sm">{evento.evento}</p>
+                  <Badge variant="outline" className="mt-1 text-xs">{evento.origem}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ======================================================= */}
+      {/* SEPARADOR ANÁLISES                                       */}
+      {/* ======================================================= */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Análises</span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
       {/* Resumo Analitico */}
       <Card>
         <CardHeader>
@@ -1519,36 +1561,7 @@ export function ReceitaMunicipal() {
           ))}
         </div>
 
-        {/* Timeline */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-5" />
-              Eventos Recentes
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {eventosReceita.map((evento, index) => (
-                <div key={index} className="flex gap-3">
-                  <div className="flex flex-col items-center">
-                    <div className={`size-2.5 rounded-full ${
-                      evento.tipo === "credito" ? "bg-green-500" : "bg-blue-500"
-                    }`} />
-                    {index < eventosReceita.length - 1 && (
-                      <div className="w-px flex-1 bg-border" />
-                    )}
-                  </div>
-                  <div className="flex-1 pb-4">
-                    <p className="text-xs text-muted-foreground">{evento.data}</p>
-                    <p className="text-sm">{evento.evento}</p>
-                    <Badge variant="outline" className="mt-1 text-xs">{evento.origem}</Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      </div>
       </div>
     </div>
   )
