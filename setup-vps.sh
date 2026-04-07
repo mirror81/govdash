@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # setup-vps.sh
-# Script de instalação para Ubuntu Server 24.04 (Vultr VPS)
-# Instala Docker, Docker Compose, ngrok, Git, e prepara a aplicação Next.js
+# Script de instalação para Ubuntu Server 22.04/24.04 (VPS)
+# Instala Docker, Docker Compose, Git, UFW, swap; clona o repositório e sobe a stack.
 #
-# Uso:
-#   chmod +x setup-vps.sh
-#   sudo ./setup-vps.sh
+# Uso (repositório padrão deste projeto; sobrescreva com REPO_URL):
+#   curl -fsSL ... | sudo bash
+#   sudo REPO_URL=owner/repo ./setup-vps.sh
 #
-# Após a execução, siga as instruções finais impressas no terminal.
+# Variáveis opcionais:
+#   REPO_URL              owner/repo ou URL git (padrão: vagnerrods/v0-shadcn-ui-components)
+#   DOMAIN                domínio público (padrão: dash.hfgestaopublica.dev; deve bater com o Caddyfile)
+#   UPDATE_CADDYFILE_DOMAIN  1 = ajusta a 1ª linha do Caddyfile para DOMAIN após o clone
+#   BUILD_NO_CACHE        1 = docker compose build --no-cache
+#   INSTALL_NGROK         1 = instala ngrok (opcional; falha não aborta o script)
+#   INSTALL_GH            1 = instala GitHub CLI (opcional)
 # ==============================================================================
 
 set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
 
 # ── Cores para output ─────────────────────────────────────────────────────────
 RED='\033[0;31m'
@@ -37,8 +45,13 @@ fi
 
 # ── Variáveis configuráveis ───────────────────────────────────────────────────
 APP_DIR="/opt/app"
-REPO_URL="${REPO_URL:-}"  # Defina via variável de ambiente ou edite aqui
-DOMAIN="dash.hfgestaopublica.dev"
+# Repositório padrão alinhado ao README; use REPO_URL para fork ou outro remoto.
+REPO_URL="${REPO_URL:-vagnerrods/v0-shadcn-ui-components}"
+DOMAIN="${DOMAIN:-dash.hfgestaopublica.dev}"
+UPDATE_CADDYFILE_DOMAIN="${UPDATE_CADDYFILE_DOMAIN:-1}"
+BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
+INSTALL_NGROK="${INSTALL_NGROK:-0}"
+INSTALL_GH="${INSTALL_GH:-0}"
 
 echo ""
 echo "============================================================"
@@ -111,38 +124,50 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 5. ngrok
+# 5. ngrok (opcional)
 # ══════════════════════════════════════════════════════════════════════════════
-if command -v ngrok &>/dev/null; then
-  warn "ngrok já instalado: $(ngrok --version)"
+if [[ "${INSTALL_NGROK}" == "1" ]]; then
+  if command -v ngrok &>/dev/null; then
+    warn "ngrok já instalado: $(ngrok --version)"
+  else
+    info "Instalando ngrok..."
+    install -m 0755 -d /etc/apt/keyrings
+    if curl -fsSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc -o /etc/apt/keyrings/ngrok.asc &&
+       chmod a+r /etc/apt/keyrings/ngrok.asc &&
+       echo "deb [signed-by=/etc/apt/keyrings/ngrok.asc] https://ngrok-agent.s3.amazonaws.com bookworm main" | \
+         tee /etc/apt/sources.list.d/ngrok.list > /dev/null &&
+       apt-get update -y &&
+       apt-get install -y ngrok; then
+      log "ngrok instalado: $(ngrok --version)"
+    else
+      warn "Instalação do ngrok falhou (opcional). Removendo fonte apt do ngrok, se existir."
+      rm -f /etc/apt/sources.list.d/ngrok.list
+      apt-get update -y || true
+    fi
+  fi
 else
-  info "Instalando ngrok..."
-  curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
-    tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
-  echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | \
-    tee /etc/apt/sources.list.d/ngrok.list
-  apt-get update -y
-  apt-get install -y ngrok
-  log "ngrok instalado: $(ngrok --version)"
+  info "Instalação do ngrok ignorada (defina INSTALL_NGROK=1 para habilitar)."
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 6. GitHub CLI (gh)
+# 6. GitHub CLI (gh) — opcional
 # ══════════════════════════════════════════════════════════════════════════════
-if command -v gh &>/dev/null; then
-  warn "GitHub CLI já instalado: $(gh --version | head -1)"
-else
-  info "Instalando GitHub CLI (gh)..."
-  (type -p wget >/dev/null || apt-get install -y wget)
-  mkdir -p -m 755 /etc/apt/keyrings
-  wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
-    tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
-  chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
-    tee /etc/apt/sources.list.d/github-cli-stable.list > /dev/null
-  apt-get update -y
-  apt-get install -y gh
-  log "GitHub CLI instalado: $(gh --version | head -1)"
+if [[ "${INSTALL_GH}" == "1" ]]; then
+  if command -v gh &>/dev/null; then
+    warn "GitHub CLI já instalado: $(gh --version | head -1)"
+  else
+    info "Instalando GitHub CLI (gh)..."
+    (type -p wget >/dev/null || apt-get install -y wget)
+    mkdir -p -m 755 /etc/apt/keyrings
+    wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+      tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+    chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+      tee /etc/apt/sources.list.d/github-cli-stable.list > /dev/null
+    apt-get update -y
+    apt-get install -y gh
+    log "GitHub CLI instalado: $(gh --version | head -1)"
+  fi
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -165,40 +190,55 @@ if swapon --show | grep -q "/swapfile"; then
   warn "Swap já configurado."
 else
   info "Criando 2GB de swap (recomendado para build do Next.js)..."
-  fallocate -l 2G /swapfile
-  chmod 600 /swapfile
-  mkswap /swapfile
-  swapon /swapfile
-  echo '/swapfile none swap sw 0 0' >> /etc/fstab
-  log "Swap de 2GB criado e ativado."
+  if fallocate -l 2G /swapfile 2>/dev/null || dd if=/dev/zero of=/swapfile bs=1M count=2048 status=none; then
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    if ! grep -q '^/swapfile[[:space:]]' /etc/fstab 2>/dev/null; then
+      echo '/swapfile none swap sw 0 0' >> /etc/fstab
+    fi
+    log "Swap de 2GB criado e ativado."
+  else
+    warn "Não foi possível criar /swapfile (disco cheio ou filesystem?). Continuando sem swap extra."
+  fi
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 9. Clonar repositório (via gh ou git)
+# 9. Clonar repositório (HTTPS público ou URL completa para privado/SSH)
 # ══════════════════════════════════════════════════════════════════════════════
-if [[ -n "${REPO_URL}" ]]; then
-  info "Clonando repositório em ${APP_DIR}..."
-  rm -rf "${APP_DIR}"
+if [[ -z "${REPO_URL// }" ]]; then
+  err "REPO_URL está vazio. Defina REPO_URL=owner/repo ou a URL completa do repositório."
+fi
 
-  # Se REPO_URL for no formato owner/repo, usar gh clone
-  if [[ "${REPO_URL}" =~ ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_.-]+$ ]]; then
-    if gh auth status &>/dev/null; then
-      gh repo clone "${REPO_URL}" "${APP_DIR}"
-    else
-      warn "gh não autenticado. Usando git clone via HTTPS..."
-      git clone "https://github.com/${REPO_URL}.git" "${APP_DIR}"
-    fi
+resolve_clone_url() {
+  local r="$1"
+  if [[ "${r}" =~ ^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$ ]]; then
+    echo "https://github.com/${r}.git"
   else
-    git clone "${REPO_URL}" "${APP_DIR}"
+    echo "${r}"
   fi
+}
 
-  log "Repositório clonado em ${APP_DIR}."
-else
-  warn "REPO_URL não definida. Você precisará copiar o projeto manualmente."
-  warn "  Opção 1: REPO_URL=owner/repo sudo ./setup-vps.sh        (usa gh clone)"
-  warn "  Opção 2: REPO_URL=https://github.com/user/repo.git sudo ./setup-vps.sh"
-  warn "  Opção 3: scp -r ./projeto root@<ip-vps>:${APP_DIR}"
-  mkdir -p "${APP_DIR}"
+CLONE_URL="$(resolve_clone_url "${REPO_URL}")"
+info "Clonando repositório em ${APP_DIR} (origem: ${CLONE_URL})..."
+
+rm -rf "${APP_DIR}.new"
+if ! git clone --depth 1 "${CLONE_URL}" "${APP_DIR}.new"; then
+  rm -rf "${APP_DIR}.new"
+  err "git clone falhou. Repositório privado? Use REPO_URL=https://<token>@github.com/org/repo.git ou git@github.com:org/repo.git (chave SSH), ou instale o gh (INSTALL_GH=1), faça gh auth login e gh auth setup-git, e clone manualmente em ${APP_DIR}."
+fi
+rm -rf "${APP_DIR}"
+mv "${APP_DIR}.new" "${APP_DIR}"
+log "Repositório clonado em ${APP_DIR}."
+
+# Opcional: alinhar domínio no Caddyfile ao DOMAIN (primeira linha: "domínio {")
+if [[ "${UPDATE_CADDYFILE_DOMAIN}" == "1" && -f "${APP_DIR}/Caddyfile" ]]; then
+  if [[ "${DOMAIN}" == *"/"* ]]; then
+    warn "DOMAIN contém '/'; não alterando Caddyfile automaticamente."
+  else
+    info "Ajustando primeira linha do Caddyfile para ${DOMAIN} ..."
+    sed -i "1s|.*|${DOMAIN} {|" "${APP_DIR}/Caddyfile"
+  fi
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -207,9 +247,13 @@ fi
 if [[ -f "${APP_DIR}/docker-compose.yml" ]]; then
   info "Construindo e iniciando a aplicação com Docker Compose..."
   cd "${APP_DIR}"
-  docker compose build --no-cache
+  if [[ "${BUILD_NO_CACHE}" == "1" ]]; then
+    docker compose build --no-cache
+  else
+    docker compose build
+  fi
   docker compose up -d
-  log "Aplicação rodando via Caddy em https://${DOMAIN}"
+  log "Aplicação em execução. Configure o DNS para apontar para este servidor; HTTPS via Caddy (Let's Encrypt)."
 else
   warn "docker-compose.yml não encontrado em ${APP_DIR}."
   warn "Copie o projeto para ${APP_DIR} e execute:"
@@ -219,7 +263,7 @@ fi
 # ══════════════════════════════════════════════════════════════════════════════
 # 11. Resumo final
 # ══════════════════════════════════════════════════════════════════════════════
-VPS_IP=$(curl -s ifconfig.me 2>/dev/null || echo "<ip-da-vps>")
+VPS_IP=$(curl -4s --max-time 10 ifconfig.me 2>/dev/null || curl -4s --max-time 10 icanhazip.com 2>/dev/null || echo "<ip-da-vps>")
 
 echo ""
 echo "============================================================"
@@ -230,10 +274,18 @@ echo "  Resumo:"
 echo "  ─────────────────────────────────────────────────────────"
 echo "  Docker:          $(docker --version 2>/dev/null || echo 'N/A')"
 echo "  Docker Compose:  $(docker compose version 2>/dev/null || echo 'N/A')"
-echo "  GitHub CLI:      $(gh --version 2>/dev/null | head -1 || echo 'N/A')"
-echo "  ngrok:           $(ngrok --version 2>/dev/null || echo 'N/A')"
+if command -v gh &>/dev/null; then
+  echo "  GitHub CLI:      $(gh --version 2>/dev/null | head -1 || echo 'N/A')"
+else
+  echo "  GitHub CLI:      (não instalado; INSTALL_GH=1 para instalar)"
+fi
+if command -v ngrok &>/dev/null; then
+  echo "  ngrok:           $(ngrok --version 2>/dev/null || echo 'N/A')"
+else
+  echo "  ngrok:           (não instalado; INSTALL_NGROK=1 para instalar)"
+fi
 echo "  Firewall:        UFW ativo (22, 80, 443)"
-echo "  Swap:            $(swapon --show --bytes | tail -1 | awk '{print $3/1024/1024/1024 " GB"}' 2>/dev/null || echo 'N/A')"
+echo "  Swap:            $(swapon --show --bytes 2>/dev/null | tail -1 | awk '{print $3/1024/1024/1024 " GB"}' 2>/dev/null || echo 'N/A')"
 echo "  Domínio:         ${DOMAIN}"
 echo "  App dir:         ${APP_DIR}"
 echo ""
@@ -244,17 +296,12 @@ echo ""
 echo "  1. Acessar a aplicação (após apontar DNS):"
 echo "     https://${DOMAIN}"
 echo ""
-echo "     Aponte o DNS A record de ${DOMAIN} para ${VPS_IP}"
+echo "     Aponte o registro DNS A de ${DOMAIN} para ${VPS_IP}"
 echo ""
-echo "  2. Autenticar GitHub CLI (para clone/push/PR):"
-echo ""
-echo "     gh auth login"
-echo ""
-echo "     Isso permite clonar repos privados, criar PRs, etc."
+echo "  2. Repositório privado: use gh auth login (se INSTALL_GH=1) ou clone via URL com credenciais."
 echo ""
 echo "  3. Caddy (reverse proxy + HTTPS automático):"
-echo "     O Caddy já está configurado no docker-compose.yml."
-echo "     Certificado SSL será emitido automaticamente via Let's Encrypt."
+echo "     Configurado no docker-compose.yml; certificado Let's Encrypt após DNS correto."
 echo ""
 echo "  4. Comandos úteis:"
 echo "     cd ${APP_DIR}"
@@ -263,7 +310,7 @@ echo "     docker compose restart        # Reiniciar"
 echo "     docker compose down           # Parar"
 echo "     docker compose up -d --build  # Rebuild e restart"
 echo ""
-echo "  5. Para atualizar a aplicação (via gh/git):"
+echo "  5. Para atualizar a aplicação:"
 echo "     cd ${APP_DIR}"
 echo "     git pull"
 echo "     docker compose up -d --build"
