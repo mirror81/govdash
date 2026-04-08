@@ -9,9 +9,7 @@
 #   sudo REPO_URL=owner/repo ./setup-vps.sh
 #
 # Variáveis opcionais:
-#   REPO_URL              owner/repo ou URL git (padrão: vagnerrods/v0-shadcn-ui-components)
-#   DOMAIN                domínio público (padrão: dash.hfgestaopublica.dev; deve bater com o Caddyfile)
-#   UPDATE_CADDYFILE_DOMAIN  1 = ajusta a 1ª linha do Caddyfile para DOMAIN após o clone
+#   REPO_URL              owner/repo ou URL git (padrão: vagnerrods/dash)
 #   BUILD_NO_CACHE        1 = docker compose build --no-cache
 #   INSTALL_NGROK         1 = instala ngrok (opcional; falha não aborta o script)
 #   INSTALL_GH            1 = instala GitHub CLI (opcional)
@@ -46,9 +44,7 @@ fi
 # ── Variáveis configuráveis ───────────────────────────────────────────────────
 APP_DIR="/opt/app"
 # Repositório padrão alinhado ao README; use REPO_URL para fork ou outro remoto.
-REPO_URL="${REPO_URL:-vagnerrods/v0-shadcn-ui-components}"
-DOMAIN="${DOMAIN:-dash.hfgestaopublica.dev}"
-UPDATE_CADDYFILE_DOMAIN="${UPDATE_CADDYFILE_DOMAIN:-1}"
+REPO_URL="${REPO_URL:-vagnerrods/dash}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
 INSTALL_NGROK="${INSTALL_NGROK:-0}"
 INSTALL_GH="${INSTALL_GH:-0}"
@@ -178,10 +174,9 @@ ufw --force reset
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow 22/tcp   comment "SSH"
-ufw allow 80/tcp   comment "HTTP"
-ufw allow 443/tcp  comment "HTTPS"
+ufw allow 3000/tcp comment "Dashboard App"
 ufw --force enable
-log "Firewall configurado (SSH, HTTP, HTTPS)."
+log "Firewall configurado (SSH, 3000)."
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 8. Swap (recomendado para VPS com pouca RAM)
@@ -231,16 +226,6 @@ rm -rf "${APP_DIR}"
 mv "${APP_DIR}.new" "${APP_DIR}"
 log "Repositório clonado em ${APP_DIR}."
 
-# Opcional: alinhar domínio no Caddyfile ao DOMAIN (primeira linha: "domínio {")
-if [[ "${UPDATE_CADDYFILE_DOMAIN}" == "1" && -f "${APP_DIR}/Caddyfile" ]]; then
-  if [[ "${DOMAIN}" == *"/"* ]]; then
-    warn "DOMAIN contém '/'; não alterando Caddyfile automaticamente."
-  else
-    info "Ajustando primeira linha do Caddyfile para ${DOMAIN} ..."
-    sed -i "1s|.*|${DOMAIN} {|" "${APP_DIR}/Caddyfile"
-  fi
-fi
-
 # ══════════════════════════════════════════════════════════════════════════════
 # 10. Build e start com Docker Compose
 # ══════════════════════════════════════════════════════════════════════════════
@@ -253,7 +238,7 @@ if [[ -f "${APP_DIR}/docker-compose.yml" ]]; then
     docker compose build
   fi
   docker compose up -d
-  log "Aplicação em execução. Configure o DNS para apontar para este servidor; HTTPS via Caddy (Let's Encrypt)."
+  log "Aplicação em execução na porta 3000."
 else
   warn "docker-compose.yml não encontrado em ${APP_DIR}."
   warn "Copie o projeto para ${APP_DIR} e execute:"
@@ -284,33 +269,27 @@ if command -v ngrok &>/dev/null; then
 else
   echo "  ngrok:           (não instalado; INSTALL_NGROK=1 para instalar)"
 fi
-echo "  Firewall:        UFW ativo (22, 80, 443)"
+echo "  Firewall:        UFW ativo (22, 3000)"
 echo "  Swap:            $(swapon --show --bytes 2>/dev/null | tail -1 | awk '{print $3/1024/1024/1024 " GB"}' 2>/dev/null || echo 'N/A')"
-echo "  Domínio:         ${DOMAIN}"
 echo "  App dir:         ${APP_DIR}"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
 echo "  PRÓXIMOS PASSOS:"
 echo "  ─────────────────────────────────────────────────────────"
 echo ""
-echo "  1. Acessar a aplicação (após apontar DNS):"
-echo "     https://${DOMAIN}"
-echo ""
-echo "     Aponte o registro DNS A de ${DOMAIN} para ${VPS_IP}"
+echo "  1. Acessar a aplicação:"
+echo "     http://${VPS_IP}:3000"
 echo ""
 echo "  2. Repositório privado: use gh auth login (se INSTALL_GH=1) ou clone via URL com credenciais."
 echo ""
-echo "  3. Caddy (reverse proxy + HTTPS automático):"
-echo "     Configurado no docker-compose.yml; certificado Let's Encrypt após DNS correto."
-echo ""
-echo "  4. Comandos úteis:"
+echo "  3. Comandos úteis:"
 echo "     cd ${APP_DIR}"
 echo "     docker compose logs -f        # Ver logs"
 echo "     docker compose restart        # Reiniciar"
 echo "     docker compose down           # Parar"
 echo "     docker compose up -d --build  # Rebuild e restart"
 echo ""
-echo "  5. Para atualizar a aplicação:"
+echo "  4. Para atualizar a aplicação:"
 echo "     cd ${APP_DIR}"
 echo "     git pull"
 echo "     docker compose up -d --build"

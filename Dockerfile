@@ -1,4 +1,6 @@
-FROM node:20-slim AS builder
+ARG NODE_VERSION=22
+
+FROM node:${NODE_VERSION}-slim AS builder
 
 WORKDIR /app
 
@@ -8,7 +10,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:20-slim AS runner
+FROM node:${NODE_VERSION}-slim AS runner
 
 WORKDIR /app
 

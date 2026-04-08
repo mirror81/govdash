@@ -144,7 +144,7 @@ export default function Page() {
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="gap-2">
+                <DropdownMenuItem onSelect={handleLogout} className="gap-2">
                   <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-4" />
                   Sair
                 </DropdownMenuItem>
