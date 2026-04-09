@@ -172,7 +172,7 @@ const alertasConsolidados = [
   { modulo: "Despesa", tipo: "warning" as const, titulo: "Restos a Pagar em crescimento", descricao: "O volume de restos a pagar não processados cresceu 12% no trimestre, totalizando R$ 6,5M." },
   { modulo: "Financeiro", tipo: "info" as const, titulo: "Disponibilidade financeira estável", descricao: "O saldo em caixa cobre 2,26 meses de despesas correntes. Situação dentro da normalidade." },
   { modulo: "RH", tipo: "warning" as const, titulo: "Horas extras acima do limite", descricao: "O gasto com horas extras atingiu 127,8% do limite orçamentário previsto para o período." },
-  { modulo: "Tributação", tipo: "info" as const, titulo: "Dívida ativa: recuperação em alta", descricao: "A recuperação de dívida ativa cresceu 15% com o programa REFIS, totalizando R$ 4,2M no semestre." },
+  { modulo: "Tributos", tipo: "info" as const, titulo: "Dívida ativa: recuperação em alta", descricao: "A recuperação de dívida ativa cresceu 15% com o programa REFIS, totalizando R$ 4,2M no semestre." },
   { modulo: "CAUC", tipo: "success" as const, titulo: "Conformidade CAUC em 84,6%", descricao: "22 dos 26 itens estão regulares. Há 1 item irregular que precisa de atenção imediata." },
 ]
 
@@ -191,7 +191,7 @@ export function VisaoGeral() {
     <div className="space-y-8">
       {/* KPIs Macro */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Receita Arrecadada</CardTitle>
             <div className="rounded-full bg-green-100 p-2 dark:bg-green-900/30">
@@ -210,7 +210,7 @@ export function VisaoGeral() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Despesa Empenhada</CardTitle>
             <div className="rounded-full bg-blue-100 p-2 dark:bg-blue-900/30">
@@ -228,7 +228,7 @@ export function VisaoGeral() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-purple-500">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Saldo Financeiro</CardTitle>
             <div className="rounded-full bg-purple-100 p-2 dark:bg-purple-900/30">
@@ -243,7 +243,7 @@ export function VisaoGeral() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-amber-500">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Conformidade CAUC</CardTitle>
             <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/30">
@@ -406,12 +406,12 @@ export function VisaoGeral() {
           </CardContent>
         </Card>
 
-        {/* Tributação */}
+        {/* Tributos */}
         <Card className="border-l-4 border-l-[var(--chart-3)]">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-medium">
               <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-4" />
-              Tributação
+              Tributos
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">

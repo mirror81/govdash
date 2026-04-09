@@ -424,7 +424,7 @@ export function OrcamentoMunicipal() {
 
         {/* KPIs Receita */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <Card>
+          <Card className="border-l-4 border-l-blue-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Receita Prevista</CardTitle>
               <div className="rounded-full bg-blue-100 p-2 dark:bg-blue-900/30">
@@ -437,7 +437,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-red-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Deduzida</CardTitle>
               <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/30">
@@ -450,7 +450,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-emerald-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Orçada</CardTitle>
               <div className="rounded-full bg-emerald-100 p-2 dark:bg-emerald-900/30">
@@ -463,7 +463,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-amber-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Alterada</CardTitle>
               <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/30">
@@ -476,7 +476,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card className="border-green-200 dark:border-green-800">
+          <Card className="border-l-4 border-l-green-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Atualizada</CardTitle>
               <div className="rounded-full bg-green-100 p-2 dark:bg-green-900/30">
@@ -491,7 +491,7 @@ export function OrcamentoMunicipal() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card>
+          <Card className="border-l-4 border-l-teal-500">
             <CardHeader className="pb-2">
               <CardDescription>Variação Orçada x Atualizada</CardDescription>
               <CardTitle className={`text-2xl ${receitaDeltaNominal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -505,7 +505,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-slate-500">
             <CardHeader className="pb-2">
               <CardDescription>Índice de Dedução</CardDescription>
               <CardTitle className="text-2xl">{pctShare(receitaDeduzida, receitaPrevista).toFixed(1)}%</CardTitle>
@@ -515,7 +515,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-cyan-500">
             <CardHeader className="pb-2">
               <CardDescription>Elasticidade da Receita</CardDescription>
               <CardTitle className="text-2xl">{pctShare(receitaAlterada, receitaOrcada).toFixed(1)}%</CardTitle>
@@ -525,7 +525,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-indigo-500">
             <CardHeader className="pb-2">
               <CardDescription>Entidade Líder em Receita</CardDescription>
               <CardTitle className="text-lg">Prefeitura Municipal</CardTitle>
@@ -546,6 +546,7 @@ export function OrcamentoMunicipal() {
               icon={MoneyAdd01Icon}
               iconClassName="text-emerald-600"
               iconWrapperClassName="bg-emerald-100 dark:bg-emerald-900/30"
+              borderClassName="border-l-emerald-500"
               value={`${realizacaoReceitaVsAtualizada.toFixed(1)}%`}
               footer={
                 <p className="text-xs text-muted-foreground">
@@ -558,6 +559,7 @@ export function OrcamentoMunicipal() {
               icon={Target01Icon}
               iconClassName="text-blue-600"
               iconWrapperClassName="bg-blue-100 dark:bg-blue-900/30"
+              borderClassName="border-l-blue-500"
               value={`${gapEstruturalLoa >= 0 ? "+" : ""}${fmtMillions(gapEstruturalLoa)}`}
               footer={
                 <p className="text-xs text-muted-foreground">
@@ -570,6 +572,7 @@ export function OrcamentoMunicipal() {
               icon={CheckmarkCircle02Icon}
               iconClassName="text-violet-600"
               iconWrapperClassName="bg-violet-100 dark:bg-violet-900/30"
+              borderClassName="border-l-violet-500"
               value={`${metaRealizacaoReceitaPct}%`}
               footer={
                 <p className="text-xs text-muted-foreground">
@@ -730,7 +733,7 @@ export function OrcamentoMunicipal() {
 
         {/* KPIs Despesa */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card>
+          <Card className="border-l-4 border-l-blue-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Despesa Orçada</CardTitle>
               <div className="rounded-full bg-blue-100 p-2 dark:bg-blue-900/30">
@@ -743,7 +746,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-amber-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Suplementado</CardTitle>
               <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/30">
@@ -756,7 +759,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-red-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Reduzido</CardTitle>
               <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/30">
@@ -769,7 +772,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card className="border-orange-200 dark:border-orange-800">
+          <Card className="border-l-4 border-l-orange-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Atualizado</CardTitle>
               <div className="rounded-full bg-orange-100 p-2 dark:bg-orange-900/30">
@@ -784,7 +787,7 @@ export function OrcamentoMunicipal() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card>
+          <Card className="border-l-4 border-l-teal-500">
             <CardHeader className="pb-2">
               <CardDescription>Variação Orçada x Atualizada</CardDescription>
               <CardTitle className={`text-2xl ${despesaDeltaNominal >= 0 ? 'text-orange-600' : 'text-green-600'}`}>
@@ -798,7 +801,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-slate-500">
             <CardHeader className="pb-2">
               <CardDescription>Índice de Suplementação</CardDescription>
               <CardTitle className="text-2xl">{pctShare(despesaSuplementado, despesaOrcada).toFixed(1)}%</CardTitle>
@@ -808,7 +811,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-cyan-500">
             <CardHeader className="pb-2">
               <CardDescription>Índice de Redução</CardDescription>
               <CardTitle className="text-2xl">{pctShare(despesaReduzido, despesaOrcada).toFixed(1)}%</CardTitle>
@@ -818,7 +821,7 @@ export function OrcamentoMunicipal() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-indigo-500">
             <CardHeader className="pb-2">
               <CardDescription>Despesa Líder por Natureza</CardDescription>
               <CardTitle className="text-lg">Pessoal e Encargos</CardTitle>
@@ -839,6 +842,7 @@ export function OrcamentoMunicipal() {
               icon={Invoice02Icon}
               iconClassName="text-orange-600"
               iconWrapperClassName="bg-orange-100 dark:bg-orange-900/30"
+              borderClassName="border-l-orange-500"
               value={`${comprometimentoDespesaVsAtualizada.toFixed(1)}%`}
               footer={
                 <p className="text-xs text-muted-foreground">
@@ -851,6 +855,7 @@ export function OrcamentoMunicipal() {
               icon={MoneySend01Icon}
               iconClassName="text-amber-600"
               iconWrapperClassName="bg-amber-100 dark:bg-amber-900/30"
+              borderClassName="border-l-amber-500"
               value={`${saldoEmpenhoDisponivelPct.toFixed(1)}%`}
               footer={
                 <p className="text-xs text-muted-foreground">
@@ -863,6 +868,7 @@ export function OrcamentoMunicipal() {
               icon={Target01Icon}
               iconClassName="text-red-600"
               iconWrapperClassName="bg-red-100 dark:bg-red-900/30"
+              borderClassName="border-l-red-500"
               value={`${rigidezPessoalSobreOrcado.toFixed(1)}%`}
               footer={
                 <p className="text-xs text-muted-foreground">

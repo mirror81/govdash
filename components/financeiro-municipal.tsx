@@ -98,6 +98,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { cn } from "@/lib/utils"
 
 // Formatadores
 const formatCurrency = (value: number) => {
@@ -114,11 +115,11 @@ const calcPercent = (value: number, total: number) => {
 
 // Dados de fontes de recursos
 const fontesRecursos = [
-  { codigo: "100", nome: "Recursos Ordinarios", saldoInicial: 12500000, entradas: 45800000, saidas: 42300000, saldoAtual: 16000000 },
+  { codigo: "100", nome: "Recursos Ordinários", saldoInicial: 12500000, entradas: 45800000, saidas: 42300000, saldoAtual: 16000000 },
   { codigo: "101", nome: "Receitas de Impostos - Educacao", saldoInicial: 4200000, entradas: 18900000, saidas: 17800000, saldoAtual: 5300000 },
   { codigo: "102", nome: "Receitas de Impostos - Saude", saldoInicial: 3800000, entradas: 22400000, saidas: 21600000, saldoAtual: 4600000 },
   { codigo: "114", nome: "FUNDEB", saldoInicial: 2100000, entradas: 28500000, saidas: 27200000, saldoAtual: 3400000 },
-  { codigo: "115", nome: "Transferencias SUS", saldoInicial: 1800000, entradas: 15600000, saidas: 14900000, saldoAtual: 2500000 },
+  { codigo: "115", nome: "Transferências SUS", saldoInicial: 1800000, entradas: 15600000, saidas: 14900000, saldoAtual: 2500000 },
   { codigo: "159", nome: "Convenios Federais", saldoInicial: 850000, entradas: 4200000, saidas: 3100000, saldoAtual: 1950000 },
   { codigo: "259", nome: "Convenios Estaduais", saldoInicial: 620000, entradas: 2800000, saidas: 2400000, saldoAtual: 1020000 },
 ]
@@ -150,12 +151,12 @@ const aplicacoesFinanceiras = [
   { instituicao: "Banco do Brasil", tipo: "Poupanca", dataAplicacao: "01/06/2024", valorAplicado: 800000, rendimento: 32000, saldoAtual: 832000, taxa: "TR + 0.5%" },
 ]
 
-// Ultimos pagamentos
+// Últimos pagamentos
 const ultimosPagamentos = [
   { data: "29/11/2024", empenho: "2024NE003456", credor: "Construtora Silva", valor: 185000, fonte: "159", tipo: "Obra" },
   { data: "29/11/2024", empenho: "2024NE003455", credor: "Distribuidora de Medicamentos", valor: 89500, fonte: "102", tipo: "Material" },
   { data: "28/11/2024", empenho: "2024NE003450", credor: "Merenda Escolar Ltda", valor: 156000, fonte: "101", tipo: "Alimentacao" },
-  { data: "28/11/2024", empenho: "2024NE003448", credor: "Combustiveis XYZ", valor: 45800, fonte: "100", tipo: "Combustivel" },
+  { data: "28/11/2024", empenho: "2024NE003448", credor: "Combustíveis XYZ", valor: 45800, fonte: "100", tipo: "Combustível" },
   { data: "27/11/2024", empenho: "2024NE003445", credor: "Empresa de Limpeza", valor: 78900, fonte: "100", tipo: "Servico" },
 ]
 
@@ -197,34 +198,34 @@ const saldosAReceber = [
 
 // Eventos por tipo
 const eventosEmpenhos = [
-  { data: "29/11/2024", hora: "16:45", descricao: "Empenho 2024NE003458 - Material de escritorio", valor: 12500 },
-  { data: "29/11/2024", hora: "14:30", descricao: "Empenho 2024NE003457 - Servicos de manutencao", valor: 45800 },
-  { data: "29/11/2024", hora: "11:20", descricao: "Empenho 2024NE003456 - Obra pavimentacao", valor: 185000 },
+  { data: "29/11/2024", hora: "16:45", descricao: "Empenho 2024NE003458 - Material de escritório", valor: 12500 },
+  { data: "29/11/2024", hora: "14:30", descricao: "Empenho 2024NE003457 - Serviços de manutenção", valor: 45800 },
+  { data: "29/11/2024", hora: "11:20", descricao: "Empenho 2024NE003456 - Obra pavimentação", valor: 185000 },
   { data: "28/11/2024", hora: "17:15", descricao: "Empenho 2024NE003455 - Medicamentos", valor: 89500 },
-  { data: "28/11/2024", hora: "09:45", descricao: "Empenho 2024NE003454 - Combustivel", valor: 32000 },
+  { data: "28/11/2024", hora: "09:45", descricao: "Empenho 2024NE003454 - Combustível", valor: 32000 },
 ]
 
 const eventosLiquidacoes = [
-  { data: "29/11/2024", hora: "17:00", descricao: "Liquidacao 2024NL002890 - Construtora Silva", valor: 185000 },
-  { data: "29/11/2024", hora: "15:30", descricao: "Liquidacao 2024NL002889 - Distribuidora ABC", valor: 89500 },
-  { data: "28/11/2024", hora: "16:45", descricao: "Liquidacao 2024NL002888 - Merenda Escolar", valor: 156000 },
-  { data: "28/11/2024", hora: "14:20", descricao: "Liquidacao 2024NL002887 - Combustiveis XYZ", valor: 45800 },
-  { data: "27/11/2024", hora: "11:30", descricao: "Liquidacao 2024NL002886 - Empresa Limpeza", valor: 78900 },
+  { data: "29/11/2024", hora: "17:00", descricao: "Liquidação 2024NL002890 - Construtora Silva", valor: 185000 },
+  { data: "29/11/2024", hora: "15:30", descricao: "Liquidação 2024NL002889 - Distribuidora ABC", valor: 89500 },
+  { data: "28/11/2024", hora: "16:45", descricao: "Liquidação 2024NL002888 - Merenda Escolar", valor: 156000 },
+  { data: "28/11/2024", hora: "14:20", descricao: "Liquidação 2024NL002887 - Combustíveis XYZ", valor: 45800 },
+  { data: "27/11/2024", hora: "11:30", descricao: "Liquidação 2024NL002886 - Empresa Limpeza", valor: 78900 },
 ]
 
 const eventosPagamentos = [
   { data: "29/11/2024", hora: "17:30", descricao: "OB 2024OB004567 - Construtora Silva", valor: 185000 },
   { data: "29/11/2024", hora: "16:00", descricao: "OB 2024OB004566 - Distribuidora ABC", valor: 89500 },
   { data: "28/11/2024", hora: "17:00", descricao: "OB 2024OB004565 - Merenda Escolar", valor: 156000 },
-  { data: "28/11/2024", hora: "15:30", descricao: "OB 2024OB004564 - Combustiveis XYZ", valor: 45800 },
+  { data: "28/11/2024", hora: "15:30", descricao: "OB 2024OB004564 - Combustíveis XYZ", valor: 45800 },
   { data: "27/11/2024", hora: "14:00", descricao: "OB 2024OB004563 - Empresa Limpeza", valor: 78900 },
 ]
 
 const eventosArrecadacao = [
   { data: "29/11/2024", hora: "18:00", descricao: "Credito FPM - Cota Decendial", valor: 2850000 },
-  { data: "29/11/2024", hora: "12:30", descricao: "Arrecadacao ISS - Empresas diversas", valor: 185000 },
+  { data: "29/11/2024", hora: "12:30", descricao: "Arrecadação ISS - Empresas diversas", valor: 185000 },
   { data: "28/11/2024", hora: "18:00", descricao: "Credito ICMS - Cota Parte", valor: 1200000 },
-  { data: "28/11/2024", hora: "14:45", descricao: "Arrecadacao IPTU - Guias diversas", valor: 89000 },
+  { data: "28/11/2024", hora: "14:45", descricao: "Arrecadação IPTU - Guias diversas", valor: 89000 },
   { data: "27/11/2024", hora: "16:30", descricao: "Credito FUNDEB - Complementacao", valor: 420000 },
 ]
 
@@ -272,17 +273,17 @@ const totaisFinanceiros = {
 
 // Alertas
 const alertasFinanceiros = [
-  { tipo: "warning", titulo: "Conta com divergencia", descricao: "A conta 98766-5 apresenta divergencia de R$ 30.000 na conciliacao bancaria de novembro.", conta: "CEF 98766-5" },
+  { tipo: "warning", titulo: "Conta com divergencia", descricao: "A conta 98766-5 apresenta divergência de R$ 30.000 na conciliacao bancaria de novembro.", conta: "CEF 98766-5" },
   { tipo: "warning", titulo: "Saldo baixo em conta vinculada", descricao: "A conta de Convenios apresenta saldo abaixo do minimo recomendado para honrar compromissos.", conta: "CEF 98765-4" },
-  { tipo: "info", titulo: "Vencimentos proximos", descricao: "Existem 89 empenhos com vencimento nos proximos 7 dias totalizando R$ 3,2 milhoes.", valor: "R$ 3,2M" },
-  { tipo: "success", titulo: "Conciliacao em dia", descricao: "4 de 5 contas bancarias estao com a conciliacao atualizada e sem divergencias.", percentual: "80%" },
+  { tipo: "info", titulo: "Vencimentos próximos", descricao: "Existem 89 empenhos com vencimento nos próximos 7 dias totalizando R$ 3,2 milhoes.", valor: "R$ 3,2M" },
+  { tipo: "success", titulo: "Conciliacao em dia", descricao: "4 de 5 contas bancarias estão com a conciliação atualizada e sem divergências.", percentual: "80%" },
 ]
 
 // Metas financeiras
 const metasFinanceiro = [
   { indicador: "Liquidez Imediata", meta: 1.5, realizado: 2.26, unidade: "", status: "atingido", descricao: "Disponível / A Pagar" },
   { indicador: "Contas Conciliadas", meta: 95, realizado: 80, unidade: "%", status: "atencao", descricao: "Atualizadas mensalmente" },
-  { indicador: "Aplicacoes Financeiras", meta: 5000000, realizado: 5715500, unidade: "R$", status: "atingido", descricao: "Meta de investimento superada" },
+  { indicador: "Aplicações Financeiras", meta: 5000000, realizado: 5715500, unidade: "R$", status: "atingido", descricao: "Meta de investimento superada" },
   { indicador: "Pagamentos em Dia", meta: 98, realizado: 96, unidade: "%", status: "atencao", descricao: "Pontualidade nos pagamentos" },
   { indicador: "Receita em Conta", meta: 90, realizado: 92, unidade: "%", descricao: "Arrecadação disponível vs total" },
   { indicador: "Provisão Mensal", meta: 15000000, realizado: 15400000, unidade: "R$", status: "atingido", descricao: "Reserva para pagamentos" },
@@ -290,7 +291,7 @@ const metasFinanceiro = [
 
 // Disponibilidade por Fonte de Recurso (chart)
 const disponibilidadePorFonte = [
-  { nome: "Recursos Ordinarios", valor: 16000000, fill: "var(--chart-1)" },
+  { nome: "Recursos Ordinários", valor: 16000000, fill: "var(--chart-1)" },
   { nome: "Educacao", valor: 5300000, fill: "var(--chart-2)" },
   { nome: "Saude", valor: 4600000, fill: "var(--chart-3)" },
   { nome: "FUNDEB", valor: 3400000, fill: "var(--chart-4)" },
@@ -323,7 +324,7 @@ const coberturaComPromissos = [
   { indicador: "Compromissos Prox. 60 dias", valor: 10500000, formatado: formatCurrency(10500000) },
 ]
 
-// Concentracao de Fornecedores (Analise Pareto / HHI)
+// Concentração de Fornecedores (Analise Pareto / HHI)
 const totalPagoFornecedores = maioresFornecedores.reduce((a, b) => a + b.totalPago, 0)
 const concentracaoFornecedores = maioresFornecedores.map((forn, index) => {
   const percentual = (forn.totalPago / totalPagoFornecedores) * 100
@@ -338,11 +339,11 @@ const riscoConcentracao = hhi > 2500 ? "alto" : hhi > 1500 ? "moderado" : "baixo
 
 // Benchmark Financeiro Municipal
 const benchmarkFinanceiro = [
-  { municipio: "Municipio Atual", liquidez: 2.26, conciliacao: 80, rendimento: 7.8, cobertura: Number(mesesCobertura.toFixed(1)), inadimplencia: 24.2, destaque: true },
-  { municipio: "Municipio A (Similar)", liquidez: 1.85, conciliacao: 92, rendimento: 6.5, cobertura: 2.1, inadimplencia: 18.5, destaque: false },
-  { municipio: "Municipio B (Similar)", liquidez: 1.42, conciliacao: 88, rendimento: 7.2, cobertura: 1.8, inadimplencia: 32.1, destaque: false },
-  { municipio: "Municipio C (Similar)", liquidez: 2.58, conciliacao: 75, rendimento: 5.9, cobertura: 3.5, inadimplencia: 28.7, destaque: false },
-  { municipio: "Media Regional", liquidez: 1.92, conciliacao: 84, rendimento: 6.5, cobertura: 2.4, inadimplencia: 25.8, destaque: false },
+  { municipio: "Município Atual", liquidez: 2.26, conciliacao: 80, rendimento: 7.8, cobertura: Number(mesesCobertura.toFixed(1)), inadimplencia: 24.2, destaque: true },
+  { municipio: "Município A (Similar)", liquidez: 1.85, conciliacao: 92, rendimento: 6.5, cobertura: 2.1, inadimplencia: 18.5, destaque: false },
+  { municipio: "Município B (Similar)", liquidez: 1.42, conciliacao: 88, rendimento: 7.2, cobertura: 1.8, inadimplencia: 32.1, destaque: false },
+  { municipio: "Município C (Similar)", liquidez: 2.58, conciliacao: 75, rendimento: 5.9, cobertura: 3.5, inadimplencia: 28.7, destaque: false },
+  { municipio: "Média Regional", liquidez: 1.92, conciliacao: 84, rendimento: 6.5, cobertura: 2.4, inadimplencia: 25.8, destaque: false },
 ]
 
 export function FinanceiroMunicipal() {
@@ -396,7 +397,7 @@ export function FinanceiroMunicipal() {
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 text-green-600" />
               <span className="text-green-600">+2.3%</span>
-              <span>vs. mes anterior</span>
+              <span>vs. mês anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -422,7 +423,7 @@ export function FinanceiroMunicipal() {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={MoneySend01Icon} strokeWidth={2} className="size-4" />
-              Total Saidas (Ano)
+              Total Saídas (Ano)
             </CardDescription>
             <CardTitle className="text-2xl">{formatCurrency(totaisFinanceiros.totalSaidas)}</CardTitle>
           </CardHeader>
@@ -439,7 +440,7 @@ export function FinanceiroMunicipal() {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={CoinsSwapIcon} strokeWidth={2} className="size-4" />
-              Aplicacoes Financeiras
+              Aplicações Financeiras
             </CardDescription>
             <CardTitle className="text-2xl">{formatCurrency(totaisFinanceiros.aplicacoes)}</CardTitle>
           </CardHeader>
@@ -461,10 +462,10 @@ export function FinanceiroMunicipal() {
                 <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
                 Fluxo de Caixa Mensal
               </CardTitle>
-              <CardDescription>Entradas, saidas e saldo acumulado</CardDescription>
+              <CardDescription>Entradas, saídas e saldo acumulado</CardDescription>
             </div>
             <Badge variant="secondary" className="text-green-600">
-              Superavit: {formatCurrency(totaisFinanceiros.totalEntradas - totaisFinanceiros.totalSaidas)}
+              Superávit: {formatCurrency(totaisFinanceiros.totalEntradas - totaisFinanceiros.totalSaidas)}
             </Badge>
           </div>
         </CardHeader>
@@ -472,7 +473,7 @@ export function FinanceiroMunicipal() {
           <ChartContainer
             config={{
               entradas: { label: "Entradas", color: "var(--chart-2)" },
-              saidas: { label: "Saidas", color: "var(--chart-1)" },
+              saidas: { label: "Saídas", color: "var(--chart-1)" },
               saldo: { label: "Saldo", color: "var(--chart-4)" },
             } satisfies ChartConfig}
             className="h-[300px] w-full"
@@ -549,7 +550,7 @@ export function FinanceiroMunicipal() {
           <TabsTrigger value="receitas" className="text-xs">Receitas</TabsTrigger>
           <TabsTrigger value="aplicacoes" className="text-xs">Aplicacoes</TabsTrigger>
           <TabsTrigger value="pagamentos" className="text-xs">Pagamentos</TabsTrigger>
-          <TabsTrigger value="conciliacao" className="text-xs">Conciliacao</TabsTrigger>
+          <TabsTrigger value="conciliacao" className="text-xs">Conciliação</TabsTrigger>
         </TabsList>
 
         {/* Fontes de Recursos */}
@@ -560,7 +561,7 @@ export function FinanceiroMunicipal() {
                 <HugeiconsIcon icon={Building06Icon} strokeWidth={2} className="size-5" />
                 Controle por Fonte de Recursos
               </CardTitle>
-              <CardDescription>Movimentacao financeira por fonte</CardDescription>
+              <CardDescription>Movimentação financeira por fonte</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -600,24 +601,27 @@ export function FinanceiroMunicipal() {
           </Card>
         </TabsContent>
 
-        {/* Contas Bancarias */}
+        {/* Contas Bancárias */}
         <TabsContent value="contas" className="mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HugeiconsIcon icon={BankIcon} strokeWidth={2} className="size-5" />
-                Controle por Conta Bancaria
+                Controle por Conta Bancária
               </CardTitle>
               <CardDescription>Saldo e status das contas</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {contasBancarias.map((conta, index) => (
-                  <Card key={index} className="relative overflow-hidden">
-                    <div className={`absolute top-0 left-0 w-1 h-full ${
-                      conta.status === "conciliada" ? "bg-green-500" :
-                      conta.status === "pendente" ? "bg-amber-500" : "bg-red-500"
-                    }`} />
+                  <Card
+                    key={index}
+                    className={cn(
+                      "relative overflow-hidden border-l-4",
+                      conta.status === "conciliada" ? "border-l-green-500" :
+                      conta.status === "pendente" ? "border-l-amber-500" : "border-l-red-500"
+                    )}
+                  >
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <CardDescription className="font-medium">{conta.banco}</CardDescription>
@@ -645,15 +649,15 @@ export function FinanceiroMunicipal() {
           </Card>
         </TabsContent>
 
-        {/* Receitas Lancadas */}
+        {/* Receitas Lançadas */}
         <TabsContent value="receitas" className="mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-5" />
-                Receitas Lancadas
+                Receitas Lançadas
               </CardTitle>
-              <CardDescription>Ultimos lancamentos de receitas</CardDescription>
+              <CardDescription>Últimos lançamentos de receitas</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -688,13 +692,13 @@ export function FinanceiroMunicipal() {
           </Card>
         </TabsContent>
 
-        {/* Aplicacoes Financeiras */}
+        {/* Aplicações Financeiras */}
         <TabsContent value="aplicacoes" className="mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} className="size-5" />
-                Aplicacoes Financeiras
+                Aplicações Financeiras
               </CardTitle>
               <CardDescription>Investimentos e rendimentos</CardDescription>
             </CardHeader>
@@ -748,7 +752,7 @@ export function FinanceiroMunicipal() {
                 <HugeiconsIcon icon={CreditCardIcon} strokeWidth={2} className="size-5" />
                 Controle de Pagamentos
               </CardTitle>
-              <CardDescription>Ultimos pagamentos realizados</CardDescription>
+              <CardDescription>Últimos pagamentos realizados</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -1210,16 +1214,16 @@ export function FinanceiroMunicipal() {
             </div>
             <Alert className="mt-3" variant={projecaoFluxoCaixa[0].saldoProjetado < 0 ? "destructive" : "default"}>
               <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4" />
-              <AlertTitle>Atencao: Dezembro com deficit projetado</AlertTitle>
+              <AlertTitle>Atenção: Dezembro com déficit projetado</AlertTitle>
               <AlertDescription>
-                Saidas elevadas previstas para dezembro (13o salario + fornecedores). Saldo disponivel e suficiente para cobertura.
+                Saídas elevadas previstas para dezembro (13º salário + fornecedores). Saldo disponível e suficiente para cobertura.
               </AlertDescription>
             </Alert>
           </CardContent>
         </Card>
       </div>
 
-      {/* Cobertura de Compromissos e Concentracao de Fornecedores */}
+      {/* Cobertura de Compromissos e Concentração de Fornecedores */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Cobertura de Compromissos */}
         <Card>
@@ -1229,7 +1233,7 @@ export function FinanceiroMunicipal() {
               Cobertura de Compromissos
             </CardTitle>
             <CardDescription>
-              O saldo atual cobre <strong className="text-green-600">{mesesCobertura.toFixed(1)} meses</strong> de saidas medias
+              O saldo atual cobre <strong className="text-green-600">{mesesCobertura.toFixed(1)} meses</strong> de saídas médias
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -1255,9 +1259,9 @@ export function FinanceiroMunicipal() {
                 <div className="flex items-center gap-2">
                   <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4 text-green-600" />
                   <p className="text-sm">
-                    <strong className="text-green-600">Situacao adequada.</strong>{" "}
+                    <strong className="text-green-600">Situação adequada.</strong>{" "}
                     <span className="text-muted-foreground">
-                      O municipio possui liquidez para honrar compromissos dos proximos {mesesCobertura.toFixed(0)} meses sem novas entradas.
+                      O município possui liquidez para honrar compromissos dos próximos {mesesCobertura.toFixed(0)} meses sem novas entradas.
                     </span>
                   </p>
                 </div>
@@ -1266,15 +1270,15 @@ export function FinanceiroMunicipal() {
           </CardContent>
         </Card>
 
-        {/* Concentracao de Fornecedores */}
+        {/* Concentração de Fornecedores */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-5" />
-              Concentracao de Fornecedores
+              Concentração de Fornecedores
             </CardTitle>
             <CardDescription>
-              Indice HHI: <strong>{hhi.toFixed(0)}</strong> — Risco: {" "}
+              Índice HHI: <strong>{hhi.toFixed(0)}</strong> — Risco: {" "}
               <Badge variant={riscoConcentracao === "alto" ? "destructive" : riscoConcentracao === "moderado" ? "outline" : "secondary"}
                 className={riscoConcentracao === "alto" ? "" : riscoConcentracao === "moderado" ? "text-amber-600" : "text-green-600"}>
                 {riscoConcentracao.charAt(0).toUpperCase() + riscoConcentracao.slice(1)}
@@ -1313,8 +1317,8 @@ export function FinanceiroMunicipal() {
             </div>
             <div className="mt-4 rounded-lg bg-muted/50 p-3">
               <p className="text-xs text-muted-foreground">
-                <strong className="text-foreground">Analise Pareto:</strong> Os 5 maiores fornecedores concentram{" "}
-                <strong>100%</strong> dos pagamentos analisados. O indice HHI de {hhi.toFixed(0)} indica concentracao{" "}
+                <strong className="text-foreground">Análise de Pareto:</strong> Os 5 maiores fornecedores concentram{" "}
+                <strong>100%</strong> dos pagamentos analisados. O índice HHI de {hhi.toFixed(0)} indica concentração{" "}
                 {riscoConcentracao === "alto" ? "alta — recomenda-se diversificar" : riscoConcentracao === "moderado" ? "moderada — monitorar" : "baixa — adequado"}.
               </p>
             </div>
@@ -1329,13 +1333,13 @@ export function FinanceiroMunicipal() {
             <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-5" />
             Benchmark Financeiro Municipal
           </CardTitle>
-          <CardDescription>Comparacao de indicadores financeiros com municipios de porte similar</CardDescription>
+          <CardDescription>Comparação de indicadores financeiros com municípios de porte similar</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Municipio</TableHead>
+                <TableHead>Município</TableHead>
                 <TableHead className="text-right">Liquidez</TableHead>
                 <TableHead className="text-right">Conciliacao</TableHead>
                 <TableHead className="text-right">Rendimento</TableHead>
@@ -1380,7 +1384,7 @@ export function FinanceiroMunicipal() {
               <p className="text-xs font-medium text-muted-foreground">Posicao Geral</p>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-bold text-green-600">1o</span>
-                <span className="text-xs text-muted-foreground">de 5 municipios</span>
+                <span className="text-xs text-muted-foreground">de 5 municípios</span>
               </div>
               <p className="text-xs text-muted-foreground">Destaque em liquidez e rendimento de aplicacoes</p>
             </div>
@@ -1434,7 +1438,7 @@ export function FinanceiroMunicipal() {
               <Badge variant="secondary" className="text-green-600">Acima CDI</Badge>
             </div>
             <div className="space-y-2 text-center p-4 rounded-lg bg-muted/50">
-              <p className="text-sm font-medium text-muted-foreground">Superavit Financeiro</p>
+              <p className="text-sm font-medium text-muted-foreground">Superávit Financeiro</p>
               <p className="text-3xl font-bold text-green-600">{formatCurrency(totaisFinanceiros.totalEntradas - totaisFinanceiros.totalSaidas)}</p>
               <p className="text-xs text-muted-foreground">Entradas - Saidas</p>
               <Badge variant="secondary" className="text-green-600">Positivo</Badge>
@@ -1444,7 +1448,7 @@ export function FinanceiroMunicipal() {
       </Card>
 
       {/* Analise Inteligente */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
@@ -1460,10 +1464,10 @@ export function FinanceiroMunicipal() {
           {/* Visao Geral */}
           <div className="prose prose-sm dark:prose-invert max-w-none">
             <p className="text-foreground leading-relaxed">
-              A analise da gestao financeira do municipio para o exercicio de {periodoSelecionado} revela um{" "}
+              A analise da gestao financeira do municipio para o exercício de {periodoSelecionado} revela um{" "}
               <strong>cenario positivo de liquidez e controle</strong>. Com saldo total de{" "}
               <strong>{formatCurrency(totaisFinanceiros.saldoTotal)}</strong> em contas bancarias e um{" "}
-              <strong>superavit financeiro de {formatCurrency(totaisFinanceiros.totalEntradas - totaisFinanceiros.totalSaidas)}</strong>,
+              <strong>superávit financeiro de {formatCurrency(totaisFinanceiros.totalEntradas - totaisFinanceiros.totalSaidas)}</strong>,
               o municipio demonstra capacidade de honrar seus compromissos. O indice de liquidez de <strong>2.26</strong>{" "}
               indica que para cada R$ 1,00 a pagar, existem R$ 2,26 disponiveis em caixa.
             </p>
@@ -1510,7 +1514,7 @@ export function FinanceiroMunicipal() {
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
                   <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 text-amber-600" />
-                  <span>Pontos de Atencao</span>
+                  <span>Pontos de Atenção</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -1519,14 +1523,14 @@ export function FinanceiroMunicipal() {
                     <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4 mt-0.5 text-amber-600 shrink-0" />
                     <p className="text-sm text-muted-foreground">
                       <strong className="text-foreground">Divergencias em conciliacao:</strong> A conta 98766-5 apresenta 
-                      divergencia de R$ 30.000, necessitando ajuste imediato para manter a integridade contabil.
+                      divergência de R$ 30.000, necessitando ajuste imediato para manter a integridade contabil.
                     </p>
                   </div>
                   <div className="flex gap-2">
                     <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4 mt-0.5 text-amber-600 shrink-0" />
                     <p className="text-sm text-muted-foreground">
                       <strong className="text-foreground">Divida ativa elevada:</strong> Com R$ 12,5 milhoes em divida ativa, 
-                      recomenda-se intensificar acoes de cobranca e programas de parcelamento.
+                      recomenda-se intensificar ações de cobrança e programas de parcelamento.
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -1573,7 +1577,7 @@ export function FinanceiroMunicipal() {
                   <div className="rounded-lg border bg-blue-50/50 dark:bg-blue-950/20 p-3">
                     <p className="text-sm font-medium text-foreground mb-1">4. Fluxo de Caixa Projetado</p>
                     <p className="text-xs text-muted-foreground">
-                      Elaborar projecao detalhada para dezembro considerando folha de 13o salario, 
+                      Elaborar projecao detalhada para dezembro considerando folha de 13º salário, 
                       ferias e outros compromissos de final de exercicio.
                     </p>
                   </div>
@@ -1625,12 +1629,12 @@ export function FinanceiroMunicipal() {
                 <p className="text-sm font-medium text-foreground">Conclusao Analitica</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   A gestao financeira municipal apresenta <strong>indicadores solidos de saude financeira</strong>, 
-                  com destaque para o alto indice de liquidez e o superavit acumulado. Os pontos de atencao identificados 
-                  - divergencias em conciliacao e divida ativa elevada - sao gerenciaveis com as acoes propostas. 
-                  A projecao para encerramento do exercicio indica que o municipio tera recursos suficientes para 
-                  honrar todos os compromissos de final de ano, mantendo saldo adequado para inicio do proximo exercicio. 
+                  com destaque para o alto indice de liquidez e o superávit acumulado. Os pontos de atenção identificados 
+                  - divergências em conciliação e dívida ativa elevada - sao gerenciáveis com as acoes propostas. 
+                  A projecao para encerramento do exercício indica que o municipio tera recursos suficientes para 
+                  honrar todos os compromissos de final de ano, mantendo saldo adequado para inicio do proximo exercício. 
                   Recomenda-se especial atencao ao fluxo de caixa de dezembro devido aos pagamentos extraordinarios 
-                  de 13o salario e ferias.
+                  de 13º salário e ferias.
                 </p>
                 <p className="text-xs text-muted-foreground mt-3 pt-3 border-t">
                   Analise gerada em {new Date().toLocaleDateString('pt-BR')} as {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} 

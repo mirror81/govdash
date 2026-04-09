@@ -435,7 +435,7 @@ export function TributacaoMunicipal() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Tributação Municipal</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Tributos Municipais</h2>
           <p className="text-muted-foreground">
             Gestão tributária, arrecadação, fiscalização e dívida ativa
           </p>
@@ -474,7 +474,7 @@ export function TributacaoMunicipal() {
 
       {/* KPIs Principais */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-primary/20">
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={MoneyReceiveSquareIcon} strokeWidth={2} className="size-4" />
@@ -493,7 +493,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Home01Icon} strokeWidth={2} className="size-4" />
@@ -509,7 +509,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-amber-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Store04Icon} strokeWidth={2} className="size-4" />
@@ -525,7 +525,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-red-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-4" />
@@ -549,7 +549,7 @@ export function TributacaoMunicipal() {
 
       {/* KPIs Secundários */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card>
+        <Card className="border-l-4 border-l-cyan-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-4" />
@@ -562,7 +562,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-violet-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-4" />
@@ -575,7 +575,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-orange-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-4" />
@@ -588,7 +588,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-teal-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={FileValidationIcon} strokeWidth={2} className="size-4" />
@@ -601,7 +601,7 @@ export function TributacaoMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-purple-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={MoneySend01Icon} strokeWidth={2} className="size-4" />
@@ -1594,14 +1594,14 @@ export function TributacaoMunicipal() {
       </Card>
 
       {/* Análise Inteligente */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
               <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-5 text-primary" />
             </div>
             <div>
-              <CardTitle>Análise Inteligente — Tributação</CardTitle>
+              <CardTitle>Análise Inteligente — Tributos</CardTitle>
               <CardDescription>Diagnóstico da gestão tributária e recomendações estratégicas</CardDescription>
             </div>
           </div>

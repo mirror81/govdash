@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { cn } from "@/lib/utils"
 
 type KpiOrcamentoCardProps = {
   title: string
@@ -29,7 +30,7 @@ export function KpiOrcamentoCard({
   borderClassName,
 }: KpiOrcamentoCardProps) {
   return (
-    <Card className={borderClassName}>
+    <Card className={cn("border-l-4", borderClassName ?? "border-l-primary/40")}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
         <div className={`rounded-full p-2 ${iconWrapperClassName}`}>

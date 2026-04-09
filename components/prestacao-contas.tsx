@@ -554,7 +554,7 @@ export function PrestacaoContas() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Prestação de Contas</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Gestão</h2>
           <p className="text-muted-foreground">
             Acompanhamento de prestação de contas, CAUC e julgamento pelo TCE/PR
           </p>
@@ -638,7 +638,7 @@ export function PrestacaoContas() {
 
       {/* KPIs */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <div className="size-2 rounded-full bg-green-500" />
@@ -649,12 +649,12 @@ export function PrestacaoContas() {
           <CardContent>
             <div className="flex items-center gap-1">
               <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 text-green-600" />
-              <span className="text-xs text-green-600 font-medium">+2 vs mês anterior</span>
+              <span className="text-xs text-green-600 font-medium">+2 vs. mês anterior</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-amber-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <div className="size-2 rounded-full bg-amber-500" />
@@ -665,12 +665,12 @@ export function PrestacaoContas() {
           <CardContent>
             <div className="flex items-center gap-1">
               <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 text-amber-600" />
-              <span className="text-xs text-amber-600 font-medium">+2 vs mês anterior</span>
+              <span className="text-xs text-amber-600 font-medium">+2 vs. mês anterior</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-red-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <div className="size-2 rounded-full bg-red-500" />
@@ -681,12 +681,12 @@ export function PrestacaoContas() {
           <CardContent>
             <div className="flex items-center gap-1">
               <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 text-red-600" />
-              <span className="text-xs text-red-600 font-medium">+1 vs mês anterior</span>
+              <span className="text-xs text-red-600 font-medium">+1 vs. mês anterior</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-zinc-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <div className="size-2 rounded-full bg-muted-foreground" />
@@ -699,7 +699,7 @@ export function PrestacaoContas() {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
+        <Card className="border-l-4 border-l-purple-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-1.5">
               <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-4" />
@@ -1114,7 +1114,7 @@ export function PrestacaoContas() {
       </Card>
 
       {/* Análise Inteligente */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
@@ -1336,7 +1336,7 @@ export function PrestacaoContas() {
             return (
               <>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                  <Card>
+                  <Card className="border-l-4 border-l-green-500">
                     <CardHeader className="pb-2">
                       <CardDescription className="flex items-center gap-1.5">
                         <div className="size-2 rounded-full bg-green-500" />
@@ -1349,7 +1349,7 @@ export function PrestacaoContas() {
                     </CardContent>
                   </Card>
 
-                  <Card>
+                  <Card className="border-l-4 border-l-amber-500">
                     <CardHeader className="pb-2">
                       <CardDescription className="flex items-center gap-1.5">
                         <div className="size-2 rounded-full bg-amber-500" />
@@ -1362,7 +1362,7 @@ export function PrestacaoContas() {
                     </CardContent>
                   </Card>
 
-                  <Card>
+                  <Card className="border-l-4 border-l-blue-500">
                     <CardHeader className="pb-2">
                       <CardDescription className="flex items-center gap-1.5">
                         <div className="size-2 rounded-full bg-blue-500" />
@@ -1375,7 +1375,7 @@ export function PrestacaoContas() {
                     </CardContent>
                   </Card>
 
-                  <Card>
+                  <Card className="border-l-4 border-l-red-500">
                     <CardHeader className="pb-2">
                       <CardDescription className="flex items-center gap-1.5">
                         <div className="size-2 rounded-full bg-red-500" />
@@ -1388,7 +1388,7 @@ export function PrestacaoContas() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-primary/20">
+                  <Card className="border-l-4 border-l-purple-500">
                     <CardHeader className="pb-2">
                       <CardDescription className="flex items-center gap-1.5">
                         <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-4" />
@@ -1576,7 +1576,7 @@ export function PrestacaoContas() {
                 </Card>
 
                 {/* Análise Inteligente TCE */}
-                <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+                <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
                   <CardHeader>
                     <div className="flex items-center gap-3">
                       <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">

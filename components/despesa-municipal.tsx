@@ -95,7 +95,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 // Dados fictícios para demonstração
-const dadosOrgaos = [
+const dadosÓrgãos = [
   { 
     codigo: "01", 
     nome: "Gabinete do Prefeito", 
@@ -259,7 +259,7 @@ const treemapData = [
   { name: "Outras Despesas Correntes", value: 42300000, fill: "var(--chart-2)" },
   { name: "Investimentos", value: 14200000, fill: "var(--chart-3)" },
   { name: "Inversoes Financeiras", value: 2100000, fill: "var(--chart-4)" },
-  { name: "Amortizacao da Divida", value: 1144500, fill: "var(--chart-5)" },
+  { name: "Amortização da Dívida", value: 1144500, fill: "var(--chart-5)" },
 ]
 
 // Dados de empenhos por modalidade
@@ -283,7 +283,7 @@ const topFornecedores = [
 
 // Metas e indicadores
 const metasExecucao = [
-  { indicador: "Taxa de Execucao", meta: 95, realizado: 91, unidade: "%", status: "atencao", descricao: "Meta de execucao orcamentaria" },
+  { indicador: "Taxa de Execução", meta: 95, realizado: 91, unidade: "%", status: "atencao", descricao: "Meta de execução orçamentária" },
   { indicador: "Despesa com Pessoal", meta: 45, realizado: 42, unidade: "%", status: "atingido", descricao: "% da receita corrente liquida" },
   { indicador: "Restos a Pagar", meta: 8000000, realizado: 6500000, unidade: "R$", status: "atingido", descricao: "Meta de restos a pagar controlada" },
   { indicador: "Contratacoes Diretas", meta: 15, realizado: 18, unidade: "%", status: "atencao", descricao: "% maximo permitido (superado)" },
@@ -293,12 +293,12 @@ const metasExecucao = [
 
 const metasODS = [
   { ods: "ODS 3", titulo: "Saude e Bem-estar", meta: 52400000, realizado: 49800000, percentual: 95 },
-  { ods: "ODS 4", titulo: "Educacao de Qualidade", meta: 45600000, realizado: 42300000, percentual: 93 },
-  { ods: "ODS 11", titulo: "Cidades Sustentaveis", meta: 18900000, realizado: 16200000, percentual: 86 },
-  { ods: "ODS 1", titulo: "Erradicacao da Pobreza", meta: 8750000, realizado: 7890000, percentual: 90 },
+  { ods: "ODS 4", titulo: "Educação de Qualidade", meta: 45600000, realizado: 42300000, percentual: 93 },
+  { ods: "ODS 11", titulo: "Cidades Sustentáveis", meta: 18900000, realizado: 16200000, percentual: 86 },
+  { ods: "ODS 1", titulo: "Erradicação da Pobreza", meta: 8750000, realizado: 7890000, percentual: 90 },
 ]
 
-// Rigidez Orcamentaria
+// Rigidez Orçamentária
 const rigidezOrcamentaria = [
   { categoria: "Pessoal e Encargos", valor: 68500000, tipo: "obrigatoria" },
   { categoria: "Servico da Divida", valor: 1144500, tipo: "obrigatoria" },
@@ -339,7 +339,7 @@ const despesaCorrenteCapital = [
   { tipo: "Despesas de Capital", valor: 16200000, percentual: 12.6, subcategorias: [
     { nome: "Investimentos", valor: 14200000 },
     { nome: "Inversoes Financeiras", valor: 500000 },
-    { nome: "Amortizacao da Divida", valor: 1500000 },
+    { nome: "Amortização da Dívida", valor: 1500000 },
   ]},
 ]
 
@@ -375,27 +375,27 @@ const projecaoExecucao = [
 
 // Benchmark Municipal
 const benchmarkDespesa = [
-  { municipio: "Municipio Atual", execucao: 92, pessoalRCL: Number(percentualPessoalRCL), investimento: 12.6, restosAPagar: 9.6, destaque: true },
-  { municipio: "Municipio A (Similar)", execucao: 89, pessoalRCL: 38.2, investimento: 10.1, restosAPagar: 14.2, destaque: false },
-  { municipio: "Municipio B (Similar)", execucao: 94, pessoalRCL: 35.5, investimento: 14.8, restosAPagar: 7.8, destaque: false },
-  { municipio: "Municipio C (Similar)", execucao: 86, pessoalRCL: 42.1, investimento: 8.5, restosAPagar: 18.5, destaque: false },
-  { municipio: "Media Regional", execucao: 90, pessoalRCL: 37.8, investimento: 11.5, restosAPagar: 12.5, destaque: false },
+  { municipio: "Município Atual", execucao: 92, pessoalRCL: Number(percentualPessoalRCL), investimento: 12.6, restosAPagar: 9.6, destaque: true },
+  { municipio: "Município A (Similar)", execucao: 89, pessoalRCL: 38.2, investimento: 10.1, restosAPagar: 14.2, destaque: false },
+  { municipio: "Município B (Similar)", execucao: 94, pessoalRCL: 35.5, investimento: 14.8, restosAPagar: 7.8, destaque: false },
+  { municipio: "Município C (Similar)", execucao: 86, pessoalRCL: 42.1, investimento: 8.5, restosAPagar: 18.5, destaque: false },
+  { municipio: "Média Regional", execucao: 90, pessoalRCL: 37.8, investimento: 11.5, restosAPagar: 12.5, destaque: false },
 ]
 
 // Alertas e recomendacoes
 const alertasGestao = [
-  { tipo: "warning", titulo: "Baixa Execucao em Infraestrutura", descricao: "A Secretaria de Infraestrutura apresenta execucao de apenas 86% do orcamento, abaixo da media municipal.", orgao: "SEMINF" },
-  { tipo: "info", titulo: "Aumento de Restos a Pagar", descricao: "Observado aumento de 8% nos restos a pagar em relacao ao mes anterior na area de saude.", orgao: "SEMSA" },
-  { tipo: "success", titulo: "Meta de Educacao Atingida", descricao: "A Secretaria de Educacao atingiu 93% da meta de execucao orcamentaria prevista para o periodo.", orgao: "SEMED" },
+  { tipo: "warning", titulo: "Baixa Execução em Infraestrutura", descricao: "A Secretaria de Infraestrutura apresenta execução de apenas 86% do orçamento, abaixo da média municipal.", orgao: "SEMINF" },
+  { tipo: "info", titulo: "Aumento de Restos a Pagar", descricao: "Observado aumento de 8% nos restos a pagar em relação ao mês anterior na área de saúde.", orgao: "SEMSA" },
+  { tipo: "success", titulo: "Meta de Educação Atingida", descricao: "A Secretaria de Educação atingiu 93% da meta de execução orçamentária prevista para o periodo.", orgao: "SEMED" },
 ]
 
 // Timeline de eventos
 const eventosRecentes = [
   { data: "28/11/2024", evento: "Empenho de R$ 2.5M para merenda escolar", tipo: "empenho", secretaria: "SEMED" },
   { data: "25/11/2024", evento: "Pagamento de R$ 1.8M para obras de pavimentacao", tipo: "pagamento", secretaria: "SEMINF" },
-  { data: "22/11/2024", evento: "Abertura de licitacao para aquisicao de medicamentos", tipo: "licitacao", secretaria: "SEMSA" },
-  { data: "20/11/2024", evento: "Liquidacao de R$ 3.2M em contratos diversos", tipo: "liquidacao", secretaria: "SEMAD" },
-  { data: "18/11/2024", evento: "Suplementacao orcamentaria de R$ 1.5M", tipo: "credito", secretaria: "SEMFAZ" },
+  { data: "22/11/2024", evento: "Abertura de licitação para aquisição de medicamentos", tipo: "licitacao", secretaria: "SEMSA" },
+  { data: "20/11/2024", evento: "Liquidação de R$ 3.2M em contratos diversos", tipo: "liquidacao", secretaria: "SEMAD" },
+  { data: "18/11/2024", evento: "Suplementação orçamentária de R$ 1,5M", tipo: "credito", secretaria: "SEMFAZ" },
 ]
 
 // Função para formatar valores em reais
@@ -428,7 +428,7 @@ export function DespesaMunicipal() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-foreground">Despesa Municipal</h2>
-          <p className="text-muted-foreground">Execucao orcamentaria do municipio</p>
+          <p className="text-muted-foreground">Execução orçamentária do município</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={periodoSelecionado} onValueChange={setPeriodoSelecionado}>
@@ -457,7 +457,7 @@ export function DespesaMunicipal() {
 
       {/* KPIs Principais */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-4" />
@@ -467,12 +467,12 @@ export function DespesaMunicipal() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span>Orcamento atualizado do exercicio</span>
+              <span>Orçamento atualizado do exercício</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-4" />
@@ -488,7 +488,7 @@ export function DespesaMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-amber-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-4" />
@@ -498,12 +498,12 @@ export function DespesaMunicipal() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span>{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orcamento disponivel</span>
+              <span>{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orçamento disponivel</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-red-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={MoneyReceiveSquareIcon} strokeWidth={2} className="size-4" />
@@ -519,7 +519,7 @@ export function DespesaMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-orange-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={Building06Icon} strokeWidth={2} className="size-4" />
@@ -540,11 +540,11 @@ export function DespesaMunicipal() {
 
       {/* Graficos de Visao Geral */}
       <div className="grid gap-4 lg:grid-cols-2">
-        {/* Evolucao Mensal */}
+        {/* Evolução Mensal */}
         <Card>
           <CardHeader>
-            <CardTitle>Evolucao Mensal da Execucao</CardTitle>
-            <CardDescription>Empenhado vs Pago por mes</CardDescription>
+            <CardTitle>Evolução Mensal da Execução</CardTitle>
+            <CardDescription>Empenhado vs Pago por mês</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -611,7 +611,7 @@ export function DespesaMunicipal() {
       {/* Tabelas por Classificacao */}
       <Tabs defaultValue="orgao" className="w-full" onValueChange={setViewMode}>
         <TabsList variant="line" className="w-full justify-start">
-          <TabsTrigger value="orgao">Por Orgao</TabsTrigger>
+          <TabsTrigger value="orgao">Por Órgão</TabsTrigger>
           <TabsTrigger value="unidade">Por Unidade</TabsTrigger>
           <TabsTrigger value="funcao">Funcao/Subfuncao</TabsTrigger>
           <TabsTrigger value="programa">Por Programa</TabsTrigger>
@@ -623,7 +623,7 @@ export function DespesaMunicipal() {
         <TabsContent value="orgao" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Orgao</CardTitle>
+              <CardTitle>Execução por Órgão</CardTitle>
               <CardDescription>Despesa orcamentaria por orgao da administracao</CardDescription>
             </CardHeader>
             <CardContent>
@@ -631,17 +631,17 @@ export function DespesaMunicipal() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-16">Codigo</TableHead>
-                    <TableHead>Orgao</TableHead>
+                    <TableHead>Órgão</TableHead>
                     <TableHead className="text-right">Atualizada</TableHead>
                     <TableHead className="text-right">Empenhada</TableHead>
                     <TableHead className="text-right">A Empenhar</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
                     <TableHead className="text-right">A Pagar</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {dadosOrgaos.map((item) => (
+                  {dadosÓrgãos.map((item) => (
                     <TableRow key={item.codigo}>
                       <TableCell className="font-mono text-xs">{item.codigo}</TableCell>
                       <TableCell className="font-medium">{item.nome}</TableCell>
@@ -679,7 +679,7 @@ export function DespesaMunicipal() {
         <TabsContent value="unidade" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Unidade Orcamentaria</CardTitle>
+              <CardTitle>Execução por Unidade Orçamentária</CardTitle>
               <CardDescription>Despesa orcamentaria por unidade (Educacao)</CardDescription>
             </CardHeader>
             <CardContent>
@@ -693,7 +693,7 @@ export function DespesaMunicipal() {
                     <TableHead className="text-right">A Empenhar</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
                     <TableHead className="text-right">A Pagar</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -724,8 +724,8 @@ export function DespesaMunicipal() {
         <TabsContent value="funcao" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Funcao/Subfuncao</CardTitle>
-              <CardDescription>Classificacao funcional da despesa</CardDescription>
+              <CardTitle>Execução por Função/Subfunção</CardTitle>
+              <CardDescription>Classificação funcional da despesa</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -737,7 +737,7 @@ export function DespesaMunicipal() {
                     <TableHead className="text-right">Atualizada</TableHead>
                     <TableHead className="text-right">Empenhada</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -767,7 +767,7 @@ export function DespesaMunicipal() {
         <TabsContent value="programa" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Programa</CardTitle>
+              <CardTitle>Execução por Programa</CardTitle>
               <CardDescription>Despesa por programa de governo</CardDescription>
             </CardHeader>
             <CardContent>
@@ -781,7 +781,7 @@ export function DespesaMunicipal() {
                     <TableHead className="text-right">A Empenhar</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
                     <TableHead className="text-right">A Pagar</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -812,7 +812,7 @@ export function DespesaMunicipal() {
         <TabsContent value="acao" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Acao</CardTitle>
+              <CardTitle>Execução por Ação</CardTitle>
               <CardDescription>Projetos e atividades orcamentarias</CardDescription>
             </CardHeader>
             <CardContent>
@@ -825,7 +825,7 @@ export function DespesaMunicipal() {
                     <TableHead className="text-right">Atualizada</TableHead>
                     <TableHead className="text-right">Empenhada</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -859,7 +859,7 @@ export function DespesaMunicipal() {
         <TabsContent value="secretaria" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Execucao por Secretaria</CardTitle>
+              <CardTitle>Execução por Secretaria</CardTitle>
               <CardDescription>Visao consolidada por secretaria</CardDescription>
             </CardHeader>
             <CardContent>
@@ -873,7 +873,7 @@ export function DespesaMunicipal() {
                     <TableHead className="text-right">A Empenhar</TableHead>
                     <TableHead className="text-right">Pago</TableHead>
                     <TableHead className="text-right">A Pagar</TableHead>
-                    <TableHead className="w-32">Execucao</TableHead>
+                    <TableHead className="w-32">Execução</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -908,7 +908,7 @@ export function DespesaMunicipal() {
         {/* Comparativo de Execucao */}
         <Card>
           <CardHeader>
-            <CardTitle>Comparativo de Execucao por Secretaria</CardTitle>
+            <CardTitle>Comparativo de Execução por Secretaria</CardTitle>
             <CardDescription>Empenhado vs Pago por secretaria</CardDescription>
           </CardHeader>
           <CardContent>
@@ -943,11 +943,11 @@ export function DespesaMunicipal() {
         {/* Indicadores de Alerta */}
         <Card>
           <CardHeader>
-            <CardTitle>Indicadores de Atencao</CardTitle>
-            <CardDescription>Orgaos com execucao abaixo de 90%</CardDescription>
+            <CardTitle>Indicadores de Atenção</CardTitle>
+            <CardDescription>Órgãos com execução abaixo de 90%</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {dadosOrgaos
+            {dadosÓrgãos
               .filter(o => calcPercent(o.empenhada, o.atualizada) < 90)
               .sort((a, b) => calcPercent(a.empenhada, a.atualizada) - calcPercent(b.empenhada, b.atualizada))
               .map((item) => (
@@ -985,12 +985,12 @@ export function DespesaMunicipal() {
               <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-5" />
               Evolucao Historica (5 anos)
             </CardTitle>
-            <CardDescription>Comparativo da execucao orcamentaria anual</CardDescription>
+            <CardDescription>Comparativo da execução orçamentária anual</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer
               config={{
-                atualizada: { label: "Orcamento", color: "var(--chart-3)" },
+                atualizada: { label: "Orçamento", color: "var(--chart-3)" },
                 empenhada: { label: "Empenhado", color: "var(--chart-1)" },
                 pago: { label: "Pago", color: "var(--chart-2)" },
               } satisfies ChartConfig}
@@ -1053,7 +1053,7 @@ export function DespesaMunicipal() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-5" />
-              Despesas por Modalidade de Licitacao
+              Despesas por Modalidade de Licitação
             </CardTitle>
             <CardDescription>Quantidade e valores por modalidade</CardDescription>
           </CardHeader>
@@ -1127,7 +1127,7 @@ export function DespesaMunicipal() {
               <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
               Alinhamento com Objetivos de Desenvolvimento Sustentavel
             </CardTitle>
-            <CardDescription>Execucao orcamentaria vinculada aos ODS</CardDescription>
+            <CardDescription>Execução orçamentária vinculada aos ODS</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -1164,17 +1164,17 @@ export function DespesaMunicipal() {
 
       </div>
 
-      {/* Rigidez Orcamentaria e Limite de Pessoal LRF */}
+      {/* Rigidez Orçamentária e Limite de Pessoal LRF */}
       <div className="grid gap-4 lg:grid-cols-2">
-        {/* Rigidez Orcamentaria */}
+        {/* Rigidez Orçamentária */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-5" />
-              Rigidez Orcamentaria
+              Rigidez Orçamentária
             </CardTitle>
             <CardDescription>
-              Indice de rigidez: <strong className={Number(percentualRigidez) > 70 ? "text-red-600" : "text-amber-600"}>{percentualRigidez}%</strong> — 
+              Índice de rigidez: <strong className={Number(percentualRigidez) > 70 ? "text-red-600" : "text-amber-600"}>{percentualRigidez}%</strong> — 
               Despesas obrigatorias sobre o total empenhado
             </CardDescription>
           </CardHeader>
@@ -1407,9 +1407,9 @@ export function DespesaMunicipal() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
-              Projecao de Execucao
+              Projeção de Execução
             </CardTitle>
-            <CardDescription>Execucao atual e projetada por secretaria — Meta: 95%</CardDescription>
+            <CardDescription>Execução atual e projetada por secretaria — Meta: 95%</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -1429,7 +1429,7 @@ export function DespesaMunicipal() {
                         variant={item.status === "atingido" ? "secondary" : item.status === "atencao" ? "outline" : "destructive"}
                         className={item.status === "atingido" ? "text-green-600" : item.status === "atencao" ? "text-amber-600" : ""}
                       >
-                        {item.status === "atingido" ? "OK" : item.status === "atencao" ? "Atencao" : "Critico"}
+                        {item.status === "atingido" ? "OK" : item.status === "atencao" ? "Atenção" : "Crítico"}
                       </Badge>
                     </div>
                   </div>
@@ -1458,14 +1458,14 @@ export function DespesaMunicipal() {
               <HugeiconsIcon icon={Building04Icon} strokeWidth={2} className="size-5" />
               Benchmark Municipal
             </CardTitle>
-            <CardDescription>Comparacao com municipios de porte similar</CardDescription>
+            <CardDescription>Comparação com municípios de porte similar</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Municipio</TableHead>
-                  <TableHead className="text-right">Execucao</TableHead>
+                  <TableHead>Município</TableHead>
+                  <TableHead className="text-right">Execução</TableHead>
                   <TableHead className="text-right">Pessoal/RCL</TableHead>
                   <TableHead className="text-right">Investim.</TableHead>
                   <TableHead className="text-right">Restos AP</TableHead>
@@ -1507,7 +1507,7 @@ export function DespesaMunicipal() {
                 <p className="text-xs font-medium text-muted-foreground">Posicao Geral</p>
                 <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold text-green-600">2o</span>
-                  <span className="text-xs text-muted-foreground">de 5 municipios</span>
+                  <span className="text-xs text-muted-foreground">de 5 municípios</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Destaque em controle de pessoal e restos a pagar</p>
               </div>
@@ -1568,14 +1568,14 @@ export function DespesaMunicipal() {
 
       <div className="space-y-6">
       {/* Secao de Analise Inteligente - Estilo IA */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
               <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-5 text-primary" />
             </div>
             <div>
-              <CardTitle>Analise Inteligente da Execucao Orcamentaria</CardTitle>
+              <CardTitle>Análise Inteligente da Execução Orçamentária</CardTitle>
               <CardDescription>Insights gerados com base nos dados do periodo</CardDescription>
             </div>
           </div>
@@ -1584,9 +1584,9 @@ export function DespesaMunicipal() {
           {/* Visao Geral */}
           <div className="prose prose-sm dark:prose-invert max-w-none">
             <p className="text-foreground leading-relaxed">
-              Analisando os dados de execucao orcamentaria do municipio para o exercicio de {periodoSelecionado}, 
-              observa-se um <strong>desempenho satisfatorio</strong> na gestao fiscal, com taxa de execucao de{" "}
-              <strong>{calcPercent(totais.empenhada, totais.atualizada)}%</strong> do orcamento atualizado de{" "}
+              Analisando os dados de execução orçamentária do município para o exercício de {periodoSelecionado}, 
+              observa-se um <strong>desempenho satisfatório</strong> na gestão fiscal, com taxa de execução de{" "}
+              <strong>{calcPercent(totais.empenhada, totais.atualizada)}%</strong> do orçamento atualizado de{" "}
               <strong>{formatCurrency(totais.atualizada)}</strong>. A relacao entre valores empenhados e pagos 
               demonstra boa capacidade de liquidacao, com <strong>{calcPercent(totais.pago, totais.empenhada)}%</strong>{" "}
               dos empenhos ja efetivamente pagos.
@@ -1609,8 +1609,8 @@ export function DespesaMunicipal() {
                   <div className="flex gap-2">
                     <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4 mt-0.5 text-green-600 shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      <strong className="text-foreground">Saude e Educacao com alta execucao:</strong> As secretarias de Saude (SEMSA) 
-                      e Educacao (SEMED) apresentam as maiores taxas de execucao orcamentaria, ambas acima de 90%, 
+                      <strong className="text-foreground">Saude e Educação com alta execução:</strong> As secretarias de Saúde (SEMSA) 
+                      e Educação (SEMED) apresentam as maiores taxas de execução orçamentária, ambas acima de 90%, 
                       demonstrando prioridade nas areas essenciais de atendimento a populacao.
                     </p>
                   </div>
@@ -1625,7 +1625,7 @@ export function DespesaMunicipal() {
                   <div className="flex gap-2">
                     <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4 mt-0.5 text-green-600 shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      <strong className="text-foreground">Crescimento sustentavel:</strong> O orcamento municipal apresenta 
+                      <strong className="text-foreground">Crescimento sustentável:</strong> O orcamento municipal apresenta 
                       crescimento medio de 9% ao ano nos ultimos 5 anos, com manutencao proporcional da capacidade 
                       de execucao.
                     </p>
@@ -1638,7 +1638,7 @@ export function DespesaMunicipal() {
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
                   <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 text-amber-600" />
-                  <span>Pontos de Atencao</span>
+                  <span>Pontos de Atenção</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -1646,8 +1646,8 @@ export function DespesaMunicipal() {
                   <div className="flex gap-2">
                     <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4 mt-0.5 text-amber-600 shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      <strong className="text-foreground">Infraestrutura com execucao abaixo da media:</strong> A Secretaria 
-                      de Infraestrutura (SEMINF) apresenta execucao de 86%, inferior a media municipal. Recomenda-se 
+                      <strong className="text-foreground">Infraestrutura com execução abaixo da media:</strong> A Secretaria 
+                      de Infraestrutura (SEMINF) apresenta execução de 86%, inferior a média municipal. Recomenda-se 
                       avaliacao dos processos licitatorios em andamento e possivel reprogramacao de cronogramas.
                     </p>
                   </div>
@@ -1664,7 +1664,7 @@ export function DespesaMunicipal() {
                     <p className="text-sm text-muted-foreground">
                       <strong className="text-foreground">Saldo significativo a empenhar:</strong> Ainda restam{" "}
                       {formatCurrency(totais.aEmpenhar)} ({calcPercent(totais.aEmpenhar, totais.atualizada)}%) do 
-                      orcamento a ser executado. Considerando o encerramento do exercicio, e necessario acelerar 
+                      orcamento a ser executado. Considerando o encerramento do exercício, e necessario acelerar 
                       os processos de contratacao pendentes.
                     </p>
                   </div>
@@ -1682,17 +1682,17 @@ export function DespesaMunicipal() {
               <AccordionContent>
                 <div className="space-y-3 pl-6">
                   <div className="rounded-lg border bg-blue-50/50 dark:bg-blue-950/20 p-3">
-                    <p className="text-sm font-medium text-foreground mb-1">1. Aceleracao da Execucao em Infraestrutura</p>
+                    <p className="text-sm font-medium text-foreground mb-1">1. Aceleração da Execução em Infraestrutura</p>
                     <p className="text-xs text-muted-foreground">
                       Implementar forca-tarefa para destravar processos licitatorios pendentes na SEMINF, 
-                      priorizando obras com maior impacto social e cronograma viavel ate o final do exercicio.
+                      priorizando obras com maior impacto social e cronograma viavel ate o final do exercício.
                     </p>
                   </div>
                   <div className="rounded-lg border bg-blue-50/50 dark:bg-blue-950/20 p-3">
                     <p className="text-sm font-medium text-foreground mb-1">2. Planejamento de Restos a Pagar</p>
                     <p className="text-xs text-muted-foreground">
                       Elaborar cronograma de liquidacao prioritaria para os {formatCurrency(totais.aPagar)} em 
-                      restos a pagar, evitando acumulo excessivo para o proximo exercicio e garantindo 
+                      restos a pagar, evitando acumulo excessivo para o proximo exercício e garantindo 
                       conformidade com a LRF.
                     </p>
                   </div>
@@ -1707,7 +1707,7 @@ export function DespesaMunicipal() {
                     <p className="text-sm font-medium text-foreground mb-1">4. Monitoramento Continuo ODS</p>
                     <p className="text-xs text-muted-foreground">
                       Fortalecer o alinhamento das despesas aos Objetivos de Desenvolvimento Sustentavel, 
-                      especialmente ODS 11 (Cidades Sustentaveis) que apresenta a menor taxa de execucao (86%).
+                      especialmente ODS 11 (Cidades Sustentáveis) que apresenta a menor taxa de execução (86%).
                     </p>
                   </div>
                 </div>
@@ -1724,28 +1724,28 @@ export function DespesaMunicipal() {
               <AccordionContent>
                 <div className="space-y-4 pl-6">
                   <p className="text-sm text-muted-foreground">
-                    Com base na tendencia historica e no ritmo atual de execucao, projeta-se para o 
-                    encerramento do exercicio:
+                    Com base na tendência histórica e no ritmo atual de execução, projeta-se para o 
+                    encerramento do exercício:
                   </p>
                   <div className="grid gap-3 sm:grid-cols-3">
                     <div className="rounded-lg border p-3 text-center">
                       <p className="text-2xl font-bold text-green-600">94%</p>
                       <p className="text-xs text-muted-foreground">Cenario Otimista</p>
-                      <p className="text-xs text-muted-foreground">Execucao Final</p>
+                      <p className="text-xs text-muted-foreground">Execução Final</p>
                     </div>
                     <div className="rounded-lg border p-3 text-center bg-primary/5">
                       <p className="text-2xl font-bold text-primary">91%</p>
                       <p className="text-xs text-muted-foreground">Cenario Provavel</p>
-                      <p className="text-xs text-muted-foreground">Execucao Final</p>
+                      <p className="text-xs text-muted-foreground">Execução Final</p>
                     </div>
                     <div className="rounded-lg border p-3 text-center">
                       <p className="text-2xl font-bold text-amber-600">88%</p>
                       <p className="text-xs text-muted-foreground">Cenario Conservador</p>
-                      <p className="text-xs text-muted-foreground">Execucao Final</p>
+                      <p className="text-xs text-muted-foreground">Execução Final</p>
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground italic">
-                    * Projecoes baseadas na media historica de execucao do ultimo trimestre dos exercicios 
+                    * Projeções baseadas na média histórica de execução do último trimestre dos exercícios 
                     anteriores e no saldo atual disponivel para empenho.
                   </p>
                 </div>
@@ -1762,15 +1762,15 @@ export function DespesaMunicipal() {
               <div className="space-y-2">
                 <p className="text-sm font-medium text-foreground">Conclusao da Analise</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  A execucao orcamentaria do municipio encontra-se em patamar adequado para o periodo, 
+                  A execução orçamentária do município encontra-se em patamar adequado para o periodo, 
                   com indicadores que demonstram responsabilidade fiscal e foco nas areas prioritarias 
-                  de saude e educacao. Os pontos de atencao identificados sao gerenciaveis e, com as 
-                  acoes recomendadas, o municipio tem condicoes de encerrar o exercicio com execucao 
+                  de saude e educacao. Os pontos de atenção identificados sao gerenciáveis e, com as 
+                  ações recomendadas, o município tem condições de encerrar o exercício com execução 
                   superior a 90%, mantendo o padrao de qualidade na gestao dos recursos publicos.
                 </p>
                 <p className="text-xs text-muted-foreground mt-3 pt-3 border-t">
                   Analise gerada em {new Date().toLocaleDateString('pt-BR')} as {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} 
-                  {" "}| Dados referentes ao exercicio de {periodoSelecionado}
+                  {" "}| Dados referentes ao exercício de {periodoSelecionado}
                 </p>
               </div>
             </div>
@@ -1782,12 +1782,12 @@ export function DespesaMunicipal() {
       <Card>
         <CardHeader>
           <CardTitle>Resumo Analitico</CardTitle>
-          <CardDescription>Indicadores de desempenho da execucao orcamentaria</CardDescription>
+          <CardDescription>Indicadores de desempenho da execução orçamentária</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-4">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Taxa de Execucao</p>
+              <p className="text-sm font-medium text-muted-foreground">Taxa de Execução</p>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold">{calcPercent(totais.empenhada, totais.atualizada)}%</span>
                 <Badge variant="secondary" className="text-xs">
@@ -1827,7 +1827,7 @@ export function DespesaMunicipal() {
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold">{formatMillions(totais.aEmpenhar)}</span>
               </div>
-              <p className="text-xs text-muted-foreground">{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orcamento ainda disponivel</p>
+              <p className="text-xs text-muted-foreground">{calcPercent(totais.aEmpenhar, totais.atualizada)}% do orçamento ainda disponivel</p>
             </div>
           </div>
         </CardContent>

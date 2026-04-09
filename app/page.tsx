@@ -9,6 +9,8 @@ import { FinanceiroMunicipal } from "@/components/financeiro-municipal"
 import { ComprasMunicipais } from "@/components/compras-municipais"
 import { RHMunicipal } from "@/components/rh-municipal"
 import { PrestacaoContas } from "@/components/prestacao-contas"
+import { Frotas } from "@/components/frotas"
+import { Obras } from "@/components/obras"
 import { TributacaoMunicipal } from "@/components/tributacao-municipal"
 import { OrcamentoMunicipal } from "@/components/orcamento-municipal"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -17,7 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, D
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon, Home01Icon, UserIcon, Cancel01Icon, Settings01Icon, Wallet01Icon } from "@hugeicons/core-free-icons"
+import { Analytics01Icon, MoneyAdd01Icon, BankIcon, ShoppingCartIcon, UserMultipleIcon, SecurityCheckIcon, Invoice01Icon, Home01Icon, UserIcon, Cancel01Icon, Settings01Icon, Wallet01Icon, DeliveryTruck01Icon, ConstructionIcon } from "@hugeicons/core-free-icons"
 
 const TAB_ORDER = [
   "visao-geral",
@@ -28,6 +30,8 @@ const TAB_ORDER = [
   "compras",
   "rh",
   "tributacao",
+  "frotas",
+  "obras",
   "prestacao-contas",
 ]
 const SCROLL_DELAY_MS = 5000
@@ -159,7 +163,7 @@ export default function Page() {
           <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-2 sm:w-auto sm:grid-cols-none sm:flex sm:rounded-full sm:p-1">
             <TabsTrigger value="visao-geral" className="gap-2">
               <HugeiconsIcon icon={Home01Icon} strokeWidth={2} className="size-4" />
-              Visão Geral
+              Geral
             </TabsTrigger>
             <TabsTrigger value="orcamento" className="gap-2">
               <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-4" />
@@ -187,11 +191,19 @@ export default function Page() {
             </TabsTrigger>
             <TabsTrigger value="tributacao" className="gap-2">
               <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-4" />
-              Tributação
+              Tributos
+            </TabsTrigger>
+            <TabsTrigger value="frotas" className="gap-2">
+              <HugeiconsIcon icon={DeliveryTruck01Icon} strokeWidth={2} className="size-4" />
+              Frotas
+            </TabsTrigger>
+            <TabsTrigger value="obras" className="gap-2">
+              <HugeiconsIcon icon={ConstructionIcon} strokeWidth={2} className="size-4" />
+              Obras
             </TabsTrigger>
             <TabsTrigger value="prestacao-contas" className="gap-2">
               <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-4" />
-              Prestação de Contas
+              Gestão
             </TabsTrigger>
           </TabsList>
           
@@ -225,6 +237,14 @@ export default function Page() {
           
           <TabsContent value="tributacao" className="mt-6">
             <TributacaoMunicipal />
+          </TabsContent>
+
+          <TabsContent value="frotas" className="mt-6">
+            <Frotas />
+          </TabsContent>
+
+          <TabsContent value="obras" className="mt-6">
+            <Obras />
           </TabsContent>
           
           <TabsContent value="prestacao-contas" className="mt-6">

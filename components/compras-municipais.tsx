@@ -130,7 +130,8 @@ const kpiData = [
     change: "+12%", 
     trend: "up",
     icon: ContactIcon,
-    description: "Contratos vigentes este mês"
+    description: "Contratos vigentes este mês",
+    borderClass: "border-l-4 border-l-blue-500",
   },
   { 
     title: "Valor Total Contratado", 
@@ -138,7 +139,8 @@ const kpiData = [
     change: "+8%", 
     trend: "up",
     icon: CoinsDollarIcon,
-    description: "Valor acumulado dos contratos"
+    description: "Valor acumulado dos contratos",
+    borderClass: "border-l-4 border-l-green-500",
   },
   { 
     title: "Licitações em Andamento", 
@@ -146,7 +148,8 @@ const kpiData = [
     change: "-5%", 
     trend: "down",
     icon: WaveIcon,
-    description: "Processos licitatórios ativos"
+    description: "Processos licitatórios ativos",
+    borderClass: "border-l-4 border-l-amber-500",
   },
   { 
     title: "Economia Obtida", 
@@ -154,7 +157,8 @@ const kpiData = [
     change: "+23%", 
     trend: "up",
     icon: ArrowUp01Icon,
-    description: "Economia sobre valor estimado"
+    description: "Economia sobre valor estimado",
+    borderClass: "border-l-4 border-l-purple-500",
   },
 ]
 
@@ -321,11 +325,11 @@ const metasCompras = [
 
 // Prazo Medio por Etapa de Contratacao
 const prazoMedioPorEtapa = [
-  { etapa: "Publicacao Edital", prazoMedio: 5, meta: 7, status: "atingido" },
+  { etapa: "Publicação Edital", prazoMedio: 5, meta: 7, status: "atingido" },
   { etapa: "Recebimento Propostas", prazoMedio: 15, meta: 15, status: "atingido" },
-  { etapa: "Analise e Julgamento", prazoMedio: 8, meta: 10, status: "atingido" },
+  { etapa: "Análise e Julgamento", prazoMedio: 8, meta: 10, status: "atingido" },
   { etapa: "Recursos", prazoMedio: 5, meta: 5, status: "atingido" },
-  { etapa: "Homologacao", prazoMedio: 3, meta: 3, status: "atingido" },
+  { etapa: "Homologação", prazoMedio: 3, meta: 3, status: "atingido" },
   { etapa: "Assinatura Contrato", prazoMedio: 2, meta: 5, status: "atingido" },
 ]
 const prazoTotalMedio = prazoMedioPorEtapa.reduce((a, b) => a + b.prazoMedio, 0)
@@ -364,11 +368,11 @@ const agingContratos = [
 
 // Benchmark de Compras Municipal
 const benchmarkCompras = [
-  { municipio: "Municipio Atual", economia: 8.4, prazo: 38, mpe: 22, aditivos: 12, concentracao: 36.3, destaque: true },
-  { municipio: "Municipio A (Similar)", economia: 6.2, prazo: 52, mpe: 28, aditivos: 18, concentracao: 42.1, destaque: false },
-  { municipio: "Municipio B (Similar)", economia: 7.8, prazo: 45, mpe: 24, aditivos: 15, concentracao: 38.5, destaque: false },
-  { municipio: "Municipio C (Similar)", economia: 5.1, prazo: 60, mpe: 30, aditivos: 22, concentracao: 45.8, destaque: false },
-  { municipio: "Media Regional", economia: 6.4, prazo: 49, mpe: 26, aditivos: 17, concentracao: 40.5, destaque: false },
+  { municipio: "Município Atual", economia: 8.4, prazo: 38, mpe: 22, aditivos: 12, concentracao: 36.3, destaque: true },
+  { municipio: "Município A (Similar)", economia: 6.2, prazo: 52, mpe: 28, aditivos: 18, concentracao: 42.1, destaque: false },
+  { municipio: "Município B (Similar)", economia: 7.8, prazo: 45, mpe: 24, aditivos: 15, concentracao: 38.5, destaque: false },
+  { municipio: "Município C (Similar)", economia: 5.1, prazo: 60, mpe: 30, aditivos: 22, concentracao: 45.8, destaque: false },
+  { municipio: "Média Regional", economia: 6.4, prazo: 49, mpe: 26, aditivos: 17, concentracao: 40.5, destaque: false },
 ]
 
 export function ComprasMunicipais() {
@@ -461,7 +465,7 @@ export function ComprasMunicipais() {
       {/* KPI Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, index) => (
-          <Card key={index}>
+          <Card key={index} className={kpi.borderClass}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
               <HugeiconsIcon icon={kpi.icon} className="h-4 w-4 text-muted-foreground" />
@@ -476,7 +480,7 @@ export function ComprasMunicipais() {
                 >
                   {kpi.change}
                 </Badge>
-                <span className="text-xs text-muted-foreground ml-2">vs mês anterior</span>
+                <span className="text-xs text-muted-foreground ml-2">vs. mês anterior</span>
               </div>
             </CardContent>
           </Card>
@@ -1110,7 +1114,7 @@ export function ComprasMunicipais() {
             <Separator className="my-3" />
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-lg border border-red-200 dark:border-red-800 p-3 text-center">
-                <p className="text-xs text-muted-foreground">Atencao Imediata</p>
+                <p className="text-xs text-muted-foreground">Atenção Imediata</p>
                 <p className="text-lg font-bold text-red-600">57</p>
                 <p className="text-xs text-muted-foreground">Vencidos + 30 dias</p>
               </div>
@@ -1131,13 +1135,13 @@ export function ComprasMunicipais() {
             <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
             Benchmark de Compras Municipal
           </CardTitle>
-          <CardDescription>Comparacao de indicadores de compras com municipios de porte similar</CardDescription>
+          <CardDescription>Comparação de indicadores de compras com municípios de porte similar</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Municipio</TableHead>
+                <TableHead>Município</TableHead>
                 <TableHead className="text-right">Economia</TableHead>
                 <TableHead className="text-right">Prazo (dias)</TableHead>
                 <TableHead className="text-right">MPE</TableHead>
@@ -1270,7 +1274,7 @@ export function ComprasMunicipais() {
       </Card>
 
       {/* Análise Inteligente */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">

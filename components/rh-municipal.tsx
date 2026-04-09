@@ -426,11 +426,11 @@ const percentualQuadro = ((totalAposentadorias5Anos / 1130) * 100).toFixed(1)
 
 // Benchmark de RH Municipal
 const benchmarkRH = [
-  { municipio: "Municipio Atual", custoMedio: 9513, absenteismo: 4.3, turnover: 8.5, hePercent: 7.3, capacitacao: 38, destaque: true },
-  { municipio: "Municipio A (Similar)", custoMedio: 10200, absenteismo: 5.1, turnover: 12.0, hePercent: 9.8, capacitacao: 32, destaque: false },
-  { municipio: "Municipio B (Similar)", custoMedio: 9800, absenteismo: 3.8, turnover: 7.2, hePercent: 6.5, capacitacao: 45, destaque: false },
-  { municipio: "Municipio C (Similar)", custoMedio: 11500, absenteismo: 6.2, turnover: 15.0, hePercent: 12.1, capacitacao: 28, destaque: false },
-  { municipio: "Media Regional", custoMedio: 10250, absenteismo: 4.8, turnover: 10.7, hePercent: 8.9, capacitacao: 35, destaque: false },
+  { municipio: "Município Atual", custoMedio: 9513, absenteismo: 4.3, turnover: 8.5, hePercent: 7.3, capacitacao: 38, destaque: true },
+  { municipio: "Município A (Similar)", custoMedio: 10200, absenteismo: 5.1, turnover: 12.0, hePercent: 9.8, capacitacao: 32, destaque: false },
+  { municipio: "Município B (Similar)", custoMedio: 9800, absenteismo: 3.8, turnover: 7.2, hePercent: 6.5, capacitacao: 45, destaque: false },
+  { municipio: "Município C (Similar)", custoMedio: 11500, absenteismo: 6.2, turnover: 15.0, hePercent: 12.1, capacitacao: 28, destaque: false },
+  { municipio: "Média Regional", custoMedio: 10250, absenteismo: 4.8, turnover: 10.7, hePercent: 8.9, capacitacao: 35, destaque: false },
 ]
 
 // Capacitacao e Desenvolvimento
@@ -439,7 +439,7 @@ const capacitacaoDesenvolvimento = [
   { programa: "Gestao de Processos", horas: 240, participantes: 85, investimento: 65000, conclusao: 88 },
   { programa: "Tecnologia da Informacao", horas: 160, participantes: 120, investimento: 42000, conclusao: 95 },
   { programa: "Lideranca e Gestao", horas: 200, participantes: 45, investimento: 85000, conclusao: 82 },
-  { programa: "Saude e Seguranca", horas: 280, participantes: 195, investimento: 35000, conclusao: 97 },
+  { programa: "Saúde e Segurança", horas: 280, participantes: 195, investimento: 35000, conclusao: 97 },
   { programa: "Legislacao Municipal", horas: 120, participantes: 68, investimento: 28000, conclusao: 90 },
 ]
 const totalHorasCapacitacao = capacitacaoDesenvolvimento.reduce((a, b) => a + b.horas, 0)
@@ -580,7 +580,7 @@ export function RHMunicipal() {
                 <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-3 mr-1" />
                 +5.8%
               </Badge>
-              <span className="text-xs text-muted-foreground">vs mês anterior</span>
+              <span className="text-xs text-muted-foreground">vs. mês anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -625,7 +625,7 @@ export function RHMunicipal() {
 
       {/* KPIs Secundários */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={GraduationScrollIcon} strokeWidth={2} className="size-4" />
@@ -638,7 +638,7 @@ export function RHMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={HeartCheckIcon} strokeWidth={2} className="size-4" />
@@ -651,7 +651,7 @@ export function RHMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-emerald-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={UserAdd01Icon} strokeWidth={2} className="size-4" />
@@ -664,7 +664,7 @@ export function RHMunicipal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-purple-500">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <HugeiconsIcon icon={UserRemove01Icon} strokeWidth={2} className="size-4" />
@@ -1646,7 +1646,7 @@ export function RHMunicipal() {
               <AlertTitle>Planejamento de Sucessao</AlertTitle>
               <AlertDescription>
                 Recomenda-se iniciar plano de sucessao para os {totalAposentadorias5Anos} cargos projetados, 
-                priorizando Professores e profissionais de Saude que representam a maior demanda.
+                priorizando Professores e profissionais de Saúde que representam a maior demanda.
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -1714,13 +1714,13 @@ export function RHMunicipal() {
             <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
             Benchmark de RH Municipal
           </CardTitle>
-          <CardDescription>Comparativo com municipios de porte similar</CardDescription>
+          <CardDescription>Comparativo com municípios de porte similar</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Municipio</TableHead>
+                <TableHead>Município</TableHead>
                 <TableHead className="text-right">Custo Medio</TableHead>
                 <TableHead className="text-right">Absenteismo</TableHead>
                 <TableHead className="text-right">Turnover</TableHead>
@@ -1769,7 +1769,7 @@ export function RHMunicipal() {
 
           <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-3">
             {(() => {
-              const mediaRegional = benchmarkRH.find(b => b.municipio === "Media Regional")!
+              const mediaRegional = benchmarkRH.find(b => b.municipio === "Média Regional")!
               const atual = benchmarkRH.find(b => b.destaque)!
               const indicadores = [
                 { nome: "Custo Medio", melhor: atual.custoMedio <= mediaRegional.custoMedio },
@@ -1902,7 +1902,7 @@ export function RHMunicipal() {
       </Card>
 
       {/* Análise Inteligente */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+      <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
