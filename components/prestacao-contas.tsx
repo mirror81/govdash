@@ -2314,7 +2314,7 @@ export function PrestacaoContas() {
                   </Alert>
                 </div>
 
-                {/* Resumo Analítico TCE */}
+                {/* Resumo Analítico do TCE */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">

@@ -901,10 +901,10 @@ export function ReceitaMunicipal() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-foreground">
-            Receita Orcamentaria
+            Receita Orçamentária
           </h2>
           <p className="text-sm text-muted-foreground">
-            Acompanhamento da arrecadacao municipal
+            Acompanhamento da arrecadação municipal
           </p>
         </div>
         <div className="flex gap-2">
@@ -913,7 +913,7 @@ export function ReceitaMunicipal() {
             onValueChange={setPeriodoSelecionado}
           >
             <SelectTrigger className="w-32">
-              <SelectValue placeholder="Periodo" />
+              <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="2024">2024</SelectItem>
@@ -1591,9 +1591,9 @@ export function ReceitaMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Historico de Arrecadacao (5 anos)
+              Histórico de Arrecadação (5 anos)
             </CardTitle>
-            <CardDescription>Evolucao da arrecadacao anual</CardDescription>
+            <CardDescription>Evolução da arrecadação anual</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -1781,10 +1781,10 @@ export function ReceitaMunicipal() {
               strokeWidth={2}
               className="size-5"
             />
-            Inadimplencia por Tributo
+            Inadimplência por Tributo
           </CardTitle>
           <CardDescription>
-            Taxa geral de inadimplencia:{" "}
+            Taxa geral de inadimplência:{" "}
             <strong className="text-red-600">{taxaInadimplenciaGeral}%</strong>{" "}
             — Total inadimplente:{" "}
             <strong>{formatCurrency(totalInadimplencia)}</strong>
@@ -1795,7 +1795,7 @@ export function ReceitaMunicipal() {
             <TableHeader>
               <TableRow>
                 <TableHead>Tributo</TableHead>
-                <TableHead className="text-right">Lancado</TableHead>
+                <TableHead className="text-right">Lançado</TableHead>
                 <TableHead className="text-right">Arrecadado</TableHead>
                 <TableHead className="text-right">Inadimplente</TableHead>
                 <TableHead className="text-right">% Inadimpl.</TableHead>
@@ -1908,10 +1908,10 @@ export function ReceitaMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Sazonalidade da Arrecadacao
+              Sazonalidade da Arrecadação
             </CardTitle>
             <CardDescription>
-              Distribuicao mensal por origem dos recursos
+              Distribuição mensal por origem dos recursos
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -2072,10 +2072,10 @@ export function ReceitaMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Projecao de Receita
+              Projeção de Receita
             </CardTitle>
             <CardDescription>
-              Realizado + forecast para encerramento — Projetado total:{" "}
+              Realizado + projeção para encerramento — Projetado total:{" "}
               <strong>{formatCurrency(totalProjetado)}</strong>
             </CardDescription>
           </CardHeader>
@@ -2319,7 +2319,7 @@ export function ReceitaMunicipal() {
       </div>
 
       <div className="space-y-6">
-        {/* Resumo Analitico */}
+        {/* Resumo Analítico */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -2328,17 +2328,17 @@ export function ReceitaMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Resumo Analitico
+              Resumo Analítico
             </CardTitle>
             <CardDescription>
-              Indicadores consolidados da arrecadacao
+              Indicadores consolidados da arrecadação
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-2">
                 <p className="text-sm font-medium text-muted-foreground">
-                  Taxa de Realizacao
+                  Taxa de Realização
                 </p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold">
@@ -2383,13 +2383,13 @@ export function ReceitaMunicipal() {
                   className="h-2"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Receitas próprias / Total
+                  Receitas próprias / total
                 </p>
               </div>
 
               <div className="space-y-2">
                 <p className="text-sm font-medium text-muted-foreground">
-                  Dependencia Federal
+                  Dependência Federal
                 </p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold">
@@ -2410,7 +2410,7 @@ export function ReceitaMunicipal() {
                   className="h-2"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Transferencias federais / Total
+                  Transferências federais / total
                 </p>
               </div>
 
@@ -2430,7 +2430,7 @@ export function ReceitaMunicipal() {
           </CardContent>
         </Card>
 
-        {/* Analise Inteligente */}
+        {/* Análise Inteligente */}
         <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
           <CardHeader>
             <div className="flex items-center gap-3">
@@ -2442,43 +2442,43 @@ export function ReceitaMunicipal() {
                 />
               </div>
               <div>
-                <CardTitle>Analise Inteligente da Receita</CardTitle>
+                <CardTitle>Análise Inteligente da Receita</CardTitle>
                 <CardDescription>
-                  Insights sobre a arrecadacao municipal
+                  Insights sobre a arrecadação municipal
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Visao Geral */}
+            {/* Visão Geral */}
             <div className="prose prose-sm dark:prose-invert max-w-none">
               <p className="text-foreground leading-relaxed">
-                A execucao da receita orcamentaria do municipio no exercício de{" "}
-                {periodoSelecionado} apresenta taxa de realizacao de{" "}
+                A execução da receita orçamentária do município no exercício de{" "}
+                {periodoSelecionado} apresenta taxa de realização de{" "}
                 <strong>
                   {calcPercent(totaisGerais.arrecadada, totaisGerais.prevista)}%
                 </strong>
                 , totalizando{" "}
                 <strong>{formatCurrency(totaisGerais.arrecadada)}</strong>{" "}
-                arrecadados ate o momento. A composição da receita demonstra
+                arrecadados até o momento. A composição da receita demonstra
                 equilíbrio entre fontes próprias (
                 {calcPercent(
                   totaisProprias.arrecadada,
                   totaisGerais.arrecadada,
                 )}
-                %) e transferencias constitucionais (
+                %) e transferências constitucionais (
                 {calcPercent(
                   totaisFederais.arrecadada + totaisEstaduais.arrecadada,
                   totaisGerais.arrecadada,
                 )}
-                %), indicando razoavel autonomia financeira para um municipio de
-                medio porte.
+                %), indicando razoável autonomia financeira para um município de
+                médio porte.
               </p>
             </div>
 
             <Separator />
 
-            {/* Acordeao de Analises */}
+            {/* Acordeão de Análises */}
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="receitas-proprias">
                 <AccordionTrigger>
@@ -2503,11 +2503,11 @@ export function ReceitaMunicipal() {
                         <strong className="text-foreground">
                           ISS com desempenho excepcional:
                         </strong>{" "}
-                        A arrecadacao do Imposto Sobre Servicos superou a
-                        previsao em 9.5%, totalizando R$ 26.5M. Este resultado
-                        reflete o aquecimento do setor de servicos no municipio,
-                        especialmente nos segmentos de tecnologia, saude e
-                        construcao civil.
+                        A arrecadação do Imposto Sobre Serviços superou a
+                        previsão em 9,5%, totalizando R$ 26,5M. Este resultado
+                        reflete o aquecimento do setor de serviços no município,
+                        especialmente nos segmentos de tecnologia, saúde e
+                        construção civil.
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -2520,10 +2520,10 @@ export function ReceitaMunicipal() {
                         <strong className="text-foreground">
                           ITBI abaixo da expectativa:
                         </strong>{" "}
-                        A arrecadacao de ITBI ficou 19% abaixo da previsão,
-                        sinalizando desaceleracao no mercado imobiliario local.
-                        Recomenda-se monitorar tendencias do setor para ajustes
-                        na LOA do proximo exercício.
+                        A arrecadação de ITBI ficou 19% abaixo da previsão,
+                        sinalizando desaceleração no mercado imobiliário local.
+                        Recomenda-se monitorar tendências do setor para ajustes
+                        na LOA do próximo exercício.
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -2536,10 +2536,10 @@ export function ReceitaMunicipal() {
                         <strong className="text-foreground">
                           IPTU com boa performance:
                         </strong>{" "}
-                        A arrecadacao do IPTU atinge 90.8% da previsão,
-                        comportamento esperado considerando que a ultima parcela
-                        vence em dezembro. Projeta-se atingimento integral da
-                        meta.
+                        A arrecadação do IPTU atinge 90,8% da previsão,
+                        comportamento esperado, considerando que a última
+                        parcela vence em dezembro. Projeta-se o atingimento
+                        integral da meta.
                       </p>
                     </div>
                   </div>
@@ -2554,7 +2554,7 @@ export function ReceitaMunicipal() {
                       strokeWidth={2}
                       className="size-4 text-green-600"
                     />
-                    <span>Analise das Transferencias</span>
+                    <span>Análise das Transferências</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -2567,11 +2567,11 @@ export function ReceitaMunicipal() {
                       />
                       <p className="text-sm text-muted-foreground">
                         <strong className="text-foreground">
-                          FUNDEB estavel:
+                          FUNDEB estável:
                         </strong>{" "}
-                        As transferencias do FUNDEB apresentam regularidade, com
-                        97.8% da previsão ja creditada. Os recursos estao sendo
-                        integralmente aplicados em educacao, conforme exigencia
+                        As transferências do FUNDEB apresentam regularidade, com
+                        97,8% da previsão já creditada. Os recursos estão sendo
+                        integralmente aplicados em educação, conforme exigência
                         legal.
                       </p>
                     </div>
@@ -2583,12 +2583,12 @@ export function ReceitaMunicipal() {
                       />
                       <p className="text-sm text-muted-foreground">
                         <strong className="text-foreground">
-                          Convenios federais com atraso:
+                          Convênios federais com atraso:
                         </strong>{" "}
-                        Apenas 61% dos recursos de convenios federais foram
-                        liberados. Ha R$ 3.3M pendentes que dependem de
-                        prestacao de contas e adequacao de documentacao junto
-                        aos ministerios.
+                        Apenas 61% dos recursos de convênios federais foram
+                        liberados. Há R$ 3,3M pendentes, que dependem de
+                        prestação de contas e adequação da documentação junto
+                        aos ministérios.
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -2601,9 +2601,9 @@ export function ReceitaMunicipal() {
                         <strong className="text-foreground">
                           ICMS e FPM regulares:
                         </strong>{" "}
-                        As principais transferencias constitucionais (ICMS,
-                        IPVA, FPM) apresentam comportamento dentro do esperado,
-                        com variacao de +/- 5% em relacao a previsao.
+                        As principais transferências constitucionais (ICMS, IPVA
+                        e FPM) apresentam comportamento dentro do esperado, com
+                        variação de +/- 5% em relação à previsão.
                       </p>
                     </div>
                   </div>
@@ -2618,17 +2618,17 @@ export function ReceitaMunicipal() {
                       strokeWidth={2}
                       className="size-4 text-amber-600"
                     />
-                    <span>Recomendacoes</span>
+                    <span>Recomendações</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-3 pl-6">
                     <div className="rounded-lg border bg-amber-50/50 dark:bg-amber-950/20 p-3">
                       <p className="text-sm font-medium text-foreground mb-1">
-                        1. Intensificar cobranca de IPTU
+                        1. Intensificar cobrança de IPTU
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Com R$ 1.7M ainda a arrecadar em IPTU e apenas 1 mês ate
+                        Com R$ 1,7M ainda a arrecadar em IPTU e apenas 1 mês até
                         o encerramento do exercício, recomenda-se intensificar
                         ações de cobrança e notificação aos contribuintes
                         inadimplentes.
@@ -2636,22 +2636,22 @@ export function ReceitaMunicipal() {
                     </div>
                     <div className="rounded-lg border bg-amber-50/50 dark:bg-amber-950/20 p-3">
                       <p className="text-sm font-medium text-foreground mb-1">
-                        2. Regularizar convenios federais
+                        2. Regularizar convênios federais
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Priorizar a prestacao de contas e documentacao
-                        necessaria para liberacao dos R$ 3.3M em convenios
+                        Priorizar a prestação de contas e a documentação
+                        necessária para a liberação dos R$ 3,3M em convênios
                         federais pendentes antes do encerramento do exercício.
                       </p>
                     </div>
                     <div className="rounded-lg border bg-amber-50/50 dark:bg-amber-950/20 p-3">
                       <p className="text-sm font-medium text-foreground mb-1">
-                        3. Revisar previsao de ITBI para 2025
+                        3. Revisar previsão de ITBI para 2025
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Considerando a queda de 19% na arrecadacao de ITBI,
-                        sugere-se revisao da previsão para o proximo exercício
-                        com base nas tendencias do mercado imobiliario local.
+                        Considerando a queda de 19% na arrecadação de ITBI,
+                        sugere-se revisão da previsão para o próximo exercício,
+                        com base nas tendências do mercado imobiliário local.
                       </p>
                     </div>
                     <div className="rounded-lg border bg-green-50/50 dark:bg-green-950/20 p-3">
@@ -2659,9 +2659,9 @@ export function ReceitaMunicipal() {
                         4. Aproveitar momento do ISS
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        O bom desempenho do ISS indica oportunidade de ampliacao
-                        da base tributaria. Considerar programa de incentivo a
-                        formalizacao de prestadores de servicos.
+                        O bom desempenho do ISS indica oportunidade de ampliação
+                        da base tributária. Considerar programa de incentivo à
+                        formalização de prestadores de serviços.
                       </p>
                     </div>
                   </div>
@@ -2676,14 +2676,14 @@ export function ReceitaMunicipal() {
                       strokeWidth={2}
                       className="size-4 text-purple-600"
                     />
-                    <span>Projecoes para Encerramento</span>
+                    <span>Projeções para Encerramento</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-4 pl-6">
                     <p className="text-sm text-muted-foreground">
                       Com base na tendência histórica e no comportamento atual
-                      da arrecadacao, projeta-se para o encerramento do
+                      da arrecadação, projeta-se para o encerramento do
                       exercício:
                     </p>
                     <div className="grid gap-3 sm:grid-cols-3">
@@ -2692,7 +2692,7 @@ export function ReceitaMunicipal() {
                           97.5%
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Cenario Otimista
+                          Cenário Otimista
                         </p>
                         <p className="text-xs text-muted-foreground">
                           R$ 237.8M
@@ -2701,7 +2701,7 @@ export function ReceitaMunicipal() {
                       <div className="rounded-lg border p-3 text-center bg-primary/5">
                         <p className="text-2xl font-bold text-primary">95.2%</p>
                         <p className="text-xs text-muted-foreground">
-                          Cenario Provavel
+                          Cenário Provável
                         </p>
                         <p className="text-xs text-muted-foreground">
                           R$ 232.2M
@@ -2712,7 +2712,7 @@ export function ReceitaMunicipal() {
                           93.0%
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Cenario Conservador
+                          Cenário Conservador
                         </p>
                         <p className="text-xs text-muted-foreground">
                           R$ 226.8M
@@ -2720,8 +2720,8 @@ export function ReceitaMunicipal() {
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground italic">
-                      * Projecoes consideram sazonalidade historica de dezembro
-                      e pendencias identificadas.
+                      * Projeções consideram sazonalidade histórica de dezembro
+                      e pendências identificadas.
                     </p>
                   </div>
                 </AccordionContent>
@@ -2730,7 +2730,7 @@ export function ReceitaMunicipal() {
 
             <Separator />
 
-            {/* Conclusao */}
+            {/* Conclusão */}
             <div className="rounded-lg border bg-muted/50 p-4">
               <div className="flex gap-3">
                 <HugeiconsIcon
@@ -2740,26 +2740,26 @@ export function ReceitaMunicipal() {
                 />
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-foreground">
-                    Conclusao da Analise
+                    Conclusão da Análise
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    A arrecadacao municipal apresenta desempenho satisfatório,
+                    A arrecadação municipal apresenta desempenho satisfatório,
                     com destaque para o ISS que supera a meta e compensa
-                    parcialmente a queda no ITBI. A dependencia de
-                    transferencias (federais e estaduais) em torno de{" "}
+                    parcialmente a queda no ITBI. A dependência de
+                    transferências (federais e estaduais) em torno de{" "}
                     {calcPercent(
                       totaisFederais.arrecadada + totaisEstaduais.arrecadada,
                       totaisGerais.arrecadada,
                     )}
-                    % esta dentro dos parâmetros esperados para municípios de
-                    porte semelhante. Com as ações recomendadas, projeta-se
-                    encerramento do exercício com taxa de realizacao proxima a
-                    95%, garantindo recursos suficientes para execucao do
+                    % está dentro dos parâmetros esperados para municípios de
+                    porte semelhante. Com as ações recomendadas, projeta-se o
+                    encerramento do exercício com taxa de realização próxima a
+                    95%, garantindo recursos suficientes para a execução do
                     orçamento aprovado.
                   </p>
                   <p className="text-xs text-muted-foreground mt-3 pt-3 border-t">
-                    Analise gerada em {new Date().toLocaleDateString("pt-BR")}{" "}
-                    as{" "}
+                    Análise gerada em {new Date().toLocaleDateString("pt-BR")}{" "}
+                    às{" "}
                     {new Date().toLocaleTimeString("pt-BR", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -2777,7 +2777,7 @@ export function ReceitaMunicipal() {
           {/* Alertas */}
           <div className="lg:col-span-2 space-y-3">
             <h3 className="text-lg font-semibold text-foreground">
-              Alertas e Notificacoes
+              Alertas e Notificações
             </h3>
             {alertasReceita.map((alerta, index) => (
               <Alert

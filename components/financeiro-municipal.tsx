@@ -134,7 +134,7 @@ const fontesRecursos = [
   },
   {
     codigo: "101",
-    nome: "Receitas de Impostos - Educacao",
+    nome: "Receitas de Impostos - Educação",
     saldoInicial: 4200000,
     entradas: 18900000,
     saidas: 17800000,
@@ -142,7 +142,7 @@ const fontesRecursos = [
   },
   {
     codigo: "102",
-    nome: "Receitas de Impostos - Saude",
+    nome: "Receitas de Impostos - Saúde",
     saldoInicial: 3800000,
     entradas: 22400000,
     saidas: 21600000,
@@ -166,7 +166,7 @@ const fontesRecursos = [
   },
   {
     codigo: "159",
-    nome: "Convenios Federais",
+    nome: "Convênios Federais",
     saldoInicial: 850000,
     entradas: 4200000,
     saidas: 3100000,
@@ -174,7 +174,7 @@ const fontesRecursos = [
   },
   {
     codigo: "259",
-    nome: "Convenios Estaduais",
+    nome: "Convênios Estaduais",
     saldoInicial: 620000,
     entradas: 2800000,
     saidas: 2400000,
@@ -182,7 +182,7 @@ const fontesRecursos = [
   },
 ];
 
-// Dados de contas bancarias
+// Dados de contas bancárias
 const contasBancarias = [
   {
     banco: "Banco do Brasil",
@@ -197,7 +197,7 @@ const contasBancarias = [
     banco: "Banco do Brasil",
     agencia: "1234-5",
     conta: "12346-7",
-    tipo: "Vinculada Educacao",
+    tipo: "Vinculada Educação",
     fonte: "101",
     saldo: 3200000,
     status: "conciliada",
@@ -206,13 +206,13 @@ const contasBancarias = [
     banco: "Banco do Brasil",
     agencia: "1234-5",
     conta: "12347-8",
-    tipo: "Vinculada Saude",
+    tipo: "Vinculada Saúde",
     fonte: "102",
     saldo: 2800000,
     status: "pendente",
   },
   {
-    banco: "Caixa Economica",
+    banco: "Caixa Econômica",
     agencia: "0567",
     conta: "98765-4",
     tipo: "FUNDEB",
@@ -221,10 +221,10 @@ const contasBancarias = [
     status: "conciliada",
   },
   {
-    banco: "Caixa Economica",
+    banco: "Caixa Econômica",
     agencia: "0567",
     conta: "98766-5",
-    tipo: "Convenios",
+    tipo: "Convênios",
     fonte: "159",
     saldo: 1950000,
     status: "divergente",
@@ -233,14 +233,14 @@ const contasBancarias = [
     banco: "Banco do Brasil",
     agencia: "1234-5",
     conta: "12348-9",
-    tipo: "Aplicacoes",
+    tipo: "Aplicações",
     fonte: "100",
     saldo: 5200000,
     status: "conciliada",
   },
 ];
 
-// Dados de receitas lancadas
+// Dados de receitas lançadas
 const receitasLancadas = [
   {
     data: "29/11/2024",
@@ -437,7 +437,7 @@ const maioresContribuintes = [
     regularidade: "irregular",
   },
   {
-    nome: "Industria Metalurgica Beta",
+    nome: "Indústria Metalúrgica Beta",
     cnpj: "55.666.777/0001-88",
     arrecadado: 620000,
     tributo: "ISS",
@@ -448,7 +448,7 @@ const maioresContribuintes = [
 // Saldos a pagar por vencimento
 const saldosAPagar = [
   { vencimento: "Vencidos", quantidade: 45, valor: 1250000, percentual: 8 },
-  { vencimento: "Ate 7 dias", quantidade: 89, valor: 3200000, percentual: 21 },
+  { vencimento: "Até 7 dias", quantidade: 89, valor: 3200000, percentual: 21 },
   { vencimento: "8-15 dias", quantidade: 67, valor: 2800000, percentual: 18 },
   { vencimento: "16-30 dias", quantidade: 124, valor: 4500000, percentual: 29 },
   {
@@ -465,7 +465,7 @@ const saldosAReceber = [
   { tipo: "ISS", vencido: 850000, aVencer: 1200000, total: 2050000 },
   { tipo: "ITBI", vencido: 120000, aVencer: 380000, total: 500000 },
   { tipo: "Taxas", vencido: 450000, aVencer: 680000, total: 1130000 },
-  { tipo: "Divida Ativa", vencido: 12500000, aVencer: 0, total: 12500000 },
+  { tipo: "Dívida Ativa", vencido: 12500000, aVencer: 0, total: 12500000 },
 ];
 
 // Eventos por tipo
@@ -623,18 +623,18 @@ const eventosTransferencias = [
   {
     data: "26/11/2024",
     hora: "16:00",
-    descricao: "Aplicacao recursos FUNDEB",
+    descricao: "Aplicação de recursos do FUNDEB",
     valor: 280000,
   },
   {
     data: "25/11/2024",
     hora: "10:30",
-    descricao: "Transf. Conta Vinculada Saude",
+    descricao: "Transf. Conta Vinculada Saúde",
     valor: 450000,
   },
 ];
 
-// Conciliacoes bancarias
+// Conciliações bancárias
 const conciliacoesBancarias = [
   {
     conta: "12345-6",
@@ -712,30 +712,30 @@ const totaisFinanceiros = {
 const alertasFinanceiros = [
   {
     tipo: "warning",
-    titulo: "Conta com divergencia",
+    titulo: "Conta com divergência",
     descricao:
-      "A conta 98766-5 apresenta divergência de R$ 30.000 na conciliacao bancaria de novembro.",
+      "A conta 98766-5 apresenta divergência de R$ 30.000 na conciliação bancária de novembro.",
     conta: "CEF 98766-5",
   },
   {
     tipo: "warning",
     titulo: "Saldo baixo em conta vinculada",
     descricao:
-      "A conta de Convenios apresenta saldo abaixo do minimo recomendado para honrar compromissos.",
+      "A conta de Convênios apresenta saldo abaixo do mínimo recomendado para honrar compromissos.",
     conta: "CEF 98765-4",
   },
   {
     tipo: "info",
     titulo: "Vencimentos próximos",
     descricao:
-      "Existem 89 empenhos com vencimento nos próximos 7 dias totalizando R$ 3,2 milhoes.",
+      "Existem 89 empenhos com vencimento nos próximos 7 dias, totalizando R$ 3,2 milhões.",
     valor: "R$ 3,2M",
   },
   {
     tipo: "success",
-    titulo: "Conciliacao em dia",
+    titulo: "Conciliação em dia",
     descricao:
-      "4 de 5 contas bancarias estão com a conciliação atualizada e sem divergências.",
+      "4 de 5 contas bancárias estão com a conciliação atualizada e sem divergências.",
     percentual: "80%",
   },
 ];
@@ -794,14 +794,14 @@ const metasFinanceiro = [
 // Disponibilidade por Fonte de Recurso (chart)
 const disponibilidadePorFonte = [
   { nome: "Recursos Ordinários", valor: 16000000, fill: "var(--chart-1)" },
-  { nome: "Educacao", valor: 5300000, fill: "var(--chart-2)" },
-  { nome: "Saude", valor: 4600000, fill: "var(--chart-3)" },
+  { nome: "Educação", valor: 5300000, fill: "var(--chart-2)" },
+  { nome: "Saúde", valor: 4600000, fill: "var(--chart-3)" },
   { nome: "FUNDEB", valor: 3400000, fill: "var(--chart-4)" },
   { nome: "SUS", valor: 2500000, fill: "var(--chart-5)" },
-  { nome: "Convenios", valor: 2970000, fill: "var(--chart-6)" },
+  { nome: "Convênios", valor: 2970000, fill: "var(--chart-6)" },
 ];
 
-// Projecao de Fluxo de Caixa (proximos meses)
+// Projeção de Fluxo de Caixa (próximos meses)
 const projecaoFluxoCaixa = [
   {
     mes: "Dez/24",
@@ -815,14 +815,14 @@ const projecaoFluxoCaixa = [
     entradasPrevistas: 10500000,
     saidasPrevistas: 11200000,
     saldoProjetado: -700000,
-    confianca: "media",
+    confianca: "média",
   },
   {
     mes: "Fev/25",
     entradasPrevistas: 11800000,
     saidasPrevistas: 10900000,
     saldoProjetado: 900000,
-    confianca: "media",
+    confianca: "média",
   },
   {
     mes: "Mar/25",
@@ -839,16 +839,16 @@ const saldoAcumuladoProjetado = projecaoFluxoCaixa.reduce((acc, item) => {
 }, totaisFinanceiros.saldoTotal);
 
 // Cobertura de Compromissos
-const mediaSaidasMensal = totaisFinanceiros.totalSaidas / 11; // 11 meses ate novembro
+const mediaSaidasMensal = totaisFinanceiros.totalSaidas / 11; // 11 meses até novembro
 const mesesCobertura = totaisFinanceiros.saldoTotal / mediaSaidasMensal;
 const coberturaComPromissos = [
   {
-    indicador: "Saldo Disponivel",
+    indicador: "Saldo Disponível",
     valor: totaisFinanceiros.saldoTotal,
     formatado: formatCurrency(totaisFinanceiros.saldoTotal),
   },
   {
-    indicador: "Media Mensal Saidas",
+    indicador: "Média Mensal de Saídas",
     valor: mediaSaidasMensal,
     formatado: formatCurrency(mediaSaidasMensal),
   },
@@ -863,18 +863,18 @@ const coberturaComPromissos = [
     formatado: formatCurrency(1250000),
   },
   {
-    indicador: "Compromissos Prox. 30 dias",
+    indicador: "Compromissos Próx. 30 dias",
     valor: 6000000,
     formatado: formatCurrency(6000000),
   },
   {
-    indicador: "Compromissos Prox. 60 dias",
+    indicador: "Compromissos Próx. 60 dias",
     valor: 10500000,
     formatado: formatCurrency(10500000),
   },
 ];
 
-// Concentração de Fornecedores (Analise Pareto / HHI)
+// Concentração de Fornecedores (Análise de Pareto / HHI)
 const totalPagoFornecedores = maioresFornecedores.reduce(
   (a, b) => a + b.totalPago,
   0,
@@ -959,7 +959,7 @@ export function FinanceiroMunicipal() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-foreground">
-            Gestao Financeira
+            Gestão Financeira
           </h2>
           <p className="text-sm text-muted-foreground">
             Controle de tesouraria e fluxo de caixa
@@ -971,7 +971,7 @@ export function FinanceiroMunicipal() {
             onValueChange={setPeriodoSelecionado}
           >
             <SelectTrigger className="w-[130px]">
-              <SelectValue placeholder="Periodo" />
+              <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="2024">2024</SelectItem>
@@ -1252,7 +1252,7 @@ export function FinanceiroMunicipal() {
             Receitas
           </TabsTrigger>
           <TabsTrigger value="aplicacoes" className="text-xs">
-            Aplicacoes
+            Aplicações
           </TabsTrigger>
           <TabsTrigger value="pagamentos" className="text-xs">
             Pagamentos
@@ -1282,7 +1282,7 @@ export function FinanceiroMunicipal() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Codigo</TableHead>
+                    <TableHead>Código</TableHead>
                     <TableHead>Fonte</TableHead>
                     <TableHead className="text-right">Saldo Inicial</TableHead>
                     <TableHead className="text-right">Entradas</TableHead>
@@ -1550,7 +1550,7 @@ export function FinanceiroMunicipal() {
               </div>
               <div className="mt-4 rounded-lg bg-muted p-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">Total em Aplicacoes</span>
+                  <span className="font-medium">Total em Aplicações</span>
                   <span className="text-xl font-bold">
                     {formatCurrency(
                       aplicacoesFinanceiras.reduce(
@@ -1620,7 +1620,7 @@ export function FinanceiroMunicipal() {
           </Card>
         </TabsContent>
 
-        {/* Conciliacao */}
+        {/* Conciliação */}
         <TabsContent value="conciliacao" className="mt-4">
           <Card>
             <CardHeader>
@@ -1630,10 +1630,10 @@ export function FinanceiroMunicipal() {
                   strokeWidth={2}
                   className="size-5"
                 />
-                Conciliacoes Bancarias
+                Conciliações Bancárias
               </CardTitle>
               <CardDescription>
-                Status das conciliacoes do periodo
+                Status das conciliações do período
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -1642,10 +1642,10 @@ export function FinanceiroMunicipal() {
                   <TableRow>
                     <TableHead>Conta</TableHead>
                     <TableHead>Banco</TableHead>
-                    <TableHead>Competencia</TableHead>
+                    <TableHead>Competência</TableHead>
                     <TableHead className="text-right">Saldo Banco</TableHead>
-                    <TableHead className="text-right">Saldo Contabil</TableHead>
-                    <TableHead className="text-right">Diferenca</TableHead>
+                    <TableHead className="text-right">Saldo Contábil</TableHead>
+                    <TableHead className="text-right">Diferença</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -1929,7 +1929,7 @@ export function FinanceiroMunicipal() {
             Eventos Recentes por Tipo
           </CardTitle>
           <CardDescription>
-            Ultimas movimentacoes do sistema financeiro
+            Últimas movimentações do sistema financeiro
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1939,13 +1939,13 @@ export function FinanceiroMunicipal() {
                 Empenhos
               </TabsTrigger>
               <TabsTrigger value="liquidacoes" className="text-xs">
-                Liquidacoes
+                Liquidações
               </TabsTrigger>
               <TabsTrigger value="pagamentos" className="text-xs">
                 Pagamentos
               </TabsTrigger>
               <TabsTrigger value="arrecadacao" className="text-xs">
-                Arrecadacao
+                Arrecadação
               </TabsTrigger>
               <TabsTrigger value="transferencias" className="text-xs">
                 Transf.
@@ -2085,7 +2085,7 @@ export function FinanceiroMunicipal() {
         </CardContent>
       </Card>
 
-      {/* Disponibilidade por Fonte e Projecao de Fluxo de Caixa */}
+      {/* Disponibilidade por Fonte e Projeção de Fluxo de Caixa */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Disponibilidade por Fonte */}
         <Card>
@@ -2099,7 +2099,7 @@ export function FinanceiroMunicipal() {
               Disponibilidade por Fonte
             </CardTitle>
             <CardDescription>
-              Distribuicao do saldo disponivel por fonte de recurso
+              Distribuição do saldo disponível por fonte de recurso
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -2108,14 +2108,14 @@ export function FinanceiroMunicipal() {
                 config={
                   {
                     ordinarios: {
-                      label: "Ordinarios",
+                      label: "Ordinários",
                       color: "var(--chart-1)",
                     },
-                    educacao: { label: "Educacao", color: "var(--chart-2)" },
-                    saude: { label: "Saude", color: "var(--chart-3)" },
+                    educacao: { label: "Educação", color: "var(--chart-2)" },
+                    saude: { label: "Saúde", color: "var(--chart-3)" },
                     fundeb: { label: "FUNDEB", color: "var(--chart-4)" },
                     sus: { label: "SUS", color: "var(--chart-5)" },
-                    convenios: { label: "Convenios", color: "var(--chart-6)" },
+                    convenios: { label: "Convênios", color: "var(--chart-6)" },
                   } satisfies ChartConfig
                 }
                 className="mx-auto aspect-square h-[180px]"
@@ -2170,7 +2170,7 @@ export function FinanceiroMunicipal() {
                 ))}
                 <Separator />
                 <div className="flex items-center justify-between text-sm font-bold">
-                  <span>Total Disponivel</span>
+                  <span>Total Disponível</span>
                   <span>{formatCurrency(totaisFinanceiros.saldoTotal)}</span>
                 </div>
               </div>
@@ -2178,7 +2178,7 @@ export function FinanceiroMunicipal() {
           </CardContent>
         </Card>
 
-        {/* Projecao de Fluxo de Caixa */}
+        {/* Projeção de Fluxo de Caixa */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -2187,7 +2187,7 @@ export function FinanceiroMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Projecao de Fluxo de Caixa
+              Projeção de Fluxo de Caixa
             </CardTitle>
             <CardDescription>
               Saldo projetado ao final:{" "}
@@ -2439,7 +2439,7 @@ export function FinanceiroMunicipal() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <HugeiconsIcon icon={StarIcon} strokeWidth={2} className="size-5" />
-            Benchmark Financeiro Municipal
+            Comparativo financeiro municipal
           </CardTitle>
           <CardDescription>
             Comparação de indicadores financeiros com municípios de porte
@@ -2452,7 +2452,7 @@ export function FinanceiroMunicipal() {
               <TableRow>
                 <TableHead>Município</TableHead>
                 <TableHead className="text-right">Liquidez</TableHead>
-                <TableHead className="text-right">Conciliacao</TableHead>
+                <TableHead className="text-right">Conciliação</TableHead>
                 <TableHead className="text-right">Rendimento</TableHead>
                 <TableHead className="text-right">Cobertura</TableHead>
                 <TableHead className="text-right">Inadimpl.</TableHead>
@@ -2532,7 +2532,7 @@ export function FinanceiroMunicipal() {
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-lg border p-3 space-y-2">
               <p className="text-xs font-medium text-muted-foreground">
-                Posicao Geral
+                Posição geral
               </p>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-bold text-green-600">1o</span>
@@ -2541,7 +2541,7 @@ export function FinanceiroMunicipal() {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Destaque em liquidez e rendimento de aplicacoes
+                Destaque em liquidez e rendimento de aplicações
               </p>
             </div>
             <div className="rounded-lg border p-3 space-y-2">
@@ -2549,7 +2549,7 @@ export function FinanceiroMunicipal() {
                 Ponto de Melhoria
               </p>
               <p className="text-sm font-medium text-amber-600">
-                Conciliacao Bancaria
+                Conciliação Bancária
               </p>
               <p className="text-xs text-muted-foreground">
                 80% vs 92% do melhor comparado — regularizar contas pendentes
@@ -2572,7 +2572,7 @@ export function FinanceiroMunicipal() {
       </div>
 
       <div className="space-y-6">
-        {/* Resumo Analitico */}
+        {/* Resumo Analítico */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -2581,25 +2581,25 @@ export function FinanceiroMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Resumo Analitico Financeiro
+              Resumo Analítico Financeiro
             </CardTitle>
-            <CardDescription>Indicadores de saude financeira</CardDescription>
+            <CardDescription>Indicadores de saúde financeira</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-2 text-center p-4 rounded-lg bg-muted/50">
                 <p className="text-sm font-medium text-muted-foreground">
-                  Indice de Liquidez
+                  Índice de Liquidez
                 </p>
                 <p className="text-3xl font-bold text-green-600">2.26</p>
-                <p className="text-xs text-muted-foreground">Saldo / A Pagar</p>
+                <p className="text-xs text-muted-foreground">Saldo / a pagar</p>
                 <Badge variant="secondary" className="text-green-600">
                   Excelente
                 </Badge>
               </div>
               <div className="space-y-2 text-center p-4 rounded-lg bg-muted/50">
                 <p className="text-sm font-medium text-muted-foreground">
-                  Taxa de Conciliacao
+                  Taxa de Conciliação
                 </p>
                 <p className="text-3xl font-bold">80%</p>
                 <p className="text-xs text-muted-foreground">4 de 5 contas</p>
@@ -2607,7 +2607,7 @@ export function FinanceiroMunicipal() {
               </div>
               <div className="space-y-2 text-center p-4 rounded-lg bg-muted/50">
                 <p className="text-sm font-medium text-muted-foreground">
-                  Rendimento Aplicacoes
+                  Rendimento Aplicações
                 </p>
                 <p className="text-3xl font-bold text-green-600">7.8%</p>
                 <p className="text-xs text-muted-foreground">
@@ -2628,7 +2628,7 @@ export function FinanceiroMunicipal() {
                   )}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Entradas - Saidas
+                  Entradas - Saídas
                 </p>
                 <Badge variant="secondary" className="text-green-600">
                   Positivo
@@ -2638,7 +2638,7 @@ export function FinanceiroMunicipal() {
           </CardContent>
         </Card>
 
-        {/* Analise Inteligente */}
+        {/* Análise Inteligente */}
         <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
           <CardHeader>
             <div className="flex items-center gap-3">
@@ -2650,23 +2650,23 @@ export function FinanceiroMunicipal() {
                 />
               </div>
               <div>
-                <CardTitle>Analise Inteligente da Gestao Financeira</CardTitle>
+                <CardTitle>Análise Inteligente da Gestão Financeira</CardTitle>
                 <CardDescription>
-                  Insights gerados com base nos dados do periodo
+                  Insights gerados com base nos dados do período
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Visao Geral */}
+            {/* Visão Geral */}
             <div className="prose prose-sm dark:prose-invert max-w-none">
               <p className="text-foreground leading-relaxed">
-                A analise da gestao financeira do municipio para o exercício de{" "}
+                A análise da gestão financeira do município para o exercício de{" "}
                 {periodoSelecionado} revela um{" "}
-                <strong>cenario positivo de liquidez e controle</strong>. Com
+                <strong>cenário positivo de liquidez e controle</strong>. Com
                 saldo total de{" "}
                 <strong>{formatCurrency(totaisFinanceiros.saldoTotal)}</strong>{" "}
-                em contas bancarias e um{" "}
+                em contas bancárias e um{" "}
                 <strong>
                   superávit financeiro de{" "}
                   {formatCurrency(
@@ -2674,9 +2674,9 @@ export function FinanceiroMunicipal() {
                       totaisFinanceiros.totalSaidas,
                   )}
                 </strong>
-                , o municipio demonstra capacidade de honrar seus compromissos.
-                O indice de liquidez de <strong>2.26</strong> indica que para
-                cada R$ 1,00 a pagar, existem R$ 2,26 disponiveis em caixa.
+                , o município demonstra capacidade de honrar seus compromissos.
+                O índice de liquidez de <strong>2.26</strong> indica que, para
+                cada R$ 1,00 a pagar, existem R$ 2,26 disponíveis em caixa.
               </p>
             </div>
 
@@ -2691,7 +2691,7 @@ export function FinanceiroMunicipal() {
                       strokeWidth={2}
                       className="size-4 text-green-600"
                     />
-                    <span>Pontos Fortes da Gestao</span>
+                    <span>Pontos Fortes da Gestão</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -2706,7 +2706,7 @@ export function FinanceiroMunicipal() {
                         <strong className="text-foreground">
                           Alta liquidez:
                         </strong>{" "}
-                        O indice de liquidez de 2.26 esta bem acima do
+                        O índice de liquidez de 2.26 está bem acima do
                         recomendado (1.0), garantindo folga para pagamentos e
                         imprevistos.
                       </p>
@@ -2719,7 +2719,7 @@ export function FinanceiroMunicipal() {
                       />
                       <p className="text-sm text-muted-foreground">
                         <strong className="text-foreground">
-                          Rendimento das aplicacoes:
+                          Rendimento das aplicações:
                         </strong>{" "}
                         Com taxa de 7.8% acumulada, os investimentos superam o
                         CDI, maximizando os recursos ociosos.
@@ -2735,9 +2735,9 @@ export function FinanceiroMunicipal() {
                         <strong className="text-foreground">
                           Controle por fonte:
                         </strong>{" "}
-                        A segregacao por fonte de recursos esta adequada, com
+                        A segregação por fonte de recursos está adequada, com
                         todas as fontes vinculadas apresentando saldos
-                        compativeis com suas destinacoes.
+                        compatíveis com suas destinações.
                       </p>
                     </div>
                   </div>
@@ -2765,11 +2765,11 @@ export function FinanceiroMunicipal() {
                       />
                       <p className="text-sm text-muted-foreground">
                         <strong className="text-foreground">
-                          Divergencias em conciliacao:
+                          Divergências em conciliação:
                         </strong>{" "}
                         A conta 98766-5 apresenta divergência de R$ 30.000,
                         necessitando ajuste imediato para manter a integridade
-                        contabil.
+                        contábil.
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -2780,9 +2780,9 @@ export function FinanceiroMunicipal() {
                       />
                       <p className="text-sm text-muted-foreground">
                         <strong className="text-foreground">
-                          Divida ativa elevada:
+                          Dívida ativa elevada:
                         </strong>{" "}
-                        Com R$ 12,5 milhoes em divida ativa, recomenda-se
+                        Com R$ 12,5 milhões em dívida ativa, recomenda-se
                         intensificar ações de cobrança e programas de
                         parcelamento.
                       </p>
@@ -2797,8 +2797,8 @@ export function FinanceiroMunicipal() {
                         <strong className="text-foreground">
                           Empenhos vencidos:
                         </strong>{" "}
-                        Existem 45 empenhos vencidos totalizando R$ 1,25 milhao
-                        que demandam regularizacao prioritaria.
+                        Existem 45 empenhos vencidos, totalizando R$ 1,25
+                        milhão, que demandam regularização prioritária.
                       </p>
                     </div>
                   </div>
@@ -2813,7 +2813,7 @@ export function FinanceiroMunicipal() {
                       strokeWidth={2}
                       className="size-4 text-blue-600"
                     />
-                    <span>Recomendacoes Estrategicas</span>
+                    <span>Recomendações Estratégicas</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -2840,7 +2840,7 @@ export function FinanceiroMunicipal() {
                     </div>
                     <div className="rounded-lg border bg-blue-50/50 dark:bg-blue-950/20 p-3">
                       <p className="text-sm font-medium text-foreground mb-1">
-                        3. Otimizar Aplicacoes
+                        3. Otimizar Aplicações
                       </p>
                       <p className="text-xs text-muted-foreground">
                         Avaliar migracao de recursos em poupanca (rendimento
@@ -2948,7 +2948,7 @@ export function FinanceiroMunicipal() {
                     ferias.
                   </p>
                   <p className="text-xs text-muted-foreground mt-3 pt-3 border-t">
-                    Analise gerada em {new Date().toLocaleDateString("pt-BR")}{" "}
+                    Análise gerada em {new Date().toLocaleDateString("pt-BR")}{" "}
                     as{" "}
                     {new Date().toLocaleTimeString("pt-BR", {
                       hour: "2-digit",
@@ -2965,7 +2965,7 @@ export function FinanceiroMunicipal() {
         {/* Alertas Financeiros */}
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-foreground">
-            Alertas e Notificacoes
+            Alertas e Notificações
           </h3>
           <div className="grid gap-3 lg:grid-cols-2">
             {alertasFinanceiros.map((alerta, index) => (

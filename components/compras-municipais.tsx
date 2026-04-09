@@ -574,10 +574,10 @@ const participacaoMPE = [
   },
 ];
 
-// Aging de Contratos (vencimento)
+// Faixas de vencimento dos contratos
 const agingContratos = [
   { faixa: "Vencidos", quantidade: 12, valor: 980000, risco: "critico" },
-  { faixa: "Ate 30 dias", quantidade: 45, valor: 2800000, risco: "alto" },
+  { faixa: "Até 30 dias", quantidade: 45, valor: 2800000, risco: "alto" },
   { faixa: "31-60 dias", quantidade: 67, valor: 4200000, risco: "medio" },
   { faixa: "61-90 dias", quantidade: 89, valor: 5600000, risco: "baixo" },
   { faixa: "91-180 dias", quantidade: 234, valor: 12800000, risco: "normal" },
@@ -1350,10 +1350,10 @@ export function ComprasMunicipais() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Prazo Medio por Etapa
+              Prazo Médio por Etapa
             </CardTitle>
             <CardDescription>
-              Prazo total medio:{" "}
+              Prazo total médio:{" "}
               <strong
                 className={
                   prazoTotalMedio <= prazoTotalMeta
@@ -1510,10 +1510,10 @@ export function ComprasMunicipais() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Participacao de MPEs
+              Participação de MPEs
             </CardTitle>
             <CardDescription>
-              Evolucao da participacao de Micro e Pequenas Empresas (meta: 25%)
+              Evolução da participação de Micro e Pequenas Empresas (meta: 25%)
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -1591,10 +1591,10 @@ export function ComprasMunicipais() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Aging de Contratos
+              Faixas de vencimento dos contratos
             </CardTitle>
             <CardDescription>
-              Distribuicao de contratos por prazo de vencimento
+              Distribuição de contratos por prazo de vencimento
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -1686,7 +1686,7 @@ export function ComprasMunicipais() {
               strokeWidth={2}
               className="size-5"
             />
-            Benchmark de Compras Municipal
+            Comparativo de compras municipal
           </CardTitle>
           <CardDescription>
             Comparação de indicadores de compras com municípios de porte similar
@@ -1701,7 +1701,7 @@ export function ComprasMunicipais() {
                 <TableHead className="text-right">Prazo (dias)</TableHead>
                 <TableHead className="text-right">MPE</TableHead>
                 <TableHead className="text-right">Aditivos</TableHead>
-                <TableHead className="text-right">Concentracao</TableHead>
+                <TableHead className="text-right">Concentração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1813,7 +1813,7 @@ export function ComprasMunicipais() {
               </p>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-amber-600">
-                  Participacao MPE: 22% vs 30% do melhor
+                  Participação MPE: 22% vs. 30% do melhor
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Ampliar programas de incentivo a MPEs para atingir a meta de

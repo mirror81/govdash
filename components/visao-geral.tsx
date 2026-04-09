@@ -299,6 +299,7 @@ export function VisaoGeral() {
               {prestacaoContas.irregulares > 0 && (
                 <span className="text-red-600 font-medium">
                   {prestacaoContas.irregulares} irregular
+                  {prestacaoContas.irregulares > 1 ? "es" : ""}
                 </span>
               )}
             </div>

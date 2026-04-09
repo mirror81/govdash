@@ -559,7 +559,7 @@ const limitePessoalLRF = {
   ],
 };
 
-// Custo por Funcionario por Secretaria
+// Custo por Funcionário por Secretaria
 const custoPorFuncionario = dadosSecretarias
   .map((s) => ({
     secretaria: s.codigo,
@@ -575,7 +575,7 @@ const custoPorFuncionario = dadosSecretarias
   }))
   .sort((a, b) => b.custoMedio - a.custoMedio);
 
-// Projecao de Aposentadorias
+// Projeção de Aposentadorias
 const projecaoAposentadorias = [
   {
     ano: "2025",
@@ -663,31 +663,31 @@ const benchmarkRH = [
   },
 ];
 
-// Capacitacao e Desenvolvimento
+// Capacitação e Desenvolvimento
 const capacitacaoDesenvolvimento = [
   {
-    programa: "Atendimento ao Publico",
+    programa: "Atendimento ao Público",
     horas: 320,
     participantes: 180,
     investimento: 48000,
     conclusao: 92,
   },
   {
-    programa: "Gestao de Processos",
+    programa: "Gestão de Processos",
     horas: 240,
     participantes: 85,
     investimento: 65000,
     conclusao: 88,
   },
   {
-    programa: "Tecnologia da Informacao",
+    programa: "Tecnologia da Informação",
     horas: 160,
     participantes: 120,
     investimento: 42000,
     conclusao: 95,
   },
   {
-    programa: "Lideranca e Gestao",
+    programa: "Liderança e Gestão",
     horas: 200,
     participantes: 45,
     investimento: 85000,
@@ -701,7 +701,7 @@ const capacitacaoDesenvolvimento = [
     conclusao: 97,
   },
   {
-    programa: "Legislacao Municipal",
+    programa: "Legislação Municipal",
     horas: 120,
     participantes: 68,
     investimento: 28000,
@@ -970,7 +970,7 @@ export function RHMunicipal() {
           <TabsTrigger value="secretarias">Secretarias</TabsTrigger>
           <TabsTrigger value="indicadores">Indicadores</TabsTrigger>
           <TabsTrigger value="verbas">Verbas</TabsTrigger>
-          <TabsTrigger value="analytics">People Analytics</TabsTrigger>
+          <TabsTrigger value="analytics">Análise de Pessoas</TabsTrigger>
         </TabsList>
 
         {/* Tab Folha de Pagamento */}
@@ -2304,7 +2304,7 @@ export function RHMunicipal() {
                 </p>
               </div>
               <div className="rounded-lg border p-2">
-                <p className="text-xs text-muted-foreground">Ate Alerta</p>
+                <p className="text-xs text-muted-foreground">Até Alerta</p>
                 <p className="text-sm font-bold text-amber-600">
                   {formatMillions(
                     limitePessoalLRF.limiteAlerta -
@@ -2316,7 +2316,7 @@ export function RHMunicipal() {
 
             <div>
               <p className="text-xs font-medium text-muted-foreground mb-2">
-                Evolucao Trimestral
+                Evolução Trimestral
               </p>
               <ChartContainer config={chartConfig} className="h-[150px] w-full">
                 <LineChart data={limitePessoalLRF.evolucaoTrimestral}>
@@ -2357,10 +2357,10 @@ export function RHMunicipal() {
                 />
                 <AlertTitle>Proximidade do Limite de Alerta</AlertTitle>
                 <AlertDescription>
-                  A despesa com pessoal esta a{" "}
+                  A despesa com pessoal está a{" "}
                   {(51.3 - limitePessoalLRF.percentualAtual).toFixed(1)}pp do
-                  limite prudencial. Recomenda-se cautela na concessao de
-                  reajustes e novas contratacoes.
+                  limite prudencial. Recomenda-se cautela na concessão de
+                  reajustes e novas contratações.
                 </AlertDescription>
               </Alert>
             )}
@@ -2375,10 +2375,10 @@ export function RHMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Custo por Funcionario
+              Custo por Funcionário
             </CardTitle>
             <CardDescription>
-              Custo medio mensal por secretaria (salario + horas extras)
+              Custo médio mensal por secretaria (salário + horas extras)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -2425,7 +2425,7 @@ export function RHMunicipal() {
             <div className="grid grid-cols-2 gap-3 text-center">
               <div className="rounded-lg border p-2">
                 <p className="text-xs text-muted-foreground">
-                  Custo Medio Geral
+                  Custo Médio Geral
                 </p>
                 <p className="text-lg font-bold">
                   {formatCurrency(
@@ -2434,7 +2434,7 @@ export function RHMunicipal() {
                 </p>
               </div>
               <div className="rounded-lg border p-2">
-                <p className="text-xs text-muted-foreground">HE Medio/Func.</p>
+                <p className="text-xs text-muted-foreground">HE Médio/Func.</p>
                 <p className="text-lg font-bold text-amber-600">
                   {formatCurrency(
                     Math.round(totalHorasExtras / totalFuncionarios),
@@ -2446,7 +2446,7 @@ export function RHMunicipal() {
         </Card>
       </div>
 
-      {/* Projecao de Aposentadorias + Capacitacao e Desenvolvimento */}
+      {/* Projeção de Aposentadorias + Capacitação e Desenvolvimento */}
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
@@ -2456,10 +2456,10 @@ export function RHMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Projecao de Aposentadorias
+              Projeção de Aposentadorias
             </CardTitle>
             <CardDescription>
-              Proximo 5 anos:{" "}
+              Próximos 5 anos:{" "}
               <strong className="text-amber-600">
                 {totalAposentadorias5Anos} servidores
               </strong>{" "}
@@ -2556,7 +2556,7 @@ export function RHMunicipal() {
                 strokeWidth={2}
                 className="size-5"
               />
-              Capacitacao e Desenvolvimento
+              Capacitação e Desenvolvimento
             </CardTitle>
             <CardDescription>
               Total: <strong>{totalHorasCapacitacao}h</strong> em{" "}
@@ -2608,7 +2608,7 @@ export function RHMunicipal() {
                 </p>
               </div>
               <div className="rounded-lg border p-2">
-                <p className="text-xs text-muted-foreground">h/Funcionario</p>
+                <p className="text-xs text-muted-foreground">h/funcionário</p>
                 <p className="text-lg font-bold">
                   {(totalHorasCapacitacao / totalFuncionarios).toFixed(1)}h
                 </p>
@@ -2641,7 +2641,7 @@ export function RHMunicipal() {
               strokeWidth={2}
               className="size-5"
             />
-            Benchmark de RH Municipal
+            Comparativo de RH municipal
           </CardTitle>
           <CardDescription>
             Comparativo com municípios de porte similar
@@ -2652,11 +2652,11 @@ export function RHMunicipal() {
             <TableHeader>
               <TableRow>
                 <TableHead>Município</TableHead>
-                <TableHead className="text-right">Custo Medio</TableHead>
-                <TableHead className="text-right">Absenteismo</TableHead>
+                <TableHead className="text-right">Custo Médio</TableHead>
+                <TableHead className="text-right">Absenteísmo</TableHead>
                 <TableHead className="text-right">Turnover</TableHead>
                 <TableHead className="text-right">% H.Extras</TableHead>
-                <TableHead className="text-right">Capacitacao (h)</TableHead>
+                <TableHead className="text-right">Capacitação (h)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
