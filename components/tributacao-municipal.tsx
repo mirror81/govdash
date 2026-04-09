@@ -824,7 +824,6 @@ export function TributacaoMunicipal() {
           icon={Building04Icon}
           title="ITBI"
           value={formatMillions(dadosITBI.arrecadado)}
-          valueClassName="text-xl"
           borderColor="border-l-cyan-500"
           footer={
             <p className="text-xs text-muted-foreground">
@@ -838,7 +837,6 @@ export function TributacaoMunicipal() {
           icon={Wallet01Icon}
           title="Taxas e Contribuições"
           value={formatMillions(totalTaxasArrecadado)}
-          valueClassName="text-xl"
           borderColor="border-l-violet-500"
           footer={
             <p className="text-xs text-muted-foreground">
@@ -852,7 +850,6 @@ export function TributacaoMunicipal() {
           icon={Search01Icon}
           title="Fiscalização"
           value={formatNumber(fiscalizacao.autosInfracao)}
-          valueClassName="text-xl"
           borderColor="border-l-orange-500"
           footer={
             <p className="text-xs text-muted-foreground">
@@ -870,7 +867,6 @@ export function TributacaoMunicipal() {
               certidoes.positivas +
               certidoes.positivasEfeitoNegativa,
           )}
-          valueClassName="text-xl"
           borderColor="border-l-teal-500"
           footer={
             <p className="text-xs text-muted-foreground">
@@ -883,7 +879,6 @@ export function TributacaoMunicipal() {
           icon={MoneySend01Icon}
           title="Renúncia Fiscal"
           value={formatMillions(renunciaFiscal.total)}
-          valueClassName="text-xl"
           borderColor="border-l-purple-500"
           footer={
             <p className="text-xs text-muted-foreground">

@@ -436,159 +436,132 @@ export function VisaoGeral() {
       {/* Resumo dos Módulos */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* Compras */}
-        <Card className="border-l-4 border-l-[var(--chart-1)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <HugeiconsIcon
-                icon={ShoppingCartIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Compras e Licitações
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold">
-                {formatNumber(compras.contratosAtivos)}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                contratos ativos
-              </span>
-            </div>
-            <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Valor contratado</span>
-                <span className="font-medium">
-                  {formatMillions(compras.valorContratado)}
+        <KpiCard
+          title="Compras e Licitações"
+          icon={ShoppingCartIcon}
+          value={formatNumber(compras.contratosAtivos)}
+          borderColor="border-l-[var(--chart-1)]"
+          footer={
+            <>
+              <p className="text-xs text-muted-foreground">contratos ativos</p>
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">
+                    Valor contratado
+                  </span>
+                  <span className="font-medium">
+                    {formatMillions(compras.valorContratado)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Economia obtida</span>
+                  <span className="font-medium text-green-600">
+                    {formatMillions(compras.economiaPeriodo)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">
+                    Licitações em andamento
+                  </span>
+                  <span className="font-medium">
+                    {compras.licitacoesAndamento}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Progress value={compras.taxaEconomia * 10} className="h-2" />
+                <span className="text-xs font-medium">
+                  {compras.taxaEconomia}%
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Economia obtida</span>
-                <span className="font-medium text-green-600">
-                  {formatMillions(compras.economiaPeriodo)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">
-                  Licitações em andamento
-                </span>
-                <span className="font-medium">
-                  {compras.licitacoesAndamento}
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Progress value={compras.taxaEconomia * 10} className="h-2" />
-              <span className="text-xs font-medium">
-                {compras.taxaEconomia}%
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Taxa de economia acima da meta de 5%
-            </p>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-muted-foreground">
+                Taxa de economia acima da meta de 5%
+              </p>
+            </>
+          }
+        />
 
         {/* RH */}
-        <Card className="border-l-4 border-l-[var(--chart-2)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <HugeiconsIcon
-                icon={UserMultipleIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Recursos Humanos
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold">
-                {formatNumber(rh.totalFuncionarios)}
-              </span>
-              <span className="text-xs text-muted-foreground">servidores</span>
-            </div>
-            <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Folha mensal</span>
-                <span className="font-medium">
-                  {formatMillions(rh.folhaPagamento)}
-                </span>
+        <KpiCard
+          title="Recursos Humanos"
+          icon={UserMultipleIcon}
+          value={formatNumber(rh.totalFuncionarios)}
+          borderColor="border-l-[var(--chart-2)]"
+          footer={
+            <>
+              <p className="text-xs text-muted-foreground">servidores</p>
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Folha mensal</span>
+                  <span className="font-medium">
+                    {formatMillions(rh.folhaPagamento)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Horas extras</span>
+                  <span className="font-medium text-amber-600">
+                    {formatCurrency(rh.horasExtras)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Pessoal / RCL</span>
+                  <span className="font-medium">
+                    {despesa.percentualPessoalRCL}%
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Horas extras</span>
-                <span className="font-medium text-amber-600">
-                  {formatCurrency(rh.horasExtras)}
-                </span>
+              <div className="grid grid-cols-2 gap-2 rounded-lg border p-2 text-center text-xs">
+                <div>
+                  <div className="font-semibold">{rh.absenteismo}%</div>
+                  <div className="text-muted-foreground">Absenteísmo</div>
+                </div>
+                <div>
+                  <div className="font-semibold">{rh.turnover}%</div>
+                  <div className="text-muted-foreground">Turnover</div>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Pessoal / RCL</span>
-                <span className="font-medium">
-                  {despesa.percentualPessoalRCL}%
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2 rounded-lg border p-2 text-center text-xs">
-              <div>
-                <div className="font-semibold">{rh.absenteismo}%</div>
-                <div className="text-muted-foreground">Absenteísmo</div>
-              </div>
-              <div>
-                <div className="font-semibold">{rh.turnover}%</div>
-                <div className="text-muted-foreground">Turnover</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </>
+          }
+        />
 
         {/* Tributos */}
-        <Card className="border-l-4 border-l-[var(--chart-3)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium">
-              <HugeiconsIcon
-                icon={Invoice01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Tributos
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold">
-                {formatMillions(tributacao.receitaTributaria)}
-              </span>
-              <span className="text-xs text-muted-foreground">arrecadado</span>
-            </div>
-            <div className="space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">IPTU</span>
-                <span className="font-medium">
-                  {formatMillions(tributacao.iptu)}
-                </span>
+        <KpiCard
+          title="Tributos"
+          icon={Invoice01Icon}
+          value={formatMillions(tributacao.receitaTributaria)}
+          borderColor="border-l-[var(--chart-3)]"
+          footer={
+            <>
+              <p className="text-xs text-muted-foreground">arrecadado</p>
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">IPTU</span>
+                  <span className="font-medium">
+                    {formatMillions(tributacao.iptu)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">ISS</span>
+                  <span className="font-medium">
+                    {formatMillions(tributacao.iss)}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Dívida ativa</span>
+                  <span className="font-medium text-red-600">
+                    {formatMillions(tributacao.dividaAtiva)}
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">ISS</span>
-                <span className="font-medium">
-                  {formatMillions(tributacao.iss)}
-                </span>
+              <div className="rounded-lg border p-2 text-center text-xs">
+                <div className="font-semibold text-amber-600">
+                  {tributacao.inadimplencia}%
+                </div>
+                <div className="text-muted-foreground">Inadimplência geral</div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Dívida ativa</span>
-                <span className="font-medium text-red-600">
-                  {formatMillions(tributacao.dividaAtiva)}
-                </span>
-              </div>
-            </div>
-            <div className="rounded-lg border p-2 text-center text-xs">
-              <div className="font-semibold text-amber-600">
-                {tributacao.inadimplencia}%
-              </div>
-              <div className="text-muted-foreground">Inadimplência geral</div>
-            </div>
-          </CardContent>
-        </Card>
+            </>
+          }
+        />
       </div>
 
       {/* Despesa por Função + Indicadores Chave */}
@@ -682,108 +655,59 @@ export function VisaoGeral() {
 
       {/* Resumo Financeiro Rápido */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Aplicações Financeiras
-            </CardTitle>
-            <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900/30">
-              <HugeiconsIcon
-                icon={BankIcon}
-                strokeWidth={2}
-                className="size-4 text-indigo-600"
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatMillions(financeiro.aplicacoes)}
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
+        <KpiCard
+          title="Aplicações Financeiras"
+          icon={BankIcon}
+          value={formatMillions(financeiro.aplicacoes)}
+          borderColor="border-l-indigo-500"
+          footer={
+            <p className="text-xs text-muted-foreground">
               Rendimento acumulado: R$ 415,5K
             </p>
-          </CardContent>
-        </Card>
+          }
+        />
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Valor Contratado
-            </CardTitle>
-            <div className="rounded-full bg-cyan-100 p-2 dark:bg-cyan-900/30">
+        <KpiCard
+          title="Valor Contratado"
+          icon={ShoppingCartIcon}
+          value={formatMillions(compras.valorContratado)}
+          borderColor="border-l-cyan-500"
+          footer={
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <HugeiconsIcon
-                icon={ShoppingCartIcon}
+                icon={ArrowDown01Icon}
                 strokeWidth={2}
-                className="size-4 text-cyan-600"
+                className="size-3 text-green-600"
               />
+              <span className="text-green-600">-{compras.taxaEconomia}%</span>
+              <span>economia</span>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatMillions(compras.valorContratado)}
-            </div>
-            <div className="mt-1 flex items-center gap-1">
-              <Badge
-                variant="outline"
-                className="bg-green-50 text-xs dark:bg-green-950/30"
-              >
-                <HugeiconsIcon
-                  icon={ArrowDown01Icon}
-                  strokeWidth={2}
-                  className="mr-1 size-3"
-                />
-                -{compras.taxaEconomia}%
-              </Badge>
-              <span className="text-xs text-muted-foreground">economia</span>
-            </div>
-          </CardContent>
-        </Card>
+          }
+        />
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Dívida Ativa
-            </CardTitle>
-            <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/30">
-              <HugeiconsIcon
-                icon={Clock01Icon}
-                strokeWidth={2}
-                className="size-4 text-red-600"
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatMillions(tributacao.dividaAtiva)}
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
+        <KpiCard
+          title="Dívida Ativa"
+          icon={Clock01Icon}
+          value={formatMillions(tributacao.dividaAtiva)}
+          borderColor="border-l-red-500"
+          footer={
+            <p className="text-xs text-muted-foreground">
               Inadimplência: {tributacao.inadimplencia}%
             </p>
-          </CardContent>
-        </Card>
+          }
+        />
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Aprovação TCE
-            </CardTitle>
-            <div className="rounded-full bg-emerald-100 p-2 dark:bg-emerald-900/30">
-              <HugeiconsIcon
-                icon={SecurityCheckIcon}
-                strokeWidth={2}
-                className="size-4 text-emerald-600"
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {prestacaoContas.taxaAprovacaoTCE}%
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
+        <KpiCard
+          title="Aprovação TCE"
+          icon={SecurityCheckIcon}
+          value={`${prestacaoContas.taxaAprovacaoTCE}%`}
+          borderColor="border-l-emerald-500"
+          footer={
+            <p className="text-xs text-muted-foreground">
               Contas julgadas regulares
             </p>
-          </CardContent>
-        </Card>
+          }
+        />
       </div>
 
       {/* Alertas Consolidados */}

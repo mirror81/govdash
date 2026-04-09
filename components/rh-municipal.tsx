@@ -920,12 +920,11 @@ export function RHMunicipal() {
       </div>
 
       {/* KPIs Secundários */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           title="Educação"
           icon={GraduationScrollIcon}
           value="298"
-          valueClassName="text-xl"
           borderColor="border-l-blue-500"
           footer={
             <p className="text-xs text-muted-foreground">26.4% do quadro</p>
@@ -935,7 +934,6 @@ export function RHMunicipal() {
           title="Saúde"
           icon={HeartCheckIcon}
           value="195"
-          valueClassName="text-xl"
           borderColor="border-l-green-500"
           footer={
             <p className="text-xs text-muted-foreground">17.3% do quadro</p>
@@ -945,7 +943,6 @@ export function RHMunicipal() {
           title="Admissões (Mês)"
           icon={UserAdd01Icon}
           value="9"
-          valueClassName="text-xl"
           borderColor="border-l-emerald-500"
           footer={
             <p className="text-xs text-muted-foreground">+3 saldo líquido</p>
@@ -955,7 +952,6 @@ export function RHMunicipal() {
           title="Turnover"
           icon={UserRemove01Icon}
           value="8.5%"
-          valueClassName="text-xl"
           borderColor="border-l-purple-500"
           footer={
             <p className="text-xs text-muted-foreground">Meta: 10% a.a.</p>

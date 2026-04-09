@@ -907,91 +907,95 @@ export function ComprasMunicipais() {
         </Card>
 
         {/* Economy Analysis */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Análise de Economia</CardTitle>
-            <CardDescription>Economia obtida vs valor estimado</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Total Economizado</span>
-                <span className="text-2xl font-bold text-green-600">
-                  R$ 3.8M
-                </span>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Média mensal</span>
+        <KpiCard
+          title="Análise de Economia"
+          icon={CoinsDollarIcon}
+          value="R$ 3.8M"
+          valueClassName="text-green-600"
+          borderColor="border-l-green-500"
+          footer={
+            <>
+              <p className="text-xs text-muted-foreground">
+                Economia obtida vs valor estimado
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Média mensal</span>
                   <span>R$ 633K</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Percentual economia</span>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">
+                    Percentual economia
+                  </span>
                   <span className="text-green-600">8.4%</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Maior economia</span>
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Maior economia</span>
                   <span>R$ 420K (Jun)</span>
                 </div>
               </div>
               <Separator />
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Contratos com economia</span>
+                  <span className="text-muted-foreground">
+                    Contratos com economia
+                  </span>
                   <span>324 de 1.247</span>
                 </div>
                 <Progress value={26} className="h-2" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </>
+          }
+        />
 
         {/* Contract Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Status dos Contratos</CardTitle>
-            <CardDescription>Distribuição por situação atual</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-sm">Ativos</span>
+        <KpiCard
+          title="Status dos Contratos"
+          icon={SecurityCheckIcon}
+          value="1.247"
+          borderColor="border-l-blue-500"
+          footer={
+            <>
+              <p className="text-xs text-muted-foreground">
+                Distribuição por situação atual
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 rounded-full bg-green-500" />
+                    <span className="text-sm">Ativos</span>
+                  </div>
+                  <span className="font-medium">892 (71.5%)</span>
                 </div>
-                <span className="font-medium">892 (71.5%)</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <span className="text-sm">Em Andamento</span>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 rounded-full bg-yellow-500" />
+                    <span className="text-sm">Em Andamento</span>
+                  </div>
+                  <span className="font-medium">245 (19.6%)</span>
                 </div>
-                <span className="font-medium">245 (19.6%)</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm">Aguardando Início</span>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 rounded-full bg-blue-500" />
+                    <span className="text-sm">Aguardando Início</span>
+                  </div>
+                  <span className="font-medium">78 (6.3%)</span>
                 </div>
-                <span className="font-medium">78 (6.3%)</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <span className="text-sm">Suspensos</span>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 rounded-full bg-red-500" />
+                    <span className="text-sm">Suspensos</span>
+                  </div>
+                  <span className="font-medium">32 (2.6%)</span>
                 </div>
-                <span className="font-medium">32 (2.6%)</span>
               </div>
               <Separator />
-              <div className="text-center">
-                <div className="text-2xl font-bold">1.247</div>
-                <div className="text-sm text-muted-foreground">
-                  Total de Contratos
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-muted-foreground">
+                Total de Contratos
+              </p>
+            </>
+          }
+        />
       </div>
 
       {/* Tables Section */}

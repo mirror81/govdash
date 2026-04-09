@@ -1157,123 +1157,107 @@ export function ReceitaMunicipal() {
 
       {/* Cards de Resumo por Origem */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-l-4 border-l-[var(--chart-1)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <HugeiconsIcon
-                icon={Home01Icon}
-                strokeWidth={2}
-                className="size-4"
+        <KpiCard
+          title="Receitas Próprias"
+          icon={Home01Icon}
+          value={formatMillions(totaisProprias.arrecadada)}
+          borderColor="border-l-[var(--chart-1)]"
+          footer={
+            <>
+              <Progress
+                value={Number(
+                  calcPercent(
+                    totaisProprias.arrecadada,
+                    totaisProprias.prevista,
+                  ),
+                )}
+                className="h-2"
               />
-              Receitas Próprias
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-bold">
-              {formatMillions(totaisProprias.arrecadada)}
-            </div>
-            <Progress
-              value={Number(
-                calcPercent(totaisProprias.arrecadada, totaisProprias.prevista),
-              )}
-              className="h-2 mt-2"
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              {calcPercent(totaisProprias.arrecadada, totaisProprias.prevista)}%
-              de {formatMillions(totaisProprias.prevista)}
-            </p>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-muted-foreground">
+                {calcPercent(
+                  totaisProprias.arrecadada,
+                  totaisProprias.prevista,
+                )}
+                % de {formatMillions(totaisProprias.prevista)}
+              </p>
+            </>
+          }
+        />
 
-        <Card className="border-l-4 border-l-[var(--chart-2)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <HugeiconsIcon
-                icon={Building06Icon}
-                strokeWidth={2}
-                className="size-4"
+        <KpiCard
+          title="Transf. Estaduais"
+          icon={Building06Icon}
+          value={formatMillions(totaisEstaduais.arrecadada)}
+          borderColor="border-l-[var(--chart-2)]"
+          footer={
+            <>
+              <Progress
+                value={Number(
+                  calcPercent(
+                    totaisEstaduais.arrecadada,
+                    totaisEstaduais.prevista,
+                  ),
+                )}
+                className="h-2"
               />
-              Transf. Estaduais
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-bold">
-              {formatMillions(totaisEstaduais.arrecadada)}
-            </div>
-            <Progress
-              value={Number(
-                calcPercent(
+              <p className="text-xs text-muted-foreground">
+                {calcPercent(
                   totaisEstaduais.arrecadada,
                   totaisEstaduais.prevista,
-                ),
-              )}
-              className="h-2 mt-2"
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              {calcPercent(
-                totaisEstaduais.arrecadada,
-                totaisEstaduais.prevista,
-              )}
-              % de {formatMillions(totaisEstaduais.prevista)}
-            </p>
-          </CardContent>
-        </Card>
+                )}
+                % de {formatMillions(totaisEstaduais.prevista)}
+              </p>
+            </>
+          }
+        />
 
-        <Card className="border-l-4 border-l-[var(--chart-3)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <HugeiconsIcon
-                icon={BankIcon}
-                strokeWidth={2}
-                className="size-4"
+        <KpiCard
+          title="Transf. Federais"
+          icon={BankIcon}
+          value={formatMillions(totaisFederais.arrecadada)}
+          borderColor="border-l-[var(--chart-3)]"
+          footer={
+            <>
+              <Progress
+                value={Number(
+                  calcPercent(
+                    totaisFederais.arrecadada,
+                    totaisFederais.prevista,
+                  ),
+                )}
+                className="h-2"
               />
-              Transf. Federais
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-bold">
-              {formatMillions(totaisFederais.arrecadada)}
-            </div>
-            <Progress
-              value={Number(
-                calcPercent(totaisFederais.arrecadada, totaisFederais.prevista),
-              )}
-              className="h-2 mt-2"
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              {calcPercent(totaisFederais.arrecadada, totaisFederais.prevista)}%
-              de {formatMillions(totaisFederais.prevista)}
-            </p>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-muted-foreground">
+                {calcPercent(
+                  totaisFederais.arrecadada,
+                  totaisFederais.prevista,
+                )}
+                % de {formatMillions(totaisFederais.prevista)}
+              </p>
+            </>
+          }
+        />
 
-        <Card className="border-l-4 border-l-[var(--chart-4)]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <HugeiconsIcon
-                icon={Wallet01Icon}
-                strokeWidth={2}
-                className="size-4"
+        <KpiCard
+          title="Outras Receitas"
+          icon={Wallet01Icon}
+          value={formatMillions(totaisOutras.arrecadada)}
+          borderColor="border-l-[var(--chart-4)]"
+          footer={
+            <>
+              <Progress
+                value={Number(
+                  calcPercent(totaisOutras.arrecadada, totaisOutras.prevista),
+                )}
+                className="h-2"
               />
-              Outras Receitas
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-bold">
-              {formatMillions(totaisOutras.arrecadada)}
-            </div>
-            <Progress
-              value={Number(
-                calcPercent(totaisOutras.arrecadada, totaisOutras.prevista),
-              )}
-              className="h-2 mt-2"
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              {calcPercent(totaisOutras.arrecadada, totaisOutras.prevista)}% de{" "}
-              {formatMillions(totaisOutras.prevista)}
-            </p>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-muted-foreground">
+                {calcPercent(totaisOutras.arrecadada, totaisOutras.prevista)}%
+                de {formatMillions(totaisOutras.prevista)}
+              </p>
+            </>
+          }
+        />
       </div>
 
       {/* Tabelas Detalhadas por Categoria */}

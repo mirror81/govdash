@@ -1476,50 +1476,51 @@ export function PrestacaoContas() {
                         )
                       : 0;
                   return (
-                    <Card key={grupo.numero}>
-                      <CardHeader className="pb-2">
-                        <CardDescription className="flex items-center gap-2">
-                          <Badge
-                            variant="outline"
-                            className="font-mono text-xs"
-                          >
-                            {grupo.numero}
-                          </Badge>
-                          <span className="truncate">{grupo.titulo}</span>
-                        </CardDescription>
-                        <div className="flex items-baseline gap-2">
-                          <CardTitle className="text-xl">
-                            {pctRegular}%
-                          </CardTitle>
-                          <span className="text-sm text-muted-foreground">
+                    <KpiCard
+                      key={grupo.numero}
+                      iconElement={
+                        <Badge variant="outline" className="font-mono text-xs">
+                          {grupo.numero}
+                        </Badge>
+                      }
+                      title={grupo.titulo}
+                      value={`${pctRegular}%`}
+                      borderColor={
+                        resumo.irregular > 0
+                          ? "border-l-red-500"
+                          : resumo.aComprovar > 0
+                            ? "border-l-amber-500"
+                            : "border-l-green-500"
+                      }
+                      footer={
+                        <>
+                          <p className="text-xs text-muted-foreground">
                             conforme
-                          </span>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <Progress value={pctRegular} className="h-2 mb-2" />
-                        <div className="flex gap-3 text-xs">
-                          <span className="text-green-600">
-                            {resumo.regular} regular
-                          </span>
-                          {resumo.aComprovar > 0 && (
-                            <span className="text-amber-600">
-                              {resumo.aComprovar} a comprovar
+                          </p>
+                          <Progress value={pctRegular} className="h-2" />
+                          <div className="flex flex-wrap gap-3 text-xs">
+                            <span className="text-green-600">
+                              {resumo.regular} regular
                             </span>
-                          )}
-                          {resumo.irregular > 0 && (
-                            <span className="text-red-600">
-                              {resumo.irregular} irregular
-                            </span>
-                          )}
-                          {resumo.desativado > 0 && (
-                            <span className="text-muted-foreground">
-                              {resumo.desativado} desativado
-                            </span>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                            {resumo.aComprovar > 0 && (
+                              <span className="text-amber-600">
+                                {resumo.aComprovar} a comprovar
+                              </span>
+                            )}
+                            {resumo.irregular > 0 && (
+                              <span className="text-red-600">
+                                {resumo.irregular} irregular
+                              </span>
+                            )}
+                            {resumo.desativado > 0 && (
+                              <span className="text-muted-foreground">
+                                {resumo.desativado} desativado
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      }
+                    />
                   );
                 })}
               </div>

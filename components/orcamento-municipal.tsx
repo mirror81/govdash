@@ -620,6 +620,7 @@ export function OrcamentoMunicipal() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <KpiCard
             title="Variação Orçada x Atualizada"
+            icon={ChartLineData02Icon}
             value={
               <>
                 {receitaDeltaNominal >= 0 ? "+" : ""}
@@ -639,6 +640,7 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Índice de Dedução"
+            icon={ArrowDown01Icon}
             value={`${pctShare(receitaDeduzida, receitaPrevista).toFixed(1)}%`}
             borderColor="border-l-slate-500"
             footer={
@@ -649,6 +651,7 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Elasticidade da Receita"
+            icon={ArrowRight01Icon}
             value={`${pctShare(receitaAlterada, receitaOrcada).toFixed(1)}%`}
             borderColor="border-l-cyan-500"
             footer={
@@ -659,8 +662,8 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Entidade Líder em Receita"
+            icon={MoneyAdd01Icon}
             value="Prefeitura Municipal"
-            valueClassName="text-lg"
             borderColor="border-l-indigo-500"
             footer={
               <p className="text-xs text-muted-foreground">
@@ -979,6 +982,7 @@ export function OrcamentoMunicipal() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <KpiCard
             title="Variação Orçada x Atualizada"
+            icon={ChartLineData02Icon}
             value={
               <>
                 {despesaDeltaNominal >= 0 ? "+" : ""}
@@ -998,6 +1002,7 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Índice de Suplementação"
+            icon={ArrowUp01Icon}
             value={`${pctShare(despesaSuplementado, despesaOrcada).toFixed(1)}%`}
             borderColor="border-l-slate-500"
             footer={
@@ -1008,6 +1013,7 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Índice de Redução"
+            icon={ArrowDown01Icon}
             value={`${pctShare(despesaReduzido, despesaOrcada).toFixed(1)}%`}
             borderColor="border-l-cyan-500"
             footer={
@@ -1018,8 +1024,8 @@ export function OrcamentoMunicipal() {
           />
           <KpiCard
             title="Despesa Líder por Natureza"
+            icon={MoneySend01Icon}
             value="Pessoal e Encargos"
-            valueClassName="text-lg"
             borderColor="border-l-indigo-500"
             footer={
               <p className="text-xs text-muted-foreground">

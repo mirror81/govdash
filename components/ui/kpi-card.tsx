@@ -38,20 +38,22 @@ export function KpiCard({
   borderColor = "border-l-primary/40",
 }: KpiCardProps) {
   return (
-    <Card className={cn("border-l-4", borderColor)}>
+    <Card className={cn("h-full border-l-4", borderColor)}>
       <CardHeader className="pb-2">
-        <CardDescription className="flex items-center gap-2">
+        <CardDescription className="flex items-center gap-2 leading-none">
           {iconElement ??
             (icon ? (
               <HugeiconsIcon icon={icon} strokeWidth={2} className="size-4" />
             ) : null)}
           {title}
         </CardDescription>
-        <CardTitle className={cn("text-2xl", valueClassName)}>
+        <CardTitle className={cn("text-2xl leading-none", valueClassName)}>
           {value}
         </CardTitle>
       </CardHeader>
-      {footer != null && <CardContent>{footer}</CardContent>}
+      {footer != null && (
+        <CardContent className="space-y-2">{footer}</CardContent>
+      )}
     </Card>
   );
 }
