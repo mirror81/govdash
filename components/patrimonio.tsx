@@ -23,6 +23,8 @@ import {
   Calculator01Icon,
   Recycle01Icon,
   ArrowMoveDownLeftIcon,
+  FilterIcon,
+  RefreshIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -46,6 +48,14 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Card,
   CardContent,
@@ -498,8 +508,61 @@ function badgeClassForCriticality(level: string) {
 }
 
 export function Patrimonio() {
+  const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024");
+  const [categoriaSelecionada, setCategoriaSelecionada] = React.useState("todas");
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Gestão de Patrimônio
+          </h2>
+          <p className="text-muted-foreground">
+            Controle e monitoramento do patrimônio público municipal
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Select value={periodoSelecionado} onValueChange={setPeriodoSelecionado}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="2024">2024</SelectItem>
+              <SelectItem value="2023">2023</SelectItem>
+              <SelectItem value="2022">2022</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={categoriaSelecionada} onValueChange={setCategoriaSelecionada}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="todas">Todas as Categorias</SelectItem>
+              <SelectItem value="predios">Prédios Públicos</SelectItem>
+              <SelectItem value="equipamentos">Equipamentos</SelectItem>
+              <SelectItem value="mobiliario">Mobiliário</SelectItem>
+              <SelectItem value="estoques">Estoques</SelectItem>
+              <SelectItem value="areas">Áreas Públicas</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" size="icon" className="size-8">
+            <HugeiconsIcon
+              icon={FilterIcon}
+              strokeWidth={2}
+              className="size-4"
+            />
+          </Button>
+          <Button variant="outline" size="icon" className="size-8">
+            <HugeiconsIcon
+              icon={RefreshIcon}
+              strokeWidth={2}
+              className="size-4"
+            />
+          </Button>
+        </div>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <KpiCard
           title="Valor Patrimonial"
