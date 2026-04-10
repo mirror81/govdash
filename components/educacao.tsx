@@ -1378,7 +1378,6 @@ export function Educacao() {
           <TabsTrigger value="censo">Censo e Matrículas</TabsTrigger>
           <TabsTrigger value="frequencia">Frequência e Busca Ativa</TabsTrigger>
           <TabsTrigger value="gestao">Gestão da Educação</TabsTrigger>
-          <TabsTrigger value="analises">Análises</TabsTrigger>
         </TabsList>
 
         {/* ── Tab: Orçamento e Finanças ── */}
@@ -2852,562 +2851,564 @@ export function Educacao() {
         </TabsContent>
 
         {/* ── Tab: Análises ── */}
-        <TabsContent value="analises" className="mt-6 space-y-6">
+      </Tabs>
+
+      {/* ======================================================= */}
+      {/* SEPARADOR ANÁLISES                                       */}
+      {/* ======================================================= */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            Análises
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon
+                icon={Calculator01Icon}
+                strokeWidth={2}
+                className="size-5"
+              />
+              Resumo Analítico da Educação
+            </CardTitle>
+            <CardDescription>
+              Indicadores consolidados de gestão e qualidade da educação pública
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Execução Orçamentária
+                </p>
+                <p className="text-3xl font-bold">
+                  {analiseExecutiva.execucaoOrcamentaria}%
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Meta: 98% até dez/2024
+                </p>
+                <Badge variant="outline">Atenção</Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Aplicação em MDE
+                </p>
+                <p className="text-3xl font-bold">
+                  {analiseExecutiva.aplicacaoMDE}%
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Mínimo constitucional: 25%
+                </p>
+                <Badge variant="secondary" className="text-emerald-600">
+                  Atendido
+                </Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Cobertura de Matrículas
+                </p>
+                <p className="text-3xl font-bold">
+                  {analiseExecutiva.coberturaMatriculas}%
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Demanda atendida no município
+                </p>
+                <Badge variant="secondary" className="text-emerald-600">
+                  Excelente
+                </Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">
+                  IDEB Médio
+                </p>
+                <p className="text-3xl font-bold">
+                  {analiseExecutiva.idebMedio}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Acima da média estadual (5,3)
+                </p>
+                <Badge variant="outline">Adequado</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
+                <HugeiconsIcon
+                  icon={BulbIcon}
+                  strokeWidth={2}
+                  className="size-5 text-primary"
+                />
+              </div>
+              <div>
+                <CardTitle>Análise Inteligente da Gestão de Educação</CardTitle>
+                <CardDescription>
+                  Insights gerados com base nos dados do exercício corrente
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="leading-relaxed text-foreground">
+                A gestão educacional municipal apresenta{" "}
+                <strong>
+                  desempenho consistente nos indicadores de qualidade e acesso
+                </strong>
+                . O IDEB dos anos iniciais alcança <strong>6,2</strong>,
+                superando a meta de 6,0 e a média estadual de 5,8. O orçamento
+                totaliza{" "}
+                <strong>{formatCurrency(educacaoResumo.orcamentoTotal)}</strong>
+                , com execução de <strong>92,8%</strong> e aplicação em MDE de{" "}
+                <strong>27,4%</strong>, acima do mínimo constitucional de 25%.
+                Pontos de atenção incluem o IDEB dos anos finais (5,1, abaixo da
+                meta de 5,5), distorção idade-série em 3 escolas acima de 9%, e
+                compra da agricultura familiar abaixo dos 30% exigidos pelo
+                PNAE. A taxa de evasão de <strong>1,8%</strong> demonstra
+                efetividade das políticas de permanência escolar.
+              </p>
+            </div>
+
+            <Separator />
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="pontos-fortes">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon
+                      icon={Flag01Icon}
+                      strokeWidth={2}
+                      className="size-4 text-emerald-600"
+                    />
+                    <span>Pontos Fortes da Gestão Educacional</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={CheckmarkCircle02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          IDEB anos iniciais acima da meta:
+                        </strong>{" "}
+                        Com 6,2, o município supera a meta de 6,0 e posiciona-se
+                        acima da média estadual (5,8), evidenciando qualidade no
+                        ciclo de alfabetização e anos iniciais do fundamental.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={CheckmarkCircle02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          Evasão escolar controlada:
+                        </strong>{" "}
+                        Taxa de 1,8% está abaixo da meta de 2,0%, demonstrando
+                        efetividade das políticas de busca ativa, acompanhamento
+                        pedagógico e suporte social às famílias.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={CheckmarkCircle02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          Aplicação em MDE acima do mínimo:
+                        </strong>{" "}
+                        27,4% da receita aplicada em Manutenção e
+                        Desenvolvimento do Ensino, superando o piso
+                        constitucional de 25% e garantindo conformidade legal e
+                        investimento contínuo.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={CheckmarkCircle02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          PNAE com alta execução:
+                        </strong>{" "}
+                        96,2% de execução na alimentação escolar, com cobertura
+                        de 98,4% no ensino fundamental, garantindo segurança
+                        alimentar e nutricional dos estudantes.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="pontos-atencao">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon
+                      icon={AlertCircleIcon}
+                      strokeWidth={2}
+                      className="size-4 text-amber-600"
+                    />
+                    <span>Pontos de Atenção</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={Alert02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-amber-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          IDEB dos anos finais abaixo da meta:
+                        </strong>{" "}
+                        5,1 contra meta de 5,5 indica necessidade de reforço
+                        pedagógico em Língua Portuguesa e Matemática nos 6º ao
+                        9º anos, com foco em metodologias ativas e avaliação
+                        formativa.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={Alert02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-amber-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          Distorção idade-série elevada:
+                        </strong>{" "}
+                        8,4% médio, com 3 escolas acima de 9%. EMEF Anísio
+                        Teixeira apresenta 14,8%, demandando programas de
+                        correção de fluxo, aceleração de aprendizagem e busca
+                        ativa de alunos com defasagem.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={Alert02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-amber-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          Agricultura familiar no PNAE insuficiente:
+                        </strong>{" "}
+                        Apenas 42,8% da meta de 30% está sendo cumprida.
+                        Necessário ampliar chamadas públicas, capacitar
+                        agricultores locais e diversificar cardápios com
+                        produtos regionais.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon
+                        icon={Alert02Icon}
+                        strokeWidth={2}
+                        className="mt-0.5 size-4 shrink-0 text-amber-600"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">
+                          Educação Conectada com baixa execução:
+                        </strong>{" "}
+                        68,9% de execução no programa Educação Conectada, com
+                        atrasos na aquisição de equipamentos e contratação de
+                        serviços de conectividade para as escolas rurais.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="recomendacoes">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon
+                      icon={BulbIcon}
+                      strokeWidth={2}
+                      className="size-4 text-blue-600"
+                    />
+                    <span>Recomendações Estratégicas</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">
+                        1. Programa de Reforço nos Anos Finais
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Implementar programa de tutoria em Língua Portuguesa e
+                        Matemática para os 6º ao 9º anos, com foco nas escolas
+                        com IDEB abaixo de 5,5 e uso de avaliações diagnósticas
+                        bimestrais.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">
+                        2. Correção de Fluxo Escolar
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Implantar turmas de aceleração de aprendizagem nas 3
+                        escolas com distorção idade-série acima de 9%,
+                        priorizando EMEF Anísio Teixeira (14,8%) e Paulo Freire
+                        (11,6%).
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">
+                        3. Ampliação da Agricultura Familiar
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Realizar novas chamadas públicas com lotes menores e
+                        assistência técnica aos agricultores, visando atingir os
+                        30% exigidos pelo PNAE e evitar sanções do FNDE.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">
+                        4. Aceleração do Educação Conectada
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Priorizar a aquisição de equipamentos de TI e
+                        contratação de internet banda larga para as 10 escolas
+                        sem conectividade adequada, garantindo inclusão digital
+                        e uso pedagógico de tecnologias.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">
+                        5. Execução Orçamentária do FUNDEB
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Acelerar empenho dos R$ 1,84M restantes do FUNDEB 70%
+                        até novembro para evitar devolução de recursos e
+                        garantir pagamento do piso do magistério conforme
+                        legislação vigente.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Separator />
+
+            <div className="rounded-lg border bg-muted/50 p-4">
+              <div className="flex gap-3">
+                <HugeiconsIcon
+                  icon={InformationCircleIcon}
+                  strokeWidth={2}
+                  className="mt-0.5 size-5 shrink-0 text-primary"
+                />
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">
+                    Conclusão Analítica
+                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    A gestão educacional municipal demonstra{" "}
+                    <strong className="text-foreground">
+                      solidez nos indicadores de acesso e permanência
+                    </strong>
+                    , com taxa de evasão controlada e IDEB dos anos iniciais
+                    acima da meta. Os principais desafios concentram-se na{" "}
+                    <strong className="text-foreground">
+                      melhoria da qualidade nos anos finais do fundamental
+                    </strong>{" "}
+                    (IDEB 5,1 vs. meta 5,5),{" "}
+                    <strong className="text-foreground">
+                      correção da distorção idade-série
+                    </strong>{" "}
+                    em 3 escolas críticas e{" "}
+                    <strong className="text-foreground">
+                      cumprimento da exigência de 30% de agricultura familiar no
+                      PNAE
+                    </strong>
+                    . A adoção das recomendações propostas — especialmente o
+                    programa de reforço nos anos finais, turmas de aceleração e
+                    ampliação da agricultura familiar — pode elevar
+                    significativamente a qualidade do ensino e garantir
+                    conformidade com as exigências legais e regulatórias.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid gap-6 xl:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HugeiconsIcon
-                  icon={Calculator01Icon}
+                  icon={Agreement01Icon}
                   strokeWidth={2}
                   className="size-5"
                 />
-                Resumo Analítico da Educação
+                Conselhos de Controle Social
               </CardTitle>
               <CardDescription>
-                Indicadores consolidados de gestão e qualidade da educação
-                pública
+                Acompanhamento dos conselhos vinculados à política educacional
+                do município.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Execução Orçamentária
-                  </p>
-                  <p className="text-3xl font-bold">
-                    {analiseExecutiva.execucaoOrcamentaria}%
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Meta: 98% até dez/2024
-                  </p>
-                  <Badge variant="outline">Atenção</Badge>
-                </div>
-                <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Aplicação em MDE
-                  </p>
-                  <p className="text-3xl font-bold">
-                    {analiseExecutiva.aplicacaoMDE}%
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Mínimo constitucional: 25%
-                  </p>
-                  <Badge variant="secondary" className="text-emerald-600">
-                    Atendido
-                  </Badge>
-                </div>
-                <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Cobertura de Matrículas
-                  </p>
-                  <p className="text-3xl font-bold">
-                    {analiseExecutiva.coberturaMatriculas}%
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Demanda atendida no município
-                  </p>
-                  <Badge variant="secondary" className="text-emerald-600">
-                    Excelente
-                  </Badge>
-                </div>
-                <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    IDEB Médio
-                  </p>
-                  <p className="text-3xl font-bold">
-                    {analiseExecutiva.idebMedio}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Acima da média estadual (5,3)
-                  </p>
-                  <Badge variant="outline">Adequado</Badge>
-                </div>
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Conselho</TableHead>
+                    <TableHead className="text-right">Membros</TableHead>
+                    <TableHead className="text-right">
+                      Reuniões Previstas
+                    </TableHead>
+                    <TableHead className="text-right">Realizadas</TableHead>
+                    <TableHead className="text-center">Situação</TableHead>
+                    <TableHead className="text-right">Mandato</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {conselhosEducacao.map((item) => (
+                    <TableRow key={item.conselho}>
+                      <TableCell className="font-medium">
+                        {item.conselho}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.membros}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.reunioesAno}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.reunioesRealizadas}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Badge
+                          variant={
+                            item.situacao === "Regular"
+                              ? "default"
+                              : "secondary"
+                          }
+                        >
+                          {item.situacao}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.mandatoAte}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
+          <Card>
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
-                  <HugeiconsIcon
-                    icon={BulbIcon}
-                    strokeWidth={2}
-                    className="size-5 text-primary"
-                  />
-                </div>
-                <div>
-                  <CardTitle>
-                    Análise Inteligente da Gestão de Educação
-                  </CardTitle>
-                  <CardDescription>
-                    Insights gerados com base nos dados do exercício corrente
-                  </CardDescription>
-                </div>
-              </div>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={Shield01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
+                Compliance Legal e Regulatório
+              </CardTitle>
+              <CardDescription>
+                Verificação do cumprimento das obrigações legais da educação
+                municipal.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="prose prose-sm dark:prose-invert max-w-none">
-                <p className="leading-relaxed text-foreground">
-                  A gestão educacional municipal apresenta{" "}
-                  <strong>
-                    desempenho consistente nos indicadores de qualidade e acesso
-                  </strong>
-                  . O IDEB dos anos iniciais alcança <strong>6,2</strong>,
-                  superando a meta de 6,0 e a média estadual de 5,8. O orçamento
-                  totaliza{" "}
-                  <strong>
-                    {formatCurrency(educacaoResumo.orcamentoTotal)}
-                  </strong>
-                  , com execução de <strong>92,8%</strong> e aplicação em MDE de{" "}
-                  <strong>27,4%</strong>, acima do mínimo constitucional de 25%.
-                  Pontos de atenção incluem o IDEB dos anos finais (5,1, abaixo
-                  da meta de 5,5), distorção idade-série em 3 escolas acima de
-                  9%, e compra da agricultura familiar abaixo dos 30% exigidos
-                  pelo PNAE. A taxa de evasão de <strong>1,8%</strong> demonstra
-                  efetividade das políticas de permanência escolar.
-                </p>
-              </div>
-
-              <Separator />
-
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="pontos-fortes">
-                  <AccordionTrigger>
-                    <div className="flex items-center gap-2">
-                      <HugeiconsIcon
-                        icon={Flag01Icon}
-                        strokeWidth={2}
-                        className="size-4 text-emerald-600"
-                      />
-                      <span>Pontos Fortes da Gestão Educacional</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-3 pl-6">
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={CheckmarkCircle02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            IDEB anos iniciais acima da meta:
-                          </strong>{" "}
-                          Com 6,2, o município supera a meta de 6,0 e
-                          posiciona-se acima da média estadual (5,8),
-                          evidenciando qualidade no ciclo de alfabetização e
-                          anos iniciais do fundamental.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={CheckmarkCircle02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            Evasão escolar controlada:
-                          </strong>{" "}
-                          Taxa de 1,8% está abaixo da meta de 2,0%, demonstrando
-                          efetividade das políticas de busca ativa,
-                          acompanhamento pedagógico e suporte social às
-                          famílias.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={CheckmarkCircle02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            Aplicação em MDE acima do mínimo:
-                          </strong>{" "}
-                          27,4% da receita aplicada em Manutenção e
-                          Desenvolvimento do Ensino, superando o piso
-                          constitucional de 25% e garantindo conformidade legal
-                          e investimento contínuo.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={CheckmarkCircle02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            PNAE com alta execução:
-                          </strong>{" "}
-                          96,2% de execução na alimentação escolar, com
-                          cobertura de 98,4% no ensino fundamental, garantindo
-                          segurança alimentar e nutricional dos estudantes.
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="pontos-atencao">
-                  <AccordionTrigger>
-                    <div className="flex items-center gap-2">
-                      <HugeiconsIcon
-                        icon={AlertCircleIcon}
-                        strokeWidth={2}
-                        className="size-4 text-amber-600"
-                      />
-                      <span>Pontos de Atenção</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-3 pl-6">
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={Alert02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-amber-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            IDEB dos anos finais abaixo da meta:
-                          </strong>{" "}
-                          5,1 contra meta de 5,5 indica necessidade de reforço
-                          pedagógico em Língua Portuguesa e Matemática nos 6º ao
-                          9º anos, com foco em metodologias ativas e avaliação
-                          formativa.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={Alert02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-amber-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            Distorção idade-série elevada:
-                          </strong>{" "}
-                          8,4% médio, com 3 escolas acima de 9%. EMEF Anísio
-                          Teixeira apresenta 14,8%, demandando programas de
-                          correção de fluxo, aceleração de aprendizagem e busca
-                          ativa de alunos com defasagem.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={Alert02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-amber-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            Agricultura familiar no PNAE insuficiente:
-                          </strong>{" "}
-                          Apenas 42,8% da meta de 30% está sendo cumprida.
-                          Necessário ampliar chamadas públicas, capacitar
-                          agricultores locais e diversificar cardápios com
-                          produtos regionais.
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <HugeiconsIcon
-                          icon={Alert02Icon}
-                          strokeWidth={2}
-                          className="mt-0.5 size-4 shrink-0 text-amber-600"
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">
-                            Educação Conectada com baixa execução:
-                          </strong>{" "}
-                          68,9% de execução no programa Educação Conectada, com
-                          atrasos na aquisição de equipamentos e contratação de
-                          serviços de conectividade para as escolas rurais.
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="recomendacoes">
-                  <AccordionTrigger>
-                    <div className="flex items-center gap-2">
-                      <HugeiconsIcon
-                        icon={BulbIcon}
-                        strokeWidth={2}
-                        className="size-4 text-blue-600"
-                      />
-                      <span>Recomendações Estratégicas</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-3 pl-6">
-                      <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">
-                          1. Programa de Reforço nos Anos Finais
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Implementar programa de tutoria em Língua Portuguesa e
-                          Matemática para os 6º ao 9º anos, com foco nas escolas
-                          com IDEB abaixo de 5,5 e uso de avaliações
-                          diagnósticas bimestrais.
-                        </p>
-                      </div>
-                      <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">
-                          2. Correção de Fluxo Escolar
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Implantar turmas de aceleração de aprendizagem nas 3
-                          escolas com distorção idade-série acima de 9%,
-                          priorizando EMEF Anísio Teixeira (14,8%) e Paulo
-                          Freire (11,6%).
-                        </p>
-                      </div>
-                      <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">
-                          3. Ampliação da Agricultura Familiar
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Realizar novas chamadas públicas com lotes menores e
-                          assistência técnica aos agricultores, visando atingir
-                          os 30% exigidos pelo PNAE e evitar sanções do FNDE.
-                        </p>
-                      </div>
-                      <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">
-                          4. Aceleração do Educação Conectada
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Priorizar a aquisição de equipamentos de TI e
-                          contratação de internet banda larga para as 10 escolas
-                          sem conectividade adequada, garantindo inclusão
-                          digital e uso pedagógico de tecnologias.
-                        </p>
-                      </div>
-                      <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">
-                          5. Execução Orçamentária do FUNDEB
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Acelerar empenho dos R$ 1,84M restantes do FUNDEB 70%
-                          até novembro para evitar devolução de recursos e
-                          garantir pagamento do piso do magistério conforme
-                          legislação vigente.
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-
-              <Separator />
-
-              <div className="rounded-lg border bg-muted/50 p-4">
-                <div className="flex gap-3">
-                  <HugeiconsIcon
-                    icon={InformationCircleIcon}
-                    strokeWidth={2}
-                    className="mt-0.5 size-5 shrink-0 text-primary"
-                  />
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-foreground">
-                      Conclusão Analítica
-                    </p>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      A gestão educacional municipal demonstra{" "}
-                      <strong className="text-foreground">
-                        solidez nos indicadores de acesso e permanência
-                      </strong>
-                      , com taxa de evasão controlada e IDEB dos anos iniciais
-                      acima da meta. Os principais desafios concentram-se na{" "}
-                      <strong className="text-foreground">
-                        melhoria da qualidade nos anos finais do fundamental
-                      </strong>{" "}
-                      (IDEB 5,1 vs. meta 5,5),{" "}
-                      <strong className="text-foreground">
-                        correção da distorção idade-série
-                      </strong>{" "}
-                      em 3 escolas críticas e{" "}
-                      <strong className="text-foreground">
-                        cumprimento da exigência de 30% de agricultura familiar
-                        no PNAE
-                      </strong>
-                      . A adoção das recomendações propostas — especialmente o
-                      programa de reforço nos anos finais, turmas de aceleração
-                      e ampliação da agricultura familiar — pode elevar
-                      significativamente a qualidade do ensino e garantir
-                      conformidade com as exigências legais e regulatórias.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Obrigação</TableHead>
+                    <TableHead className="text-right">Valor</TableHead>
+                    <TableHead className="text-center">Situação</TableHead>
+                    <TableHead>Referência</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {complianceLegal.map((item) => (
+                    <TableRow key={item.obrigacao}>
+                      <TableCell className="font-medium">
+                        {item.obrigacao}
+                      </TableCell>
+                      <TableCell className="text-right">{item.valor}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge
+                          variant={
+                            item.situacao === "Cumprido"
+                              ? "default"
+                              : item.situacao === "Atenção"
+                                ? "secondary"
+                                : "destructive"
+                          }
+                        >
+                          {item.situacao}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {item.referencia}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
+        </div>
 
-          <div className="grid gap-6 xl:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon
-                    icon={Agreement01Icon}
-                    strokeWidth={2}
-                    className="size-5"
-                  />
-                  Conselhos de Controle Social
-                </CardTitle>
-                <CardDescription>
-                  Acompanhamento dos conselhos vinculados à política educacional
-                  do município.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Conselho</TableHead>
-                      <TableHead className="text-right">Membros</TableHead>
-                      <TableHead className="text-right">
-                        Reuniões Previstas
-                      </TableHead>
-                      <TableHead className="text-right">Realizadas</TableHead>
-                      <TableHead className="text-center">Situação</TableHead>
-                      <TableHead className="text-right">Mandato</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {conselhosEducacao.map((item) => (
-                      <TableRow key={item.conselho}>
-                        <TableCell className="font-medium">
-                          {item.conselho}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.membros}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.reunioesAno}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.reunioesRealizadas}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Badge
-                            variant={
-                              item.situacao === "Regular"
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            {item.situacao}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.mandatoAte}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon
-                    icon={Shield01Icon}
-                    strokeWidth={2}
-                    className="size-5"
-                  />
-                  Compliance Legal e Regulatório
-                </CardTitle>
-                <CardDescription>
-                  Verificação do cumprimento das obrigações legais da educação
-                  municipal.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Obrigação</TableHead>
-                      <TableHead className="text-right">Valor</TableHead>
-                      <TableHead className="text-center">Situação</TableHead>
-                      <TableHead>Referência</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {complianceLegal.map((item) => (
-                      <TableRow key={item.obrigacao}>
-                        <TableCell className="font-medium">
-                          {item.obrigacao}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.valor}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Badge
-                            variant={
-                              item.situacao === "Cumprido"
-                                ? "default"
-                                : item.situacao === "Atenção"
-                                  ? "secondary"
-                                  : "destructive"
-                            }
-                          >
-                            {item.situacao}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {item.referencia}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-foreground">
-              Alertas e Notificações
-            </h3>
-            <div className="grid gap-3 lg:grid-cols-2">
-              {alertasAnalise.map((alerta, index) => (
-                <Alert
-                  key={index}
-                  variant={
-                    alerta.tipo === "warning" ? "destructive" : "default"
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-foreground">
+            Alertas e Notificações
+          </h3>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {alertasAnalise.map((alerta, index) => (
+              <Alert
+                key={index}
+                variant={alerta.tipo === "warning" ? "destructive" : "default"}
+              >
+                <HugeiconsIcon
+                  icon={
+                    alerta.tipo === "warning"
+                      ? Alert02Icon
+                      : alerta.tipo === "success"
+                        ? CheckmarkCircle02Icon
+                        : InformationCircleIcon
                   }
-                >
-                  <HugeiconsIcon
-                    icon={
-                      alerta.tipo === "warning"
-                        ? Alert02Icon
-                        : alerta.tipo === "success"
-                          ? CheckmarkCircle02Icon
-                          : InformationCircleIcon
-                    }
-                    strokeWidth={2}
-                    className="size-4"
-                  />
-                  <AlertTitle className="flex items-center gap-2">
-                    {alerta.titulo}
-                    <Badge variant="outline" className="text-xs">
-                      {alerta.badge}
-                    </Badge>
-                  </AlertTitle>
-                  <AlertDescription>{alerta.descricao}</AlertDescription>
-                </Alert>
-              ))}
-            </div>
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                <AlertTitle className="flex items-center gap-2">
+                  {alerta.titulo}
+                  <Badge variant="outline" className="text-xs">
+                    {alerta.badge}
+                  </Badge>
+                </AlertTitle>
+                <AlertDescription>{alerta.descricao}</AlertDescription>
+              </Alert>
+            ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 }
