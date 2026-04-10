@@ -846,7 +846,7 @@ export function PrestacaoContas() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Gestão</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Prestação de Contas</h2>
           <p className="text-muted-foreground">
             Acompanhamento de prestação de contas, CAUC e julgamento pelo TCE/PR
           </p>
