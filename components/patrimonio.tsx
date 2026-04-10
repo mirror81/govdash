@@ -3,13 +3,16 @@
 import * as React from "react";
 import {
   Archive02Icon,
+  Alert02Icon,
   ArrowDown01Icon,
   ArrowUp01Icon,
+  BulbIcon,
   Building04Icon,
   Calendar01Icon,
   ChartLineData02Icon,
   CheckmarkCircle02Icon,
   FileValidationIcon,
+  Flag01Icon,
   InformationCircleIcon,
   AlertCircleIcon,
   SecurityCheckIcon,
@@ -17,6 +20,9 @@ import {
   Home09Icon,
   TreesIcon,
   Chair01Icon,
+  Calculator01Icon,
+  Recycle01Icon,
+  ArrowMoveDownLeftIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -32,6 +38,12 @@ import {
   YAxis,
 } from "recharts";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -367,6 +379,112 @@ const areasPublicas = [
   },
 ];
 
+/* ── Depreciação e Vida Útil ─────────────────────────────────────── */
+
+const depreciacaoAtivos = [
+  { categoria: "Prédios públicos", valorOriginal: 118_000_000, depreciacaoAcumulada: 14_160_000, valorLiquido: 103_840_000, taxaAnual: 2.0, vidaUtilAnos: 50, vidaUtilRestante: 38 },
+  { categoria: "Equipamentos", valorOriginal: 64_500_000, depreciacaoAcumulada: 19_350_000, valorLiquido: 45_150_000, taxaAnual: 10.0, vidaUtilAnos: 10, vidaUtilRestante: 5 },
+  { categoria: "Mobiliário e bens", valorOriginal: 39_200_000, depreciacaoAcumulada: 15_680_000, valorLiquido: 23_520_000, taxaAnual: 10.0, vidaUtilAnos: 10, vidaUtilRestante: 4 },
+  { categoria: "Veículos e máquinas", valorOriginal: 22_800_000, depreciacaoAcumulada: 11_400_000, valorLiquido: 11_400_000, taxaAnual: 20.0, vidaUtilAnos: 5, vidaUtilRestante: 2 },
+  { categoria: "Equipamentos de TI", valorOriginal: 18_400_000, depreciacaoAcumulada: 11_040_000, valorLiquido: 7_360_000, taxaAnual: 20.0, vidaUtilAnos: 5, vidaUtilRestante: 1 },
+];
+
+const chartConfigDepreciacao = {
+  valorLiquido: { label: "Valor líquido", color: "var(--chart-1)" },
+  depreciacaoAcumulada: { label: "Depreciação acumulada", color: "var(--chart-4)" },
+} satisfies ChartConfig;
+
+const evolucaoDepreciacao = [
+  { mes: "Jan", depreciacaoMensal: 4_820_000, valorContabil: 276_800_000 },
+  { mes: "Fev", depreciacaoMensal: 4_850_000, valorContabil: 273_350_000 },
+  { mes: "Mar", depreciacaoMensal: 4_870_000, valorContabil: 270_580_000 },
+  { mes: "Abr", depreciacaoMensal: 4_900_000, valorContabil: 268_780_000 },
+  { mes: "Mai", depreciacaoMensal: 4_920_000, valorContabil: 267_860_000 },
+  { mes: "Jun", depreciacaoMensal: 4_940_000, valorContabil: 266_920_000 },
+  { mes: "Jul", depreciacaoMensal: 4_960_000, valorContabil: 266_060_000 },
+  { mes: "Ago", depreciacaoMensal: 4_980_000, valorContabil: 265_180_000 },
+];
+
+const chartConfigEvolDepreciacao = {
+  depreciacaoMensal: { label: "Depreciação mensal", color: "var(--chart-4)" },
+  valorContabil: { label: "Valor contábil líquido", color: "var(--chart-1)" },
+} satisfies ChartConfig;
+
+/* ── Movimentação Patrimonial ────────────────────────────────────── */
+
+const movimentacoes = [
+  { data: "02/08/2026", tipo: "Transferência", descricao: "15 computadores da Adm para Educação", origem: "Sec. Administração", destino: "Sec. Educação", valor: 67_500, status: "Concluída" },
+  { data: "28/07/2026", tipo: "Cessão", descricao: "Veículo Fiat Fiorino para CRAS Sul", origem: "Sec. Saúde", destino: "Sec. Assistência Social", valor: 48_000, status: "Concluída" },
+  { data: "25/07/2026", tipo: "Baixa", descricao: "Mobiliário inservível - Escola Rui Barbosa", origem: "Sec. Educação", destino: "Desfazimento", valor: 12_300, status: "Em análise" },
+  { data: "20/07/2026", tipo: "Incorporação", descricao: "Lote de 8 ar-condicionados - Pregão 042/2026", origem: "Almoxarifado Central", destino: "Sec. Saúde", valor: 96_000, status: "Concluída" },
+  { data: "15/07/2026", tipo: "Transferência", descricao: "Projetor multimídia para Centro Cultural", origem: "Sec. Administração", destino: "Sec. Cultura", valor: 8_200, status: "Concluída" },
+  { data: "10/07/2026", tipo: "Baixa", descricao: "Impressoras obsoletas - lote patrimônio TI", origem: "Sec. Administração", destino: "Desfazimento", valor: 5_600, status: "Aprovada" },
+  { data: "05/07/2026", tipo: "Doação recebida", descricao: "Equipamento hospitalar - convênio federal", origem: "Min. Saúde", destino: "Hospital Municipal", valor: 340_000, status: "Concluída" },
+  { data: "01/07/2026", tipo: "Reavaliação", descricao: "Terreno anexo ao Paço Municipal", origem: "Sec. Planejamento", destino: "Patrimônio", valor: 1_200_000, status: "Concluída" },
+];
+
+const resumoMovimentacoes = {
+  transferencias: 42,
+  cessoes: 8,
+  baixas: 15,
+  incorporacoes: 67,
+  doacoes: 3,
+  reavaliacoes: 5,
+  valorTransferido: 1_840_000,
+  valorBaixado: 420_000,
+  valorIncorporado: 4_200_000,
+};
+
+const termosResponsabilidade = [
+  { secretaria: "Educação", totalTermos: 284, atualizados: 261, pendentes: 23, coberturaPct: 91.9, ultimaAtualizacao: "Ago/2026" },
+  { secretaria: "Saúde", totalTermos: 196, atualizados: 168, pendentes: 28, coberturaPct: 85.7, ultimaAtualizacao: "Jul/2026" },
+  { secretaria: "Administração", totalTermos: 142, atualizados: 136, pendentes: 6, coberturaPct: 95.8, ultimaAtualizacao: "Ago/2026" },
+  { secretaria: "Assistência Social", totalTermos: 87, atualizados: 78, pendentes: 9, coberturaPct: 89.7, ultimaAtualizacao: "Jul/2026" },
+  { secretaria: "Transportes e Obras", totalTermos: 104, atualizados: 89, pendentes: 15, coberturaPct: 85.6, ultimaAtualizacao: "Jun/2026" },
+  { secretaria: "Esportes e Lazer", totalTermos: 63, atualizados: 56, pendentes: 7, coberturaPct: 88.9, ultimaAtualizacao: "Jul/2026" },
+];
+
+/* ── Alertas da seção de Análises ─────────────────────────────────── */
+
+const alertasAnalise = [
+  {
+    tipo: "warning" as const,
+    titulo: "Equipamentos de TI com vida útil esgotando",
+    badge: "Depreciação",
+    descricao: "124 equipamentos de informática atingirão vida útil residual zero nos próximos 6 meses, demandando planejamento de reposição estimado em R$ 1,2 milhão.",
+  },
+  {
+    tipo: "warning" as const,
+    titulo: "Termos de responsabilidade desatualizados na Saúde",
+    badge: "Controle",
+    descricao: "28 termos de responsabilidade na Secretaria de Saúde estão pendentes de atualização, comprometendo a rastreabilidade de R$ 4,8 milhões em equipamentos.",
+  },
+  {
+    tipo: "info" as const,
+    titulo: "Inventário anual deve ser iniciado até outubro",
+    badge: "Inventário",
+    descricao: "O inventário físico-financeiro anual deve ser iniciado no próximo bimestre para cumprimento do prazo legal de encerramento do exercício.",
+  },
+  {
+    tipo: "success" as const,
+    titulo: "Incorporações do exercício superam baixas em 10x",
+    badge: "Movimentação",
+    descricao: "O saldo de incorporações (R$ 4,2 milhões) versus baixas (R$ 420 mil) indica renovação e ampliação do acervo patrimonial municipal.",
+  },
+  {
+    tipo: "warning" as const,
+    titulo: "Reavaliação de imóveis pendente em 11 unidades",
+    badge: "Avaliação",
+    descricao: "Imóveis das secretarias de Saúde e Esportes estão com laudo de avaliação vencido há mais de 4 anos, exigindo reavaliação conforme NBCASP.",
+  },
+  {
+    tipo: "info" as const,
+    titulo: "Seguro patrimonial vence em novembro",
+    badge: "Seguros",
+    descricao: "A apólice de seguro predial e de equipamentos vence em 30/11/2026. Recomenda-se iniciar processo licitatório para renovação.",
+  },
+];
+
 function badgeVariantForRisk(risk: string) {
   if (risk === "Alto") return "destructive" as const;
   if (risk === "Médio") return "secondary" as const;
@@ -501,6 +619,8 @@ export function Patrimonio() {
           <TabsTrigger value="visao-geral">Visão Geral</TabsTrigger>
           <TabsTrigger value="finalidade">Por Finalidade</TabsTrigger>
           <TabsTrigger value="ativos-criticos">Ativos Críticos</TabsTrigger>
+          <TabsTrigger value="depreciacao">Depreciação e Vida Útil</TabsTrigger>
+          <TabsTrigger value="movimentacao">Movimentação Patrimonial</TabsTrigger>
         </TabsList>
 
         <TabsContent value="visao-geral" className="mt-6 space-y-6">
@@ -929,7 +1049,573 @@ export function Patrimonio() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* ── Depreciação e Vida Útil ──────────────────────────── */}
+        <TabsContent value="depreciacao" className="mt-6 space-y-6">
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon icon={Recycle01Icon} strokeWidth={2} className="size-5" />
+                  Depreciação por Categoria de Ativo
+                </CardTitle>
+                <CardDescription>
+                  Valor original, depreciação acumulada e valor contábil líquido de cada grupo patrimonial.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfigDepreciacao} className="min-h-[320px]">
+                  <BarChart data={depreciacaoAtivos} layout="vertical" margin={{ left: 10, right: 10 }}>
+                    <CartesianGrid horizontal={false} />
+                    <XAxis type="number" tickFormatter={(value) => `R$ ${(Number(value) / 1_000_000).toFixed(0)}M`} />
+                    <YAxis type="category" dataKey="categoria" tickLine={false} axisLine={false} width={120} />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value, name) => [
+                            formatCurrency(Number(value)),
+                            name === "valorLiquido" ? "Valor líquido" : "Depreciação acumulada",
+                          ]}
+                        />
+                      }
+                    />
+                    <ChartLegend content={<ChartLegendContent />} />
+                    <Bar dataKey="valorLiquido" stackId="dep" fill="var(--chart-1)" radius={[0, 0, 0, 0]} />
+                    <Bar dataKey="depreciacaoAcumulada" stackId="dep" fill="var(--chart-4)" radius={[0, 6, 6, 0]} />
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-5" />
+                  Evolução da Depreciação no Exercício
+                </CardTitle>
+                <CardDescription>
+                  Depreciação mensal acumulada e valor contábil líquido do acervo patrimonial.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfigEvolDepreciacao}>
+                  <LineChart data={evolucaoDepreciacao} margin={{ left: 12, right: 12 }}>
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="mes" tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="valor" tickLine={false} axisLine={false} tickFormatter={(value) => `R$ ${(Number(value) / 1_000_000).toFixed(0)}M`} />
+                    <YAxis yAxisId="dep" orientation="right" tickLine={false} axisLine={false} tickFormatter={(value) => `R$ ${(Number(value) / 1_000_000).toFixed(1)}M`} />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value, name) => [
+                            formatCurrency(Number(value)),
+                            name === "valorContabil" ? "Valor contábil líquido" : "Depreciação mensal",
+                          ]}
+                        />
+                      }
+                    />
+                    <Line yAxisId="valor" type="monotone" dataKey="valorContabil" stroke="var(--chart-1)" strokeWidth={3} dot={{ r: 3 }} />
+                    <Line yAxisId="dep" type="monotone" dataKey="depreciacaoMensal" stroke="var(--chart-4)" strokeWidth={2.5} dot={{ r: 3 }} />
+                  </LineChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon icon={Archive02Icon} strokeWidth={2} className="size-5" />
+                Detalhamento da Depreciação e Vida Útil
+              </CardTitle>
+              <CardDescription>
+                Taxas anuais, vida útil remanescente e projeção de reposição por categoria de ativo conforme NBCASP.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead className="text-right">Valor Original</TableHead>
+                    <TableHead className="text-right">Deprec. Acumulada</TableHead>
+                    <TableHead className="text-right">Valor Líquido</TableHead>
+                    <TableHead className="text-right">Taxa Anual</TableHead>
+                    <TableHead className="text-right">Vida Útil</TableHead>
+                    <TableHead className="text-right">Restante</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {depreciacaoAtivos.map((item) => (
+                    <TableRow key={item.categoria}>
+                      <TableCell className="font-medium">{item.categoria}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(item.valorOriginal)}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(item.depreciacaoAcumulada)}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(item.valorLiquido)}</TableCell>
+                      <TableCell className="text-right">{item.taxaAnual}%</TableCell>
+                      <TableCell className="text-right">{item.vidaUtilAnos} anos</TableCell>
+                      <TableCell className="text-right">
+                        <Badge variant={item.vidaUtilRestante <= 2 ? "destructive" : "secondary"}>
+                          {item.vidaUtilRestante} anos
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Depreciação acumulada total</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold">{formatCurrency(depreciacaoAtivos.reduce((acc, i) => acc + i.depreciacaoAcumulada, 0))}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Representa {((depreciacaoAtivos.reduce((acc, i) => acc + i.depreciacaoAcumulada, 0) / depreciacaoAtivos.reduce((acc, i) => acc + i.valorOriginal, 0)) * 100).toFixed(1)}% do valor original dos ativos.
+              </p>
+            </div>
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Ativos próximos do fim da vida útil</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold">{depreciacaoAtivos.filter((i) => i.vidaUtilRestante <= 2).length} categorias</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Veículos e equipamentos de TI demandam planejamento de reposição nos próximos 24 meses.
+              </p>
+            </div>
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Valor contábil líquido total</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold">{formatCurrency(depreciacaoAtivos.reduce((acc, i) => acc + i.valorLiquido, 0))}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Valor patrimonial após aplicação das taxas de depreciação acumulada.
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* ── Movimentação Patrimonial ─────────────────────────── */}
+        <TabsContent value="movimentacao" className="mt-6 space-y-6">
+          <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Transferências</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.transferencias}</p>
+            </div>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Cessões</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.cessoes}</p>
+            </div>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Baixas</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.baixas}</p>
+            </div>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Incorporações</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.incorporacoes}</p>
+            </div>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Doações recebidas</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.doacoes}</p>
+            </div>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Reavaliações</p>
+              <p className="mt-2 text-2xl font-semibold">{resumoMovimentacoes.reavaliacoes}</p>
+            </div>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon icon={ArrowMoveDownLeftIcon} strokeWidth={2} className="size-5" />
+                  Últimas Movimentações
+                </CardTitle>
+                <CardDescription>
+                  Registro de transferências, cessões, baixas, incorporações e reavaliações patrimoniais.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Descrição</TableHead>
+                      <TableHead>Origem</TableHead>
+                      <TableHead>Destino</TableHead>
+                      <TableHead className="text-right">Valor</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {movimentacoes.map((mov) => (
+                      <TableRow key={`${mov.data}-${mov.descricao}`}>
+                        <TableCell className="whitespace-nowrap">{mov.data}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{mov.tipo}</Badge>
+                        </TableCell>
+                        <TableCell className="max-w-[220px] truncate">{mov.descricao}</TableCell>
+                        <TableCell className="text-sm">{mov.origem}</TableCell>
+                        <TableCell className="text-sm">{mov.destino}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(mov.valor)}</TableCell>
+                        <TableCell>
+                          <Badge variant={mov.status === "Concluída" ? "secondary" : mov.status === "Aprovada" ? "default" : "destructive"}>
+                            {mov.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon icon={FileValidationIcon} strokeWidth={2} className="size-5" />
+                  Termos de Responsabilidade
+                </CardTitle>
+                <CardDescription>
+                  Acompanhamento da cobertura de termos de guarda e responsabilidade por secretaria.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {termosResponsabilidade.map((tr) => (
+                  <div key={tr.secretaria} className="rounded-2xl border p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="font-medium">{tr.secretaria}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {tr.atualizados} de {tr.totalTermos} termos atualizados • {tr.pendentes} pendentes
+                        </p>
+                      </div>
+                      <Badge variant={tr.coberturaPct >= 90 ? "secondary" : "destructive"}>
+                        {tr.coberturaPct}%
+                      </Badge>
+                    </div>
+                    <Progress value={tr.coberturaPct} className="mt-3 h-2" />
+                    <p className="mt-2 text-xs text-muted-foreground">Última atualização: {tr.ultimaAtualizacao}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Valor incorporado no exercício</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold text-emerald-600">{formatCurrency(resumoMovimentacoes.valorIncorporado)}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {resumoMovimentacoes.incorporacoes} incorporações e {resumoMovimentacoes.doacoes} doações recebidas.
+              </p>
+            </div>
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Valor transferido entre setores</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold">{formatCurrency(resumoMovimentacoes.valorTransferido)}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {resumoMovimentacoes.transferencias} transferências e {resumoMovimentacoes.cessoes} cessões de uso.
+              </p>
+            </div>
+            <div className="rounded-2xl border p-4">
+              <p className="font-medium">Valor baixado no exercício</p>
+              <Separator className="my-3" />
+              <p className="text-3xl font-bold text-red-600">{formatCurrency(resumoMovimentacoes.valorBaixado)}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {resumoMovimentacoes.baixas} baixas por inservibilidade, obsolescência ou sinistro.
+              </p>
+            </div>
+          </div>
+        </TabsContent>
       </Tabs>
+
+      {/* ═══════════════════════════════════════════════════════════ */}
+      {/* ANÁLISES                                                   */}
+      {/* ═══════════════════════════════════════════════════════════ */}
+      <div className="relative py-4">
+        <Separator />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-muted px-4 dark:bg-background">
+          <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Análises
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        {/* ── Resumo Analítico ──────────────────────────────────── */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HugeiconsIcon icon={Calculator01Icon} strokeWidth={2} className="size-5" />
+              Resumo Analítico Patrimonial
+            </CardTitle>
+            <CardDescription>Indicadores consolidados de saúde e controle patrimonial</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">Índice de Conservação</p>
+                <p className="text-3xl font-bold">{patrimonioResumo.indiceConservacaoPct}%</p>
+                <p className="text-xs text-muted-foreground">Meta: 85% até dez/2026</p>
+                <Badge variant="outline">Atenção</Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">Cobertura de Termos</p>
+                <p className="text-3xl font-bold">89.8%</p>
+                <p className="text-xs text-muted-foreground">{termosResponsabilidade.reduce((a, t) => a + t.atualizados, 0)} de {termosResponsabilidade.reduce((a, t) => a + t.totalTermos, 0)} termos</p>
+                <Badge variant="secondary" className="text-green-600">Boa</Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">Taxa de Depreciação</p>
+                <p className="text-3xl font-bold">27.2%</p>
+                <p className="text-xs text-muted-foreground">{formatCurrency(depreciacaoAtivos.reduce((a, i) => a + i.depreciacaoAcumulada, 0))} acumulada</p>
+                <Badge variant="outline">Dentro do esperado</Badge>
+              </div>
+              <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
+                <p className="text-sm font-medium text-muted-foreground">Saldo Líquido de Movimentação</p>
+                <p className="text-3xl font-bold text-green-600">{formatCurrency(resumoMovimentacoes.valorIncorporado - resumoMovimentacoes.valorBaixado)}</p>
+                <p className="text-xs text-muted-foreground">Incorporações - Baixas</p>
+                <Badge variant="secondary" className="text-green-600">Positivo</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ── Análise Inteligente ──────────────────────────────── */}
+        <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-background">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
+                <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-5 text-primary" />
+              </div>
+              <div>
+                <CardTitle>Análise Inteligente da Gestão Patrimonial</CardTitle>
+                <CardDescription>Insights gerados com base nos dados do exercício corrente</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="leading-relaxed text-foreground">
+                A gestão patrimonial do município apresenta <strong>evolução consistente nos indicadores de controle</strong>. O inventário conciliado alcança <strong>{patrimonioResumo.inventarioConciliadoPct}%</strong>, a regularização de imóveis atinge <strong>{patrimonioResumo.regularizacaoImoveisPct}%</strong> e o índice de conservação geral está em <strong>{patrimonioResumo.indiceConservacaoPct}%</strong>, ainda abaixo da meta de 85%. O acervo patrimonial totalizou <strong>{formatCurrency(patrimonioResumo.valorTotal)}</strong>, com depreciação acumulada de <strong>{formatCurrency(depreciacaoAtivos.reduce((a, i) => a + i.depreciacaoAcumulada, 0))}</strong>. As incorporações líquidas do exercício ({formatCurrency(resumoMovimentacoes.valorIncorporado - resumoMovimentacoes.valorBaixado)}) indicam renovação do acervo, mas a proximidade do fim da vida útil de equipamentos de TI e veículos exige planejamento de reposição.
+              </p>
+            </div>
+
+            <Separator />
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="pontos-fortes">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon icon={Flag01Icon} strokeWidth={2} className="size-4 text-green-600" />
+                    <span>Pontos Fortes da Gestão Patrimonial</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-green-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Alto índice de inventário conciliado:</strong>{" "}
+                        Com 94,2% dos bens conferidos e vinculados, o município demonstra maturidade no controle físico-financeiro, superando a média de municípios de mesmo porte (em torno de 78%).
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-green-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Regularização imobiliária avançada:</strong>{" "}
+                        87,5% dos imóveis estão com matrícula, averbação e uso conciliados, reduzindo riscos jurídicos e contábeis perante tribunais de contas.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-green-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Educação como referência em conservação:</strong>{" "}
+                        As escolas municipais atingem 88% de conformidade física, fruto da manutenção preventiva contratada no primeiro semestre. Esse modelo pode ser replicado em outras secretarias.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-green-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Saldo positivo de movimentação:</strong>{" "}
+                        O volume de incorporações (R$ 4,2 milhões) supera em dez vezes o valor das baixas (R$ 420 mil), evidenciando investimento contínuo na ampliação e renovação do acervo.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="pontos-atencao">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 text-amber-600" />
+                    <span>Pontos de Atenção</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Conservação abaixo da meta:</strong>{" "}
+                        O índice geral de 81,3% está 3,7 pontos percentuais abaixo da meta institucional de 85%. As secretarias de Transportes/Obras (74%) e Esportes/Lazer (76%) puxam a média para baixo.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">218 bens sem rastreabilidade:</strong>{" "}
+                        Bens sem plaqueta ou termo de responsabilidade representam risco de ressalva em auditoria. A concentração em educação e almoxarifado central demanda mutirão de identificação.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Vida útil crítica em TI e veículos:</strong>{" "}
+                        Duas categorias de ativos (equipamentos de TI com 1 ano restante e veículos com 2 anos) demandam planejamento de reposição estimado em R$ 18,7 milhões nos próximos 24 meses.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Termos desatualizados na Saúde e Transportes:</strong>{" "}
+                        Secretarias com cobertura abaixo de 86% comprometem a cadeia de responsabilização sobre equipamentos e veículos de alto valor.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="recomendacoes">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-4 text-blue-600" />
+                    <span>Recomendações Estratégicas</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-3 pl-6">
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">1. Plano de Reposição de Ativos Críticos</p>
+                      <p className="text-xs text-muted-foreground">
+                        Elaborar plano plurianual de reposição para equipamentos de TI e veículos, incluindo previsão orçamentária no PPA e LOA, com prioridade para itens com vida útil inferior a 2 anos.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">2. Mutirão de Identificação e Termos</p>
+                      <p className="text-xs text-muted-foreground">
+                        Realizar campanha intensiva de plaquetamento dos 218 bens pendentes e atualização dos termos de responsabilidade nas secretarias com cobertura inferior a 90%, antes do inventário anual.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">3. Replicar Modelo da Educação</p>
+                      <p className="text-xs text-muted-foreground">
+                        Expandir o contrato de manutenção preventiva, bem-sucedido na Educação (88% conservação), para as secretarias de Transportes/Obras e Esportes/Lazer, que apresentam os piores índices.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">4. Reavaliação Patrimonial Imobiliária</p>
+                      <p className="text-xs text-muted-foreground">
+                        Contratar laudos de avaliação para os 11 imóveis com reavaliação vencida, conforme exigência das NBCASP, priorizando unidades de Saúde e Esportes para adequação contábil até o encerramento do exercício.
+                      </p>
+                    </div>
+                    <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
+                      <p className="mb-1 text-sm font-medium text-foreground">5. Integração Almoxarifado-Patrimônio</p>
+                      <p className="text-xs text-muted-foreground">
+                        Unificar os sistemas de controle de estoque e patrimônio para eliminar lacunas de rastreabilidade entre a entrada de material e a incorporação ao acervo patrimonial, reduzindo itens sem vínculo.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="projecoes">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2">
+                    <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-4 text-purple-600" />
+                    <span>Projeções para Encerramento do Exercício</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-4 pl-6">
+                    <p className="text-sm text-muted-foreground">
+                      Com base na tendência dos últimos 8 meses e nas ações programadas:
+                    </p>
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-lg border p-3 text-center">
+                        <p className="text-xs text-muted-foreground">Conservação projetada dez/26</p>
+                        <p className="text-xl font-bold">83,5%</p>
+                        <p className="text-xs text-muted-foreground">Meta: 85% — risco de não atingir</p>
+                      </div>
+                      <div className="rounded-lg border p-3 text-center">
+                        <p className="text-xs text-muted-foreground">Inventário conciliado projetado</p>
+                        <p className="text-xl font-bold text-green-600">96,8%</p>
+                        <p className="text-xs text-muted-foreground">Tendência de alcançar 97%+</p>
+                      </div>
+                      <div className="rounded-lg border bg-primary/5 p-3 text-center">
+                        <p className="text-xs text-muted-foreground">Valor patrimonial projetado</p>
+                        <p className="text-xl font-bold text-primary">{formatCurrency(295_000_000)}</p>
+                        <p className="text-xs text-muted-foreground">+3% sobre posição atual</p>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Separator />
+
+            <div className="rounded-lg border bg-muted/50 p-4">
+              <div className="flex gap-3">
+                <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="mt-0.5 size-5 shrink-0 text-primary" />
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">Conclusão Analítica</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    A gestão patrimonial municipal apresenta <strong>maturidade em controle de inventário e regularização imobiliária</strong>, com indicadores acima da média para municípios de porte similar. Os principais desafios concentram-se na <strong>melhoria do índice de conservação</strong> (3,7 pp abaixo da meta) e no <strong>planejamento de reposição de ativos com vida útil próxima do esgotamento</strong>. A adoção das recomendações propostas — especialmente a replicação do modelo de manutenção preventiva da Educação e o plano plurianual de reposição — pode elevar a conservação para 85%+ e garantir continuidade dos serviços públicos sem rupturas operacionais.
+                  </p>
+                  <p className="mt-3 border-t pt-3 text-xs text-muted-foreground">
+                    Análise gerada em {new Date().toLocaleDateString("pt-BR")} às{" "}
+                    {new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}{" "}
+                    | Dados patrimoniais atualizados até agosto/2026
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ── Alertas e Notificações ──────────────────────────── */}
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {alertasAnalise.map((alerta, index) => (
+              <Alert
+                key={index}
+                variant={alerta.tipo === "warning" ? "destructive" : "default"}
+              >
+                <HugeiconsIcon
+                  icon={
+                    alerta.tipo === "warning"
+                      ? Alert02Icon
+                      : alerta.tipo === "success"
+                        ? CheckmarkCircle02Icon
+                        : InformationCircleIcon
+                  }
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                <AlertTitle className="flex items-center gap-2">
+                  {alerta.titulo}
+                  <Badge variant="outline" className="text-xs">{alerta.badge}</Badge>
+                </AlertTitle>
+                <AlertDescription>{alerta.descricao}</AlertDescription>
+              </Alert>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
