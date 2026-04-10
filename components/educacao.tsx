@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Alert02Icon,
   ArrowUp01Icon,
@@ -22,11 +22,16 @@ import {
   Target01Icon,
   UserMultipleIcon,
   Wallet01Icon,
-} from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
+  Search01Icon,
+  Clock01Icon,
+  Building01Icon,
+  AnalyticsUpIcon,
+  TaskDaily01Icon,
+  Agreement01Icon,
+  Shield01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Area,
-  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -37,31 +42,31 @@ import {
   PieChart,
   XAxis,
   YAxis,
-} from "recharts"
+} from "recharts";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartLegend,
@@ -69,11 +74,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart"
-import { KpiCard } from "@/components/ui/kpi-card"
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@/components/ui/chart";
+import { KpiCard } from "@/components/ui/kpi-card";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -81,17 +86,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
     maximumFractionDigits: 0,
-  }).format(value)
+  }).format(value);
 
 const formatNumber = (value: number) =>
-  new Intl.NumberFormat("pt-BR").format(value)
+  new Intl.NumberFormat("pt-BR").format(value);
 
 const greenPalette = {
   1: "#166534",
@@ -99,7 +104,7 @@ const greenPalette = {
   3: "#16a34a",
   4: "#22c55e",
   5: "#4ade80",
-}
+};
 
 // ── Dados Orçamentários e Financeiros ──────────────────────────────
 
@@ -112,23 +117,54 @@ const educacaoResumo = {
   escolas: 42,
   profissionaisEducacao: 1_680,
   fundeRecebido: 32_400_000,
-}
+};
 
 const despesasEducacao = [
-  { categoria: "Pessoal e Encargos", valor: 28_600_000, percentual: 67.6, fill: greenPalette[1] },
-  { categoria: "Alimentação Escolar", valor: 4_800_000, percentual: 11.3, fill: greenPalette[2] },
-  { categoria: "Transporte Escolar", valor: 3_900_000, percentual: 9.2, fill: greenPalette[3] },
-  { categoria: "Material Didático", valor: 2_800_000, percentual: 6.6, fill: greenPalette[4] },
-  { categoria: "Manutenção e Infraestrutura", valor: 2_200_000, percentual: 5.2, fill: greenPalette[5] },
-]
+  {
+    categoria: "Pessoal e Encargos",
+    valor: 28_600_000,
+    percentual: 67.6,
+    fill: greenPalette[1],
+  },
+  {
+    categoria: "Alimentação Escolar",
+    valor: 4_800_000,
+    percentual: 11.3,
+    fill: greenPalette[2],
+  },
+  {
+    categoria: "Transporte Escolar",
+    valor: 3_900_000,
+    percentual: 9.2,
+    fill: greenPalette[3],
+  },
+  {
+    categoria: "Material Didático",
+    valor: 2_800_000,
+    percentual: 6.6,
+    fill: greenPalette[4],
+  },
+  {
+    categoria: "Manutenção e Infraestrutura",
+    valor: 2_200_000,
+    percentual: 5.2,
+    fill: greenPalette[5],
+  },
+];
 
 const chartConfigDespesas = {
   "Pessoal e Encargos": { label: "Pessoal e Encargos", color: greenPalette[1] },
-  "Alimentação Escolar": { label: "Alimentação Escolar", color: greenPalette[2] },
+  "Alimentação Escolar": {
+    label: "Alimentação Escolar",
+    color: greenPalette[2],
+  },
   "Transporte Escolar": { label: "Transporte Escolar", color: greenPalette[3] },
   "Material Didático": { label: "Material Didático", color: greenPalette[4] },
-  "Manutenção e Infraestrutura": { label: "Manutenção e Infraestrutura", color: greenPalette[5] },
-} satisfies ChartConfig
+  "Manutenção e Infraestrutura": {
+    label: "Manutenção e Infraestrutura",
+    color: greenPalette[5],
+  },
+} satisfies ChartConfig;
 
 const receitasEducacao = [
   { fonte: "FUNDEB", valor: 32_400_000, percentual: 68.6 },
@@ -136,25 +172,97 @@ const receitasEducacao = [
   { fonte: "Salário-Educação (FNDE)", valor: 3_400_000, percentual: 7.2 },
   { fonte: "PNAE (Alimentação)", valor: 1_840_000, percentual: 3.9 },
   { fonte: "PNATE (Transporte)", valor: 1_360_000, percentual: 2.9 },
-]
+];
 
 const fontesRecursos = [
-  { codigo: "1.540", nome: "FUNDEB 70% - Magistério", saldo: 1_840_000, empenhado: 22_680_000, disponivel: 1_840_000 },
-  { codigo: "1.541", nome: "FUNDEB 30% - Outros", saldo: 960_000, empenhado: 9_720_000, disponivel: 960_000 },
-  { codigo: "1.550", nome: "MDE - Recursos Próprios", saldo: 680_000, empenhado: 7_520_000, disponivel: 680_000 },
-  { codigo: "1.553", nome: "Salário-Educação / FNDE", saldo: 420_000, empenhado: 2_980_000, disponivel: 420_000 },
-  { codigo: "1.560", nome: "PNAE - Alimentação", saldo: 240_000, empenhado: 1_600_000, disponivel: 240_000 },
-  { codigo: "1.561", nome: "PNATE - Transporte", saldo: 180_000, empenhado: 1_180_000, disponivel: 180_000 },
-]
+  {
+    codigo: "1.540",
+    nome: "FUNDEB 70% - Magistério",
+    saldo: 1_840_000,
+    empenhado: 22_680_000,
+    disponivel: 1_840_000,
+  },
+  {
+    codigo: "1.541",
+    nome: "FUNDEB 30% - Outros",
+    saldo: 960_000,
+    empenhado: 9_720_000,
+    disponivel: 960_000,
+  },
+  {
+    codigo: "1.550",
+    nome: "MDE - Recursos Próprios",
+    saldo: 680_000,
+    empenhado: 7_520_000,
+    disponivel: 680_000,
+  },
+  {
+    codigo: "1.553",
+    nome: "Salário-Educação / FNDE",
+    saldo: 420_000,
+    empenhado: 2_980_000,
+    disponivel: 420_000,
+  },
+  {
+    codigo: "1.560",
+    nome: "PNAE - Alimentação",
+    saldo: 240_000,
+    empenhado: 1_600_000,
+    disponivel: 240_000,
+  },
+  {
+    codigo: "1.561",
+    nome: "PNATE - Transporte",
+    saldo: 180_000,
+    empenhado: 1_180_000,
+    disponivel: 180_000,
+  },
+];
 
 const contasBancarias = [
-  { banco: "Banco do Brasil", agencia: "2345-6", conta: "23456-7", tipo: "FUNDEB 70%", saldo: 1_840_000 },
-  { banco: "Banco do Brasil", agencia: "2345-6", conta: "23457-5", tipo: "FUNDEB 30%", saldo: 960_000 },
-  { banco: "Caixa Econômica", agencia: "1234", conta: "00234-5", tipo: "MDE - Próprios", saldo: 680_000 },
-  { banco: "Banco do Brasil", agencia: "2345-6", conta: "23458-3", tipo: "Salário-Educação", saldo: 420_000 },
-  { banco: "Caixa Econômica", agencia: "1234", conta: "00235-3", tipo: "PNAE", saldo: 240_000 },
-  { banco: "Caixa Econômica", agencia: "1234", conta: "00236-1", tipo: "PNATE", saldo: 180_000 },
-]
+  {
+    banco: "Banco do Brasil",
+    agencia: "2345-6",
+    conta: "23456-7",
+    tipo: "FUNDEB 70%",
+    saldo: 1_840_000,
+  },
+  {
+    banco: "Banco do Brasil",
+    agencia: "2345-6",
+    conta: "23457-5",
+    tipo: "FUNDEB 30%",
+    saldo: 960_000,
+  },
+  {
+    banco: "Caixa Econômica",
+    agencia: "1234",
+    conta: "00234-5",
+    tipo: "MDE - Próprios",
+    saldo: 680_000,
+  },
+  {
+    banco: "Banco do Brasil",
+    agencia: "2345-6",
+    conta: "23458-3",
+    tipo: "Salário-Educação",
+    saldo: 420_000,
+  },
+  {
+    banco: "Caixa Econômica",
+    agencia: "1234",
+    conta: "00235-3",
+    tipo: "PNAE",
+    saldo: 240_000,
+  },
+  {
+    banco: "Caixa Econômica",
+    agencia: "1234",
+    conta: "00236-1",
+    tipo: "PNATE",
+    saldo: 180_000,
+  },
+];
 
 const evolucaoOrcamentaria = [
   { mes: "Jan", orcado: 5_200_000, empenhado: 5_000_000, pago: 4_600_000 },
@@ -165,109 +273,809 @@ const evolucaoOrcamentaria = [
   { mes: "Jun", orcado: 5_700_000, empenhado: 5_580_000, pago: 5_250_000 },
   { mes: "Jul", orcado: 5_750_000, empenhado: 5_620_000, pago: 5_300_000 },
   { mes: "Ago", orcado: 5_800_000, empenhado: 5_700_000, pago: 5_400_000 },
-]
+];
 
 const chartConfigEvolucao = {
   orcado: { label: "Orçado", color: greenPalette[5] },
   empenhado: { label: "Empenhado", color: greenPalette[3] },
   pago: { label: "Pago", color: greenPalette[1] },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 const detalhamentoDespesa = [
-  { grupo: "Ensino Fundamental", autorizado: 22_400_000, empenhado: 21_200_000, liquidado: 20_100_000, pago: 19_400_000 },
-  { grupo: "Educação Infantil", autorizado: 12_800_000, empenhado: 11_900_000, liquidado: 11_200_000, pago: 10_600_000 },
-  { grupo: "Transporte Escolar", autorizado: 4_200_000, empenhado: 3_900_000, liquidado: 3_600_000, pago: 3_500_000 },
-  { grupo: "Alimentação Escolar", autorizado: 3_600_000, empenhado: 3_400_000, liquidado: 3_200_000, pago: 3_100_000 },
-  { grupo: "Gestão e Administração", autorizado: 2_600_000, empenhado: 1_900_000, liquidado: 1_800_000, pago: 2_300_000 },
-]
+  {
+    grupo: "Ensino Fundamental",
+    autorizado: 22_400_000,
+    empenhado: 21_200_000,
+    liquidado: 20_100_000,
+    pago: 19_400_000,
+  },
+  {
+    grupo: "Educação Infantil",
+    autorizado: 12_800_000,
+    empenhado: 11_900_000,
+    liquidado: 11_200_000,
+    pago: 10_600_000,
+  },
+  {
+    grupo: "Transporte Escolar",
+    autorizado: 4_200_000,
+    empenhado: 3_900_000,
+    liquidado: 3_600_000,
+    pago: 3_500_000,
+  },
+  {
+    grupo: "Alimentação Escolar",
+    autorizado: 3_600_000,
+    empenhado: 3_400_000,
+    liquidado: 3_200_000,
+    pago: 3_100_000,
+  },
+  {
+    grupo: "Gestão e Administração",
+    autorizado: 2_600_000,
+    empenhado: 1_900_000,
+    liquidado: 1_800_000,
+    pago: 2_300_000,
+  },
+];
 
 const chartReceitasOrigem = {
   previsto: { label: "Previsto", color: greenPalette[4] },
   arrecadado: { label: "Arrecadado", color: greenPalette[1] },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 const receitasPorOrigem = [
   { origem: "FUNDEB", previsto: 33_800_000, arrecadado: 32_400_000 },
   { origem: "MDE Próprio", previsto: 8_600_000, arrecadado: 8_200_000 },
   { origem: "Sal.-Educação", previsto: 3_600_000, arrecadado: 3_400_000 },
   { origem: "PNAE/PNATE", previsto: 3_400_000, arrecadado: 3_200_000 },
-]
+];
 
 // ── Dados da Gestão da Educação ────────────────────────────────────
 
 const kpisEducacao = [
-  { indicador: "IDEB Anos Iniciais", valor: 6.2, meta: 6.0, unidade: "", status: "atingido" },
-  { indicador: "IDEB Anos Finais", valor: 5.1, meta: 5.5, unidade: "", status: "atencao" },
-  { indicador: "Taxa de Aprovação", valor: 94.8, meta: 95.0, unidade: "%", status: "atencao" },
-  { indicador: "Taxa de Evasão", valor: 1.8, meta: 2.0, unidade: "%", status: "atingido" },
-  { indicador: "Distorção Idade-Série", valor: 8.4, meta: 7.0, unidade: "%", status: "atencao" },
-  { indicador: "Alfabetização (2º ano)", valor: 78.5, meta: 80.0, unidade: "%", status: "atencao" },
-]
+  {
+    indicador: "IDEB Anos Iniciais",
+    valor: 6.2,
+    meta: 6.0,
+    unidade: "",
+    status: "atingido",
+  },
+  {
+    indicador: "IDEB Anos Finais",
+    valor: 5.1,
+    meta: 5.5,
+    unidade: "",
+    status: "atencao",
+  },
+  {
+    indicador: "Taxa de Aprovação",
+    valor: 94.8,
+    meta: 95.0,
+    unidade: "%",
+    status: "atencao",
+  },
+  {
+    indicador: "Taxa de Evasão",
+    valor: 1.8,
+    meta: 2.0,
+    unidade: "%",
+    status: "atingido",
+  },
+  {
+    indicador: "Distorção Idade-Série",
+    valor: 8.4,
+    meta: 7.0,
+    unidade: "%",
+    status: "atencao",
+  },
+  {
+    indicador: "Alfabetização (2º ano)",
+    valor: 78.5,
+    meta: 80.0,
+    unidade: "%",
+    status: "atencao",
+  },
+];
 
 const escolasPorModalidade = [
-  { modalidade: "CMEI (Creche e Pré-escola)", unidades: 14, alunos: 3_240, capacidade: 3_600, ocupacao: 90.0, profissionais: 280 },
-  { modalidade: "EMEF (Fundamental I)", unidades: 12, alunos: 6_480, capacidade: 7_200, ocupacao: 90.0, profissionais: 420 },
-  { modalidade: "EMEF (Fundamental II)", unidades: 8, alunos: 5_120, capacidade: 5_600, ocupacao: 91.4, profissionais: 380 },
-  { modalidade: "EJA (Jovens e Adultos)", unidades: 4, alunos: 1_840, capacidade: 2_400, ocupacao: 76.7, profissionais: 120 },
-  { modalidade: "Educação Especial/AEE", unidades: 2, alunos: 480, capacidade: 600, ocupacao: 80.0, profissionais: 86 },
-  { modalidade: "Escola Rural", unidades: 2, alunos: 1_260, capacidade: 1_400, ocupacao: 90.0, profissionais: 94 },
-]
+  {
+    modalidade: "CMEI (Creche e Pré-escola)",
+    unidades: 14,
+    alunos: 3_240,
+    capacidade: 3_600,
+    ocupacao: 90.0,
+    profissionais: 280,
+  },
+  {
+    modalidade: "EMEF (Fundamental I)",
+    unidades: 12,
+    alunos: 6_480,
+    capacidade: 7_200,
+    ocupacao: 90.0,
+    profissionais: 420,
+  },
+  {
+    modalidade: "EMEF (Fundamental II)",
+    unidades: 8,
+    alunos: 5_120,
+    capacidade: 5_600,
+    ocupacao: 91.4,
+    profissionais: 380,
+  },
+  {
+    modalidade: "EJA (Jovens e Adultos)",
+    unidades: 4,
+    alunos: 1_840,
+    capacidade: 2_400,
+    ocupacao: 76.7,
+    profissionais: 120,
+  },
+  {
+    modalidade: "Educação Especial/AEE",
+    unidades: 2,
+    alunos: 480,
+    capacidade: 600,
+    ocupacao: 80.0,
+    profissionais: 86,
+  },
+  {
+    modalidade: "Escola Rural",
+    unidades: 2,
+    alunos: 1_260,
+    capacidade: 1_400,
+    ocupacao: 90.0,
+    profissionais: 94,
+  },
+];
 
 const matriculasPorAno = [
-  { ano: "2020", infantil: 2_840, fundamental: 10_200, eja: 1_620, especial: 340 },
-  { ano: "2021", infantil: 2_920, fundamental: 10_400, eja: 1_580, especial: 360 },
-  { ano: "2022", infantil: 3_040, fundamental: 10_800, eja: 1_720, especial: 400 },
-  { ano: "2023", infantil: 3_140, fundamental: 11_200, eja: 1_780, especial: 440 },
-  { ano: "2024", infantil: 3_240, fundamental: 11_600, eja: 1_840, especial: 480 },
-]
+  {
+    ano: "2020",
+    infantil: 2_840,
+    fundamental: 10_200,
+    eja: 1_620,
+    especial: 340,
+  },
+  {
+    ano: "2021",
+    infantil: 2_920,
+    fundamental: 10_400,
+    eja: 1_580,
+    especial: 360,
+  },
+  {
+    ano: "2022",
+    infantil: 3_040,
+    fundamental: 10_800,
+    eja: 1_720,
+    especial: 400,
+  },
+  {
+    ano: "2023",
+    infantil: 3_140,
+    fundamental: 11_200,
+    eja: 1_780,
+    especial: 440,
+  },
+  {
+    ano: "2024",
+    infantil: 3_240,
+    fundamental: 11_600,
+    eja: 1_840,
+    especial: 480,
+  },
+];
 
 const chartMatriculas = {
   infantil: { label: "Ed. Infantil", color: greenPalette[1] },
   fundamental: { label: "Fundamental", color: greenPalette[3] },
-} satisfies ChartConfig
+  eja: { label: "EJA", color: greenPalette[4] },
+  especial: { label: "Ed. Especial", color: greenPalette[5] },
+} satisfies ChartConfig;
 
 const profissionaisEducacao = [
-  { categoria: "Professores Efetivos", quantidade: 680, formacaoSuperior: 94.2, mediaSalarial: 5_840 },
-  { categoria: "Professores Contratados", quantidade: 240, formacaoSuperior: 82.5, mediaSalarial: 3_200 },
-  { categoria: "Coordenadores Pedagógicos", quantidade: 48, formacaoSuperior: 100, mediaSalarial: 7_200 },
-  { categoria: "Diretores Escolares", quantidade: 42, formacaoSuperior: 100, mediaSalarial: 8_400 },
-  { categoria: "Apoio Pedagógico (AEE)", quantidade: 86, formacaoSuperior: 91.9, mediaSalarial: 4_600 },
-  { categoria: "Auxiliares e Administrativos", quantidade: 584, formacaoSuperior: 42.1, mediaSalarial: 2_200 },
-]
+  {
+    categoria: "Professores Efetivos",
+    quantidade: 680,
+    formacaoSuperior: 94.2,
+    mediaSalarial: 5_840,
+  },
+  {
+    categoria: "Professores Contratados",
+    quantidade: 240,
+    formacaoSuperior: 82.5,
+    mediaSalarial: 3_200,
+  },
+  {
+    categoria: "Coordenadores Pedagógicos",
+    quantidade: 48,
+    formacaoSuperior: 100,
+    mediaSalarial: 7_200,
+  },
+  {
+    categoria: "Diretores Escolares",
+    quantidade: 42,
+    formacaoSuperior: 100,
+    mediaSalarial: 8_400,
+  },
+  {
+    categoria: "Apoio Pedagógico (AEE)",
+    quantidade: 86,
+    formacaoSuperior: 91.9,
+    mediaSalarial: 4_600,
+  },
+  {
+    categoria: "Auxiliares e Administrativos",
+    quantidade: 584,
+    formacaoSuperior: 42.1,
+    mediaSalarial: 2_200,
+  },
+];
 
 const transporteEscolar = [
   { rota: "Rural Norte", veiculos: 4, alunos: 480, kmDia: 186, custo: 84_000 },
   { rota: "Rural Sul", veiculos: 3, alunos: 360, kmDia: 142, custo: 68_000 },
-  { rota: "Urbano Periferia", veiculos: 6, alunos: 1_240, kmDia: 210, custo: 96_000 },
+  {
+    rota: "Urbano Periferia",
+    veiculos: 6,
+    alunos: 1_240,
+    kmDia: 210,
+    custo: 96_000,
+  },
   { rota: "Distritos", veiculos: 2, alunos: 280, kmDia: 124, custo: 52_000 },
-  { rota: "Educação Especial", veiculos: 2, alunos: 120, kmDia: 98, custo: 44_000 },
-]
+  {
+    rota: "Educação Especial",
+    veiculos: 2,
+    alunos: 120,
+    kmDia: 98,
+    custo: 44_000,
+  },
+];
 
 const alimentacaoEscolar = [
-  { programa: "PNAE - Creche", refeicoesDia: 3_240, custoAluno: 1.07, cobertura: 100 },
-  { programa: "PNAE - Pré-escola", refeicoesDia: 2_480, custoAluno: 0.53, cobertura: 100 },
-  { programa: "PNAE - Fundamental", refeicoesDia: 11_600, custoAluno: 0.36, cobertura: 98.4 },
-  { programa: "PNAE - EJA", refeicoesDia: 1_420, custoAluno: 0.32, cobertura: 77.2 },
-  { programa: "Agricultura Familiar (30%)", refeicoesDia: 0, custoAluno: 0, cobertura: 42.8 },
-]
+  {
+    programa: "PNAE - Creche",
+    refeicoesDia: 3_240,
+    custoAluno: 1.07,
+    cobertura: 100,
+  },
+  {
+    programa: "PNAE - Pré-escola",
+    refeicoesDia: 2_480,
+    custoAluno: 0.53,
+    cobertura: 100,
+  },
+  {
+    programa: "PNAE - Fundamental",
+    refeicoesDia: 11_600,
+    custoAluno: 0.36,
+    cobertura: 98.4,
+  },
+  {
+    programa: "PNAE - EJA",
+    refeicoesDia: 1_420,
+    custoAluno: 0.32,
+    cobertura: 77.2,
+  },
+  {
+    programa: "Agricultura Familiar (30%)",
+    refeicoesDia: 0,
+    custoAluno: 0,
+    cobertura: 42.8,
+  },
+];
 
 const programasEducacionais = [
-  { programa: "PDDE (Dinheiro Direto)", escolas: 42, valor: 840_000, execucao: 91.4 },
-  { programa: "PNAE (Alimentação)", escolas: 42, valor: 1_840_000, execucao: 96.2 },
-  { programa: "PNATE (Transporte)", escolas: 28, valor: 1_360_000, execucao: 88.5 },
+  {
+    programa: "PDDE (Dinheiro Direto)",
+    escolas: 42,
+    valor: 840_000,
+    execucao: 91.4,
+  },
+  {
+    programa: "PNAE (Alimentação)",
+    escolas: 42,
+    valor: 1_840_000,
+    execucao: 96.2,
+  },
+  {
+    programa: "PNATE (Transporte)",
+    escolas: 28,
+    valor: 1_360_000,
+    execucao: 88.5,
+  },
   { programa: "Mais Educação", escolas: 18, valor: 640_000, execucao: 82.4 },
-  { programa: "Brasil Alfabetizado", escolas: 8, valor: 280_000, execucao: 74.2 },
-  { programa: "Educação Conectada", escolas: 32, valor: 420_000, execucao: 68.9 },
-]
+  {
+    programa: "Brasil Alfabetizado",
+    escolas: 8,
+    valor: 280_000,
+    execucao: 74.2,
+  },
+  {
+    programa: "Educação Conectada",
+    escolas: 32,
+    valor: 420_000,
+    execucao: 68.9,
+  },
+];
 
 const desempenhoEscolar = [
-  { escola: "EMEF Monteiro Lobato", ideb: 6.8, aprovacao: 97.2, evasao: 0.8, distorcao: 4.2 },
-  { escola: "EMEF Machado de Assis", ideb: 6.4, aprovacao: 96.1, evasao: 1.2, distorcao: 5.8 },
-  { escola: "EMEF Castro Alves", ideb: 5.9, aprovacao: 94.8, evasao: 1.6, distorcao: 7.4 },
-  { escola: "EMEF Cecília Meireles", ideb: 5.6, aprovacao: 93.4, evasao: 2.1, distorcao: 9.2 },
-  { escola: "EMEF Paulo Freire", ideb: 5.2, aprovacao: 92.8, evasao: 2.4, distorcao: 11.6 },
-  { escola: "EMEF Anísio Teixeira", ideb: 4.8, aprovacao: 91.2, evasao: 3.2, distorcao: 14.8 },
-]
+  {
+    escola: "EMEF Monteiro Lobato",
+    ideb: 6.8,
+    aprovacao: 97.2,
+    evasao: 0.8,
+    distorcao: 4.2,
+  },
+  {
+    escola: "EMEF Machado de Assis",
+    ideb: 6.4,
+    aprovacao: 96.1,
+    evasao: 1.2,
+    distorcao: 5.8,
+  },
+  {
+    escola: "EMEF Castro Alves",
+    ideb: 5.9,
+    aprovacao: 94.8,
+    evasao: 1.6,
+    distorcao: 7.4,
+  },
+  {
+    escola: "EMEF Cecília Meireles",
+    ideb: 5.6,
+    aprovacao: 93.4,
+    evasao: 2.1,
+    distorcao: 9.2,
+  },
+  {
+    escola: "EMEF Paulo Freire",
+    ideb: 5.2,
+    aprovacao: 92.8,
+    evasao: 2.4,
+    distorcao: 11.6,
+  },
+  {
+    escola: "EMEF Anísio Teixeira",
+    ideb: 4.8,
+    aprovacao: 91.2,
+    evasao: 3.2,
+    distorcao: 14.8,
+  },
+];
+
+// ── Dados do Censo e Matrículas ───────────────────────────────────
+
+const listaEsperaCreche = [
+  {
+    faixaEtaria: "0 a 1 ano",
+    inscritos: 342,
+    vagasDisponiveis: 180,
+    deficit: 162,
+    tempoMedioEspera: "8 meses",
+  },
+  {
+    faixaEtaria: "1 a 2 anos",
+    inscritos: 298,
+    vagasDisponiveis: 220,
+    deficit: 78,
+    tempoMedioEspera: "5 meses",
+  },
+  {
+    faixaEtaria: "2 a 3 anos",
+    inscritos: 264,
+    vagasDisponiveis: 240,
+    deficit: 24,
+    tempoMedioEspera: "2 meses",
+  },
+  {
+    faixaEtaria: "3 a 4 anos (pré-escola)",
+    inscritos: 186,
+    vagasDisponiveis: 210,
+    deficit: 0,
+    tempoMedioEspera: "—",
+  },
+];
+
+const fluxoEscolar = [
+  {
+    etapa: "1º ao 3º ano (Ciclo Alfab.)",
+    matriculas: 3420,
+    aprovados: 3318,
+    reprovados: 34,
+    abandonos: 68,
+    aprovacao: 97.0,
+    reprovacao: 1.0,
+    abandono: 2.0,
+  },
+  {
+    etapa: "4º e 5º ano",
+    matriculas: 3060,
+    aprovados: 2938,
+    reprovados: 92,
+    abandonos: 30,
+    aprovacao: 96.0,
+    reprovacao: 3.0,
+    abandono: 1.0,
+  },
+  {
+    etapa: "6º e 7º ano",
+    matriculas: 2680,
+    aprovados: 2493,
+    reprovados: 134,
+    abandonos: 53,
+    aprovacao: 93.0,
+    reprovacao: 5.0,
+    abandono: 2.0,
+  },
+  {
+    etapa: "8º e 9º ano",
+    matriculas: 2440,
+    aprovados: 2220,
+    reprovados: 147,
+    abandonos: 73,
+    aprovacao: 91.0,
+    reprovacao: 6.0,
+    abandono: 3.0,
+  },
+  {
+    etapa: "EJA - Fundamental",
+    matriculas: 1840,
+    aprovados: 1527,
+    reprovados: 92,
+    abandonos: 221,
+    aprovacao: 83.0,
+    reprovacao: 5.0,
+    abandono: 12.0,
+  },
+];
+
+// ── Dados de Frequência e Busca Ativa ─────────────────────────────
+
+const frequenciaEscolar = [
+  {
+    escola: "EMEF Monteiro Lobato",
+    totalAlunos: 840,
+    frequenciaMedia: 94.2,
+    infrequentes: 28,
+    criticos: 8,
+    ficaiEmitidos: 12,
+  },
+  {
+    escola: "EMEF Machado de Assis",
+    totalAlunos: 720,
+    frequenciaMedia: 92.8,
+    infrequentes: 34,
+    criticos: 12,
+    ficaiEmitidos: 18,
+  },
+  {
+    escola: "EMEF Castro Alves",
+    totalAlunos: 680,
+    frequenciaMedia: 91.4,
+    infrequentes: 42,
+    criticos: 15,
+    ficaiEmitidos: 22,
+  },
+  {
+    escola: "EMEF Cecília Meireles",
+    totalAlunos: 620,
+    frequenciaMedia: 89.6,
+    infrequentes: 48,
+    criticos: 18,
+    ficaiEmitidos: 28,
+  },
+  {
+    escola: "EMEF Paulo Freire",
+    totalAlunos: 580,
+    frequenciaMedia: 88.2,
+    infrequentes: 52,
+    criticos: 22,
+    ficaiEmitidos: 34,
+  },
+  {
+    escola: "EMEF Anísio Teixeira",
+    totalAlunos: 540,
+    frequenciaMedia: 86.8,
+    infrequentes: 58,
+    criticos: 26,
+    ficaiEmitidos: 42,
+  },
+];
+
+const buscaAtivaEscolar = {
+  alunosIdentificados: 284,
+  visitasRealizadas: 412,
+  alunosRetornaram: 198,
+  alunosEmAcompanhamento: 62,
+  encaminhamentosConselhoTutelar: 24,
+  taxaRetorno: 69.7,
+};
+
+const motivosInfrequencia = [
+  {
+    motivo: "Vulnerabilidade socioeconômica",
+    quantidade: 86,
+    percentual: 30.3,
+  },
+  { motivo: "Trabalho infantil", quantidade: 42, percentual: 14.8 },
+  { motivo: "Problemas de saúde", quantidade: 38, percentual: 13.4 },
+  { motivo: "Dificuldade de transporte", quantidade: 34, percentual: 12.0 },
+  { motivo: "Desinteresse/desmotivação", quantidade: 32, percentual: 11.3 },
+  { motivo: "Gravidez na adolescência", quantidade: 18, percentual: 6.3 },
+  { motivo: "Mudança de município", quantidade: 22, percentual: 7.7 },
+  { motivo: "Outros", quantidade: 12, percentual: 4.2 },
+];
+
+// ── Dados do PME, Infraestrutura e Formação ───────────────────────
+
+const metasPME = [
+  {
+    meta: 1,
+    descricao: "Universalizar Ed. Infantil (4-5 anos)",
+    indicador: 96.4,
+    metaValor: 100,
+    prazo: "2025",
+    status: "em andamento",
+  },
+  {
+    meta: 2,
+    descricao: "Universalizar Ensino Fundamental (6-14 anos)",
+    indicador: 98.2,
+    metaValor: 100,
+    prazo: "2025",
+    status: "em andamento",
+  },
+  {
+    meta: 3,
+    descricao: "Atender 50% das crianças de 0-3 anos em creches",
+    indicador: 38.4,
+    metaValor: 50,
+    prazo: "2025",
+    status: "atrasado",
+  },
+  {
+    meta: 5,
+    descricao: "Alfabetizar todas as crianças até o 3º ano",
+    indicador: 78.5,
+    metaValor: 100,
+    prazo: "2025",
+    status: "atrasado",
+  },
+  {
+    meta: 6,
+    descricao: "Oferecer educação integral em 50% das escolas",
+    indicador: 42.9,
+    metaValor: 50,
+    prazo: "2025",
+    status: "em andamento",
+  },
+  {
+    meta: 7,
+    descricao: "Atingir média 6.0 no IDEB (anos iniciais)",
+    indicador: 6.2,
+    metaValor: 6.0,
+    prazo: "2025",
+    status: "atingido",
+  },
+  {
+    meta: 8,
+    descricao: "Elevar escolaridade média (EJA)",
+    indicador: 7.2,
+    metaValor: 9.5,
+    prazo: "2025",
+    status: "atrasado",
+  },
+  {
+    meta: 15,
+    descricao: "Garantir pós-graduação para 50% dos professores",
+    indicador: 42.0,
+    metaValor: 50,
+    prazo: "2025",
+    status: "em andamento",
+  },
+  {
+    meta: 17,
+    descricao: "Valorizar profissionais do magistério (piso)",
+    indicador: 100,
+    metaValor: 100,
+    prazo: "2024",
+    status: "atingido",
+  },
+  {
+    meta: 19,
+    descricao: "Assegurar plano de carreira para profissionais",
+    indicador: 100,
+    metaValor: 100,
+    prazo: "2024",
+    status: "atingido",
+  },
+];
+
+const infraestruturaEscolar = [
+  {
+    item: "Acessibilidade (rampas/banheiros)",
+    escolasAdequadas: 28,
+    totalEscolas: 42,
+    percentual: 66.7,
+  },
+  {
+    item: "Biblioteca/Sala de Leitura",
+    escolasAdequadas: 34,
+    totalEscolas: 42,
+    percentual: 81.0,
+  },
+  {
+    item: "Laboratório de Informática",
+    escolasAdequadas: 26,
+    totalEscolas: 42,
+    percentual: 61.9,
+  },
+  {
+    item: "Internet Banda Larga",
+    escolasAdequadas: 32,
+    totalEscolas: 42,
+    percentual: 76.2,
+  },
+  {
+    item: "Quadra Poliesportiva",
+    escolasAdequadas: 22,
+    totalEscolas: 42,
+    percentual: 52.4,
+  },
+  {
+    item: "Cozinha Adequada (PNAE)",
+    escolasAdequadas: 38,
+    totalEscolas: 42,
+    percentual: 90.5,
+  },
+  {
+    item: "Parque Infantil (CMEIs)",
+    escolasAdequadas: 11,
+    totalEscolas: 14,
+    percentual: 78.6,
+  },
+  {
+    item: "Sala de AEE/Recursos",
+    escolasAdequadas: 18,
+    totalEscolas: 42,
+    percentual: 42.9,
+  },
+];
+
+const formacaoContinuada = [
+  {
+    programa: "PNAIC - Alfabetização",
+    profissionais: 180,
+    cargaHoraria: 120,
+    execucao: 92.4,
+    modalidade: "Presencial",
+  },
+  {
+    programa: "Educação Inclusiva/AEE",
+    profissionais: 86,
+    cargaHoraria: 80,
+    execucao: 88.6,
+    modalidade: "Híbrido",
+  },
+  {
+    programa: "Tecnologias Educacionais",
+    profissionais: 240,
+    cargaHoraria: 60,
+    execucao: 74.2,
+    modalidade: "EaD",
+  },
+  {
+    programa: "BNCC na Prática",
+    profissionais: 920,
+    cargaHoraria: 40,
+    execucao: 96.8,
+    modalidade: "Presencial",
+  },
+  {
+    programa: "Gestão Escolar",
+    profissionais: 90,
+    cargaHoraria: 100,
+    execucao: 82.0,
+    modalidade: "Híbrido",
+  },
+  {
+    programa: "Educação Socioemocional",
+    profissionais: 320,
+    cargaHoraria: 30,
+    execucao: 68.4,
+    modalidade: "EaD",
+  },
+];
+
+// ── Dados de Conselhos e Compliance ───────────────────────────────
+
+const conselhosEducacao = [
+  {
+    conselho: "Conselho Municipal de Educação (CME)",
+    membros: 12,
+    reunioesAno: 10,
+    reunioesRealizadas: 8,
+    situacao: "Regular",
+    mandatoAte: "2026",
+  },
+  {
+    conselho: "CACS-FUNDEB",
+    membros: 14,
+    reunioesAno: 12,
+    reunioesRealizadas: 10,
+    situacao: "Regular",
+    mandatoAte: "2025",
+  },
+  {
+    conselho: "Conselho de Alimentação Escolar (CAE)",
+    membros: 10,
+    reunioesAno: 10,
+    reunioesRealizadas: 9,
+    situacao: "Regular",
+    mandatoAte: "2026",
+  },
+  {
+    conselho: "Conselho Escolar (média)",
+    membros: 8,
+    reunioesAno: 6,
+    reunioesRealizadas: 4,
+    situacao: "Atenção",
+    mandatoAte: "2025",
+  },
+];
+
+const complianceLegal = [
+  {
+    obrigacao: "Aplicação mínima de 25% em MDE (Art. 212 CF)",
+    valor: "27,4%",
+    situacao: "Cumprido",
+    referencia: "CF Art. 212",
+  },
+  {
+    obrigacao: "FUNDEB 70% em remuneração do magistério",
+    valor: "73,2%",
+    situacao: "Cumprido",
+    referencia: "Lei 14.113/2020",
+  },
+  {
+    obrigacao: "Piso Nacional do Magistério",
+    valor: "R$ 4.580",
+    situacao: "Cumprido",
+    referencia: "Lei 11.738/2008",
+  },
+  {
+    obrigacao: "30% do PNAE em agricultura familiar",
+    valor: "12,8%",
+    situacao: "Descumprido",
+    referencia: "Lei 11.947/2009",
+  },
+  {
+    obrigacao: "Prestação de contas FUNDEB no prazo",
+    valor: "Em dia",
+    situacao: "Cumprido",
+    referencia: "Lei 14.113/2020",
+  },
+  {
+    obrigacao: "Censo Escolar atualizado",
+    valor: "Março/2024",
+    situacao: "Cumprido",
+    referencia: "Decreto 6.425/2008",
+  },
+  {
+    obrigacao: "Plano de Carreira do Magistério",
+    valor: "Vigente",
+    situacao: "Cumprido",
+    referencia: "LDB Art. 67",
+  },
+  {
+    obrigacao: "Chamada pública agricultura familiar",
+    valor: "1 de 3",
+    situacao: "Atenção",
+    referencia: "Res. FNDE 26/2013",
+  },
+];
 
 // ── Dados de Análise ───────────────────────────────────────────────
 
@@ -276,79 +1084,90 @@ const alertasEducacao = [
     tipo: "warning" as const,
     titulo: "IDEB dos anos finais abaixo da meta",
     badge: "Qualidade",
-    descricao: "IDEB de 5,1 nos anos finais está 0,4 pontos abaixo da meta de 5,5. Necessário reforço em Língua Portuguesa e Matemática.",
+    descricao:
+      "IDEB de 5,1 nos anos finais está 0,4 pontos abaixo da meta de 5,5. Necessário reforço em Língua Portuguesa e Matemática.",
   },
   {
     tipo: "warning" as const,
     titulo: "Compra da agricultura familiar abaixo de 30%",
     badge: "Alimentação",
-    descricao: "Apenas 42,8% da meta de 30% do PNAE está sendo cumprida com agricultura familiar. Risco de descumprimento legal.",
+    descricao:
+      "Apenas 42,8% da meta de 30% do PNAE está sendo cumprida com agricultura familiar. Risco de descumprimento legal.",
   },
   {
     tipo: "info" as const,
     titulo: "IDEB dos anos iniciais supera meta nacional",
     badge: "Desempenho",
-    descricao: "6,2 nos anos iniciais supera a meta de 6,0 e posiciona o município acima da média estadual de 5,8.",
+    descricao:
+      "6,2 nos anos iniciais supera a meta de 6,0 e posiciona o município acima da média estadual de 5,8.",
   },
   {
     tipo: "success" as const,
     titulo: "Taxa de evasão abaixo da meta estabelecida",
     badge: "Permanência",
-    descricao: "1,8% de evasão, abaixo da meta de 2,0%, demonstrando efetividade das políticas de busca ativa e permanência escolar.",
+    descricao:
+      "1,8% de evasão, abaixo da meta de 2,0%, demonstrando efetividade das políticas de busca ativa e permanência escolar.",
   },
-]
+];
 
 const alertasAnalise = [
   {
     tipo: "warning" as const,
     titulo: "Execução do FUNDEB 70% demanda aceleração",
     badge: "Orçamento",
-    descricao: "Restam R$ 1,84M a executar no FUNDEB 70% (magistério). Com prazo até dezembro, a secretaria precisa intensificar empenhos para evitar devolução de recursos.",
+    descricao:
+      "Restam R$ 1,84M a executar no FUNDEB 70% (magistério). Com prazo até dezembro, a secretaria precisa intensificar empenhos para evitar devolução de recursos.",
   },
   {
     tipo: "warning" as const,
     titulo: "Distorção idade-série acima da meta em 3 escolas",
     badge: "Qualidade",
-    descricao: "EMEF Cecília Meireles, Paulo Freire e Anísio Teixeira apresentam distorção acima de 9%, demandando programas de correção de fluxo e reforço escolar.",
+    descricao:
+      "EMEF Cecília Meireles, Paulo Freire e Anísio Teixeira apresentam distorção acima de 9%, demandando programas de correção de fluxo e reforço escolar.",
   },
   {
     tipo: "info" as const,
     titulo: "Programa Educação Conectada com baixa execução",
     badge: "Programas",
-    descricao: "Apenas 68,9% de execução no Educação Conectada. Necessário agilizar aquisição de equipamentos e contratação de conectividade.",
+    descricao:
+      "Apenas 68,9% de execução no Educação Conectada. Necessário agilizar aquisição de equipamentos e contratação de conectividade.",
   },
   {
     tipo: "success" as const,
     titulo: "PNAE com execução acima de 96%",
     badge: "Alimentação",
-    descricao: "A alimentação escolar mantém alta execução (96,2%) e cobertura de 98,4% no ensino fundamental, garantindo segurança alimentar dos alunos.",
+    descricao:
+      "A alimentação escolar mantém alta execução (96,2%) e cobertura de 98,4% no ensino fundamental, garantindo segurança alimentar dos alunos.",
   },
   {
     tipo: "warning" as const,
     titulo: "Transporte escolar rural com custos elevados",
     badge: "Transporte",
-    descricao: "Rotas rurais operam com custo médio de R$ 2,40/km/aluno, 35% acima da média estadual. Avaliar otimização de rotas e renovação da frota.",
+    descricao:
+      "Rotas rurais operam com custo médio de R$ 2,40/km/aluno, 35% acima da média estadual. Avaliar otimização de rotas e renovação da frota.",
   },
   {
     tipo: "info" as const,
     titulo: "Formação continuada dos professores em expansão",
     badge: "Recursos Humanos",
-    descricao: "94,2% dos professores efetivos possuem formação superior. Programa de pós-graduação em serviço atinge 42% do corpo docente.",
+    descricao:
+      "94,2% dos professores efetivos possuem formação superior. Programa de pós-graduação em serviço atinge 42% do corpo docente.",
   },
-]
+];
 
 const analiseExecutiva = {
   execucaoOrcamentaria: 92.8,
   aplicacaoMDE: 27.4,
   coberturaMatriculas: 94.2,
   idebMedio: 5.65,
-}
+};
 
 // ── Componente Principal ───────────────────────────────────────────
 
 export function Educacao() {
-  const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024")
-  const [modalidadeSelecionada, setModalidadeSelecionada] = React.useState("todas")
+  const [periodoSelecionado, setPeriodoSelecionado] = React.useState("2024");
+  const [modalidadeSelecionada, setModalidadeSelecionada] =
+    React.useState("todas");
 
   return (
     <div className="space-y-8">
@@ -358,11 +1177,15 @@ export function Educacao() {
             Gestão de Educação
           </h2>
           <p className="text-muted-foreground">
-            Controle orçamentário, financeiro e monitoramento da educação pública municipal
+            Controle orçamentário, financeiro e monitoramento da educação
+            pública municipal
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Select value={periodoSelecionado} onValueChange={setPeriodoSelecionado}>
+          <Select
+            value={periodoSelecionado}
+            onValueChange={setPeriodoSelecionado}
+          >
             <SelectTrigger className="w-[140px]">
               <SelectValue />
             </SelectTrigger>
@@ -372,7 +1195,10 @@ export function Educacao() {
               <SelectItem value="2022">2022</SelectItem>
             </SelectContent>
           </Select>
-          <Select value={modalidadeSelecionada} onValueChange={setModalidadeSelecionada}>
+          <Select
+            value={modalidadeSelecionada}
+            onValueChange={setModalidadeSelecionada}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue />
             </SelectTrigger>
@@ -384,10 +1210,18 @@ export function Educacao() {
             </SelectContent>
           </Select>
           <Button variant="outline" size="icon" className="size-8">
-            <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="size-4" />
+            <HugeiconsIcon
+              icon={FilterIcon}
+              strokeWidth={2}
+              className="size-4"
+            />
           </Button>
           <Button variant="outline" size="icon" className="size-8">
-            <HugeiconsIcon icon={RefreshIcon} strokeWidth={2} className="size-4" />
+            <HugeiconsIcon
+              icon={RefreshIcon}
+              strokeWidth={2}
+              className="size-4"
+            />
           </Button>
         </div>
       </div>
@@ -400,7 +1234,11 @@ export function Educacao() {
           borderColor="border-l-emerald-700"
           footer={
             <div className="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-300">
-              <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} className="size-4" />
+              <HugeiconsIcon
+                icon={ArrowUp01Icon}
+                strokeWidth={2}
+                className="size-4"
+              />
               Crescimento de 3,2% em relação ao ano anterior
             </div>
           }
@@ -434,7 +1272,14 @@ export function Educacao() {
           borderColor="border-l-emerald-700"
           footer={
             <>
-              <Progress value={((educacaoResumo.fundeRecebido / educacaoResumo.orcamentoTotal) * 100)} className="h-2" />
+              <Progress
+                value={
+                  (educacaoResumo.fundeRecebido /
+                    educacaoResumo.orcamentoTotal) *
+                  100
+                }
+                className="h-2"
+              />
               <p className="text-sm text-muted-foreground">
                 71% do orçamento total da educação
               </p>
@@ -447,19 +1292,34 @@ export function Educacao() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
+              <HugeiconsIcon
+                icon={ChartLineData02Icon}
+                strokeWidth={2}
+                className="size-5"
+              />
               Painel Executivo da Educação
             </CardTitle>
             <CardDescription>
-              Situação consolidada dos principais indicadores da educação pública municipal.
+              Situação consolidada dos principais indicadores da educação
+              pública municipal.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl border bg-muted/40 p-4">
-              <p className="text-sm text-muted-foreground">Orçamento Executado</p>
-              <p className="mt-2 text-3xl font-semibold">{((educacaoResumo.orcamentoEmpenhado / educacaoResumo.orcamentoTotal) * 100).toFixed(1)}%</p>
+              <p className="text-sm text-muted-foreground">
+                Orçamento Executado
+              </p>
+              <p className="mt-2 text-3xl font-semibold">
+                {(
+                  (educacaoResumo.orcamentoEmpenhado /
+                    educacaoResumo.orcamentoTotal) *
+                  100
+                ).toFixed(1)}
+                %
+              </p>
               <p className="mt-2 text-sm text-muted-foreground">
-                {formatCurrency(educacaoResumo.orcamentoEmpenhado)} de {formatCurrency(educacaoResumo.orcamentoTotal)}
+                {formatCurrency(educacaoResumo.orcamentoEmpenhado)} de{" "}
+                {formatCurrency(educacaoResumo.orcamentoTotal)}
               </p>
             </div>
             <div className="rounded-2xl border bg-muted/40 p-4">
@@ -470,7 +1330,9 @@ export function Educacao() {
               </p>
             </div>
             <div className="rounded-2xl border bg-muted/40 p-4">
-              <p className="text-sm text-muted-foreground">IDEB Médio Municipal</p>
+              <p className="text-sm text-muted-foreground">
+                IDEB Médio Municipal
+              </p>
               <p className="mt-2 text-3xl font-semibold">5,65</p>
               <p className="mt-2 text-sm text-muted-foreground">
                 Acima da média estadual de 5,3
@@ -482,7 +1344,11 @@ export function Educacao() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="size-5" />
+              <HugeiconsIcon
+                icon={InformationCircleIcon}
+                strokeWidth={2}
+                className="size-5"
+              />
               Alertas de Gestão
             </CardTitle>
             <CardDescription>
@@ -491,7 +1357,10 @@ export function Educacao() {
           </CardHeader>
           <CardContent className="space-y-3">
             {alertasEducacao.map((alerta) => (
-              <Alert key={alerta.titulo} variant={alerta.tipo === "warning" ? "destructive" : "default"}>
+              <Alert
+                key={alerta.titulo}
+                variant={alerta.tipo === "warning" ? "destructive" : "default"}
+              >
                 <AlertTitle className="flex flex-wrap items-center gap-2">
                   {alerta.titulo}
                   <Badge variant="outline">{alerta.badge}</Badge>
@@ -506,6 +1375,8 @@ export function Educacao() {
       <Tabs defaultValue="orcamento" className="w-full">
         <TabsList className="flex h-auto w-full flex-wrap gap-2 rounded-2xl p-2">
           <TabsTrigger value="orcamento">Orçamento e Finanças</TabsTrigger>
+          <TabsTrigger value="censo">Censo e Matrículas</TabsTrigger>
+          <TabsTrigger value="frequencia">Frequência e Busca Ativa</TabsTrigger>
           <TabsTrigger value="gestao">Gestão da Educação</TabsTrigger>
           <TabsTrigger value="analises">Análises</TabsTrigger>
         </TabsList>
@@ -516,23 +1387,43 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={Wallet01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Composição das Despesas
                 </CardTitle>
                 <CardDescription>
-                  Distribuição do orçamento da educação por categoria de despesa.
+                  Distribuição do orçamento da educação por categoria de
+                  despesa.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={chartConfigDespesas} className="mx-auto aspect-square max-h-[320px]">
+                <ChartContainer
+                  config={chartConfigDespesas}
+                  className="mx-auto aspect-square max-h-[320px]"
+                >
                   <PieChart>
-                    <ChartTooltip content={<ChartTooltipContent nameKey="categoria" hideLabel />} />
-                    <Pie data={despesasEducacao} dataKey="valor" nameKey="categoria" innerRadius={70} outerRadius={110}>
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent nameKey="categoria" hideLabel />
+                      }
+                    />
+                    <Pie
+                      data={despesasEducacao}
+                      dataKey="valor"
+                      nameKey="categoria"
+                      innerRadius={70}
+                      outerRadius={110}
+                    >
                       {despesasEducacao.map((item) => (
                         <Cell key={item.categoria} fill={item.fill} />
                       ))}
                     </Pie>
-                    <ChartLegend content={<ChartLegendContent nameKey="categoria" />} />
+                    <ChartLegend
+                      content={<ChartLegendContent nameKey="categoria" />}
+                    />
                   </PieChart>
                 </ChartContainer>
               </CardContent>
@@ -541,7 +1432,11 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={Calendar01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Evolução Orçamentária
                 </CardTitle>
                 <CardDescription>
@@ -550,14 +1445,47 @@ export function Educacao() {
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfigEvolucao}>
-                  <LineChart data={evolucaoOrcamentaria} margin={{ left: 12, right: 12 }}>
+                  <LineChart
+                    data={evolucaoOrcamentaria}
+                    margin={{ left: 12, right: 12 }}
+                  >
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="mes" tickLine={false} axisLine={false} />
-                    <YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `R$ ${(Number(value) / 1_000_000).toFixed(0)}M`} />
-                    <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
-                    <Line type="monotone" dataKey="orcado" stroke={greenPalette[5]} strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="empenhado" stroke={greenPalette[3]} strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="pago" stroke={greenPalette[1]} strokeWidth={2} dot={{ r: 3 }} />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(value) =>
+                        `R$ ${(Number(value) / 1_000_000).toFixed(0)}M`
+                      }
+                    />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value) => formatCurrency(Number(value))}
+                        />
+                      }
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="orcado"
+                      stroke={greenPalette[5]}
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="empenhado"
+                      stroke={greenPalette[3]}
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="pago"
+                      stroke={greenPalette[1]}
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                    />
                     <ChartLegend content={<ChartLegendContent />} />
                   </LineChart>
                 </ChartContainer>
@@ -569,23 +1497,59 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={MoneyReceiveSquareIcon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={MoneyReceiveSquareIcon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Receitas por Origem
                 </CardTitle>
                 <CardDescription>
-                  Comparativo entre previsão e arrecadação das principais fontes da educação.
+                  Comparativo entre previsão e arrecadação das principais fontes
+                  da educação.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={chartReceitasOrigem} className="h-[320px] w-full">
-                  <BarChart data={receitasPorOrigem} margin={{ left: 12, right: 12 }}>
+                <ChartContainer
+                  config={chartReceitasOrigem}
+                  className="h-[320px] w-full"
+                >
+                  <BarChart
+                    data={receitasPorOrigem}
+                    margin={{ left: 12, right: 12 }}
+                  >
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="origem" tickLine={false} axisLine={false} tickMargin={8} />
-                    <YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `R$ ${(Number(value) / 1_000_000).toFixed(1)}M`} />
-                    <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
+                    <XAxis
+                      dataKey="origem"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(value) =>
+                        `R$ ${(Number(value) / 1_000_000).toFixed(1)}M`
+                      }
+                    />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value) => formatCurrency(Number(value))}
+                        />
+                      }
+                    />
                     <ChartLegend content={<ChartLegendContent />} />
-                    <Bar dataKey="previsto" fill="var(--color-previsto)" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="arrecadado" fill="var(--color-arrecadado)" radius={[6, 6, 0, 0]} />
+                    <Bar
+                      dataKey="previsto"
+                      fill="var(--color-previsto)"
+                      radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="arrecadado"
+                      fill="var(--color-arrecadado)"
+                      radius={[6, 6, 0, 0]}
+                    />
                   </BarChart>
                 </ChartContainer>
               </CardContent>
@@ -594,7 +1558,11 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={MoneyReceiveSquareIcon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={MoneyReceiveSquareIcon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Receitas por Fonte
                 </CardTitle>
                 <CardDescription>
@@ -613,9 +1581,15 @@ export function Educacao() {
                   <TableBody>
                     {receitasEducacao.map((item) => (
                       <TableRow key={item.fonte}>
-                        <TableCell className="font-medium">{item.fonte}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.valor)}</TableCell>
-                        <TableCell className="text-right">{item.percentual.toFixed(1)}%</TableCell>
+                        <TableCell className="font-medium">
+                          {item.fonte}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.valor)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.percentual.toFixed(1)}%
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -628,7 +1602,11 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={Invoice01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Fontes de Recursos
                 </CardTitle>
                 <CardDescription>
@@ -648,10 +1626,18 @@ export function Educacao() {
                   <TableBody>
                     {fontesRecursos.map((item) => (
                       <TableRow key={item.codigo}>
-                        <TableCell className="font-mono text-sm">{item.codigo}</TableCell>
-                        <TableCell className="font-medium">{item.nome}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.empenhado)}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.disponivel)}</TableCell>
+                        <TableCell className="font-mono text-sm">
+                          {item.codigo}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {item.nome}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.empenhado)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.disponivel)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -662,7 +1648,9 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle>Detalhamento da Despesa por Bloco</CardTitle>
-                <CardDescription>Execução por grandes grupos da política de educação.</CardDescription>
+                <CardDescription>
+                  Execução por grandes grupos da política de educação.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -677,10 +1665,18 @@ export function Educacao() {
                   <TableBody>
                     {detalhamentoDespesa.map((item) => (
                       <TableRow key={item.grupo}>
-                        <TableCell className="font-medium">{item.grupo}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.autorizado)}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.empenhado)}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.pago)}</TableCell>
+                        <TableCell className="font-medium">
+                          {item.grupo}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.autorizado)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.empenhado)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.pago)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -692,7 +1688,11 @@ export function Educacao() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <HugeiconsIcon icon={BankIcon} strokeWidth={2} className="size-5" />
+                <HugeiconsIcon
+                  icon={BankIcon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
                 Contas Bancárias Vinculadas
               </CardTitle>
               <CardDescription>
@@ -713,11 +1713,17 @@ export function Educacao() {
                 <TableBody>
                   {contasBancarias.map((item, idx) => (
                     <TableRow key={idx}>
-                      <TableCell className="font-medium">{item.banco}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.banco}
+                      </TableCell>
                       <TableCell>{item.agencia}</TableCell>
-                      <TableCell className="font-mono text-sm">{item.conta}</TableCell>
+                      <TableCell className="font-mono text-sm">
+                        {item.conta}
+                      </TableCell>
                       <TableCell>{item.tipo}</TableCell>
-                      <TableCell className="text-right font-semibold">{formatCurrency(item.saldo)}</TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {formatCurrency(item.saldo)}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -726,8 +1732,802 @@ export function Educacao() {
           </Card>
         </TabsContent>
 
+        {/* ── Tab: Censo e Matrículas ── */}
+        <TabsContent value="censo" className="mt-6 space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <KpiCard
+              title="Total de Matrículas 2024"
+              icon={UserMultipleIcon}
+              value={formatNumber(18_420)}
+              borderColor="border-l-emerald-700"
+              footer={
+                <p className="text-sm text-muted-foreground">
+                  3.240 infantil, 11.600 fundamental, 1.840 EJA, 480 especial
+                </p>
+              }
+            />
+            <KpiCard
+              title="Lista de Espera Creche"
+              icon={Clock01Icon}
+              value="264 crianças"
+              borderColor="border-l-emerald-700"
+              footer={
+                <div className="flex items-center gap-2 text-sm text-amber-600">
+                  <HugeiconsIcon
+                    icon={Alert02Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  Deficit total de vagas (0-3 anos)
+                </div>
+              }
+            />
+            <KpiCard
+              title="Taxa de Cobertura 4-5 anos"
+              icon={AnalyticsUpIcon}
+              value="96,4%"
+              borderColor="border-l-emerald-700"
+              footer={
+                <>
+                  <Progress value={96.4} className="h-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Meta: universalização (100%)
+                  </p>
+                </>
+              }
+            />
+            <KpiCard
+              title="Taxa de Cobertura 6-14 anos"
+              icon={AnalyticsUpIcon}
+              value="98,2%"
+              borderColor="border-l-emerald-700"
+              footer={
+                <>
+                  <Progress value={98.2} className="h-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Meta: universalização (100%)
+                  </p>
+                </>
+              }
+            />
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={Clock01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
+                Lista de Espera — Creche (Lei 12.796/2013)
+              </CardTitle>
+              <CardDescription>
+                Demanda por vagas em creche por faixa etária. Deficit indica
+                necessidade de expansão da rede.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Faixa Etária</TableHead>
+                    <TableHead className="text-right">Inscritos</TableHead>
+                    <TableHead className="text-right">
+                      Vagas Disponíveis
+                    </TableHead>
+                    <TableHead className="text-right">Deficit</TableHead>
+                    <TableHead className="text-right">
+                      Tempo Médio de Espera
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {listaEsperaCreche.map((item) => (
+                    <TableRow key={item.faixaEtaria}>
+                      <TableCell className="font-medium">
+                        {item.faixaEtaria}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.inscritos)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.vagasDisponiveis)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.deficit > 0
+                              ? "font-semibold text-amber-600"
+                              : "text-emerald-600"
+                          }
+                        >
+                          {item.deficit > 0 ? item.deficit : "—"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.tempoMedioEspera}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={TaskDaily01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
+                Fluxo Escolar por Etapa
+              </CardTitle>
+              <CardDescription>
+                Taxas de aprovação, reprovação e abandono por etapa do ensino
+                fundamental e EJA.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Etapa</TableHead>
+                    <TableHead className="text-right">Matrículas</TableHead>
+                    <TableHead className="text-right">Aprovados</TableHead>
+                    <TableHead className="text-right">Reprovados</TableHead>
+                    <TableHead className="text-right">Abandonos</TableHead>
+                    <TableHead className="text-right">% Aprovação</TableHead>
+                    <TableHead className="text-right">% Abandono</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {fluxoEscolar.map((item) => (
+                    <TableRow key={item.etapa}>
+                      <TableCell className="font-medium">
+                        {item.etapa}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.matriculas)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.aprovados)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.reprovados)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.abandonos)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.aprovacao >= 95
+                              ? "text-emerald-600 font-semibold"
+                              : ""
+                          }
+                        >
+                          {item.aprovacao.toFixed(1)}%
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.abandono >= 5
+                              ? "font-semibold text-amber-600"
+                              : ""
+                          }
+                        >
+                          {item.abandono.toFixed(1)}%
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={BookOpen02Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Escolas por Modalidade
+                </CardTitle>
+                <CardDescription>
+                  Unidades escolares, matrículas e taxa de ocupação por
+                  modalidade de ensino.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Modalidade</TableHead>
+                      <TableHead className="text-right">Unidades</TableHead>
+                      <TableHead className="text-right">Alunos</TableHead>
+                      <TableHead className="text-right">Ocupação</TableHead>
+                      <TableHead className="text-right">
+                        Profissionais
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {escolasPorModalidade.map((item) => (
+                      <TableRow key={item.modalidade}>
+                        <TableCell className="font-medium">
+                          {item.modalidade}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.unidades}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(item.alunos)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span
+                            className={
+                              item.ocupacao > 90
+                                ? "font-semibold text-amber-600"
+                                : ""
+                            }
+                          >
+                            {item.ocupacao.toFixed(1)}%
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.profissionais}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={ChartLineData02Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Evolução de Matrículas
+                </CardTitle>
+                <CardDescription>
+                  Acompanhamento histórico de matrículas por modalidade de
+                  ensino.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer
+                  config={chartMatriculas}
+                  className="h-[320px] w-full"
+                >
+                  <BarChart
+                    data={matriculasPorAno}
+                    margin={{ left: 12, right: 12 }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="ano" tickLine={false} axisLine={false} />
+                    <YAxis tickLine={false} axisLine={false} />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value) => formatNumber(Number(value))}
+                        />
+                      }
+                    />
+                    <ChartLegend content={<ChartLegendContent />} />
+                    <Bar
+                      dataKey="infantil"
+                      fill="var(--color-infantil)"
+                      radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="fundamental"
+                      fill="var(--color-fundamental)"
+                      radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="eja"
+                      fill="var(--color-eja)"
+                      radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="especial"
+                      fill="var(--color-especial)"
+                      radius={[6, 6, 0, 0]}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* ── Tab: Frequência e Busca Ativa ── */}
+        <TabsContent value="frequencia" className="mt-6 space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <KpiCard
+              title="Alunos Infrequentes"
+              icon={Alert02Icon}
+              value={formatNumber(262)}
+              borderColor="border-l-emerald-700"
+              footer={
+                <div className="flex items-center gap-2 text-sm text-amber-600">
+                  <HugeiconsIcon
+                    icon={ArrowUp01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  Soma de alunos com frequência abaixo de 75%
+                </div>
+              }
+            />
+            <KpiCard
+              title="Alunos em Situação Crítica"
+              icon={AlertCircleIcon}
+              value={formatNumber(101)}
+              borderColor="border-l-emerald-700"
+              footer={
+                <p className="text-sm text-muted-foreground">
+                  Frequência abaixo de 50% ou mais de 15 faltas consecutivas
+                </p>
+              }
+            />
+            <KpiCard
+              title="FICAI Emitidos"
+              icon={Invoice01Icon}
+              value={formatNumber(156)}
+              borderColor="border-l-emerald-700"
+              footer={
+                <p className="text-sm text-muted-foreground">
+                  Fichas de Comunicação de Aluno Infrequente
+                </p>
+              }
+            />
+            <KpiCard
+              title="Taxa de Retorno (Busca Ativa)"
+              icon={Search01Icon}
+              value="69,7%"
+              borderColor="border-l-emerald-700"
+              footer={
+                <>
+                  <Progress value={69.7} className="h-2" />
+                  <p className="text-sm text-muted-foreground">
+                    198 de 284 alunos retornaram às aulas
+                  </p>
+                </>
+              }
+            />
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={Building01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
+                Frequência por Escola
+              </CardTitle>
+              <CardDescription>
+                Monitoramento da frequência escolar, alunos infrequentes e FICAI
+                emitidos por unidade.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Escola</TableHead>
+                    <TableHead className="text-right">Total Alunos</TableHead>
+                    <TableHead className="text-right">Freq. Média</TableHead>
+                    <TableHead className="text-right">Infrequentes</TableHead>
+                    <TableHead className="text-right">Críticos</TableHead>
+                    <TableHead className="text-right">FICAI</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {frequenciaEscolar.map((item) => (
+                    <TableRow key={item.escola}>
+                      <TableCell className="font-medium">
+                        {item.escola}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.totalAlunos)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.frequenciaMedia < 90
+                              ? "font-semibold text-amber-600"
+                              : "text-emerald-600"
+                          }
+                        >
+                          {item.frequenciaMedia.toFixed(1)}%
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.infrequentes}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.criticos > 15
+                              ? "font-semibold text-amber-600"
+                              : ""
+                          }
+                        >
+                          {item.criticos}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.ficaiEmitidos}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={Search01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Busca Ativa Escolar
+                </CardTitle>
+                <CardDescription>
+                  Programa de identificação e recuperação de alunos em situação
+                  de infrequência e evasão.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Alunos Identificados
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">
+                      {buscaAtivaEscolar.alunosIdentificados}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Visitas Realizadas
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">
+                      {buscaAtivaEscolar.visitasRealizadas}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Alunos Retornaram
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-emerald-600">
+                      {buscaAtivaEscolar.alunosRetornaram}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Em Acompanhamento
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">
+                      {buscaAtivaEscolar.alunosEmAcompanhamento}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Encaminhados ao Conselho Tutelar
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-amber-600">
+                      {buscaAtivaEscolar.encaminhamentosConselhoTutelar}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border bg-muted/40 p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Taxa de Retorno
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-emerald-600">
+                      {buscaAtivaEscolar.taxaRetorno}%
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={ChartLineData02Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Motivos de Infrequência
+                </CardTitle>
+                <CardDescription>
+                  Principais causas identificadas para infrequência escolar no
+                  município.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Motivo</TableHead>
+                      <TableHead className="text-right">Quantidade</TableHead>
+                      <TableHead className="text-right">%</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {motivosInfrequencia.map((item) => (
+                      <TableRow key={item.motivo}>
+                        <TableCell className="font-medium">
+                          {item.motivo}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.quantidade}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.percentual.toFixed(1)}%
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-foreground">
+              Alertas de Frequência
+            </h3>
+            <div className="grid gap-3 lg:grid-cols-3">
+              <Alert variant="destructive">
+                <HugeiconsIcon
+                  icon={Alert02Icon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                <AlertTitle>Faltas Consecutivas</AlertTitle>
+                <AlertDescription>
+                  42 alunos com mais de 15 faltas consecutivas
+                </AlertDescription>
+              </Alert>
+              <Alert variant="destructive">
+                <HugeiconsIcon
+                  icon={Alert02Icon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                <AlertTitle>Frequência Baixa</AlertTitle>
+                <AlertDescription>
+                  3 escolas com frequência média abaixo de 90%
+                </AlertDescription>
+              </Alert>
+              <Alert>
+                <HugeiconsIcon
+                  icon={InformationCircleIcon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                <AlertTitle>Busca Ativa</AlertTitle>
+                <AlertDescription>
+                  Programa de Busca Ativa recuperou 198 alunos no semestre
+                </AlertDescription>
+              </Alert>
+            </div>
+          </div>
+        </TabsContent>
+
         {/* ── Tab: Gestão da Educação ── */}
         <TabsContent value="gestao" className="mt-6 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={Flag01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
+                Plano Municipal de Educação (PME) — Metas
+              </CardTitle>
+              <CardDescription>
+                Acompanhamento das metas do PME com indicadores de execução e
+                prazo.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[60px]">Meta</TableHead>
+                    <TableHead>Descrição</TableHead>
+                    <TableHead className="text-right">Indicador</TableHead>
+                    <TableHead className="text-right">Meta</TableHead>
+                    <TableHead className="text-right">Prazo</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead className="w-[120px]">Progresso</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {metasPME.map((item) => (
+                    <TableRow key={item.meta}>
+                      <TableCell className="font-mono font-semibold">
+                        {item.meta}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {item.descricao}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.indicador}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.metaValor}
+                      </TableCell>
+                      <TableCell className="text-right">{item.prazo}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge
+                          variant={
+                            item.status === "atingido"
+                              ? "default"
+                              : item.status === "em andamento"
+                                ? "secondary"
+                                : "destructive"
+                          }
+                        >
+                          {item.status === "atingido"
+                            ? "Atingido"
+                            : item.status === "em andamento"
+                              ? "Em andamento"
+                              : "Atrasado"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Progress
+                          value={Math.min(
+                            (item.indicador / item.metaValor) * 100,
+                            100,
+                          )}
+                          className="h-2"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={Building01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Infraestrutura Escolar
+                </CardTitle>
+                <CardDescription>
+                  Adequação das escolas municipais quanto a itens de
+                  infraestrutura essencial.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Item</TableHead>
+                      <TableHead className="text-right">Adequadas</TableHead>
+                      <TableHead className="text-right">Total</TableHead>
+                      <TableHead className="text-right">%</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {infraestruturaEscolar.map((item) => (
+                      <TableRow key={item.item}>
+                        <TableCell className="font-medium">
+                          {item.item}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.escolasAdequadas}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.totalEscolas}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span
+                            className={
+                              item.percentual < 50
+                                ? "font-semibold text-amber-600"
+                                : item.percentual >= 80
+                                  ? "font-semibold text-emerald-600"
+                                  : ""
+                            }
+                          >
+                            {item.percentual.toFixed(1)}%
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={BookOpen02Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Formação Continuada
+                </CardTitle>
+                <CardDescription>
+                  Programas de capacitação e formação dos profissionais da
+                  educação.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {formacaoContinuada.map((item) => (
+                    <div key={item.programa} className="rounded-2xl border p-4">
+                      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <p className="font-medium">{item.programa}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {item.profissionais} profissionais •{" "}
+                            {item.cargaHoraria}h • {item.modalidade}
+                          </p>
+                        </div>
+                        <Badge
+                          variant={
+                            item.execucao >= 90
+                              ? "default"
+                              : item.execucao >= 75
+                                ? "secondary"
+                                : "destructive"
+                          }
+                        >
+                          {item.execucao.toFixed(1)}% execução
+                        </Badge>
+                      </div>
+                      <div className="mt-4">
+                        <div className="mb-1 flex items-center justify-between text-sm">
+                          <span>Execução do programa</span>
+                          <span>{item.execucao.toFixed(1)}%</span>
+                        </div>
+                        <Progress value={item.execucao} className="h-2" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {kpisEducacao.map((kpi) => (
               <KpiCard
@@ -743,93 +2543,46 @@ export function Educacao() {
                 footer={
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Meta: {kpi.meta}{kpi.unidade}</span>
-                      <Badge variant={kpi.status === "atingido" ? "default" : "secondary"}>
+                      <span className="text-muted-foreground">
+                        Meta: {kpi.meta}
+                        {kpi.unidade}
+                      </span>
+                      <Badge
+                        variant={
+                          kpi.status === "atingido" ? "default" : "secondary"
+                        }
+                      >
                         {kpi.status === "atingido" ? "Atingido" : "Atenção"}
                       </Badge>
                     </div>
-                    <Progress value={kpi.indicador === "Taxa de Evasão" || kpi.indicador === "Distorção Idade-Série" ? Math.min((kpi.meta / kpi.valor) * 100, 100) : (kpi.valor / kpi.meta) * 100} className="h-2" />
+                    <Progress
+                      value={
+                        kpi.indicador === "Taxa de Evasão" ||
+                        kpi.indicador === "Distorção Idade-Série"
+                          ? Math.min((kpi.meta / kpi.valor) * 100, 100)
+                          : (kpi.valor / kpi.meta) * 100
+                      }
+                      className="h-2"
+                    />
                   </div>
                 }
               />
             ))}
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={BookOpen02Icon} strokeWidth={2} className="size-5" />
-                  Escolas por Modalidade
-                </CardTitle>
-                <CardDescription>
-                  Unidades escolares, matrículas e taxa de ocupação por modalidade de ensino.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Modalidade</TableHead>
-                      <TableHead className="text-right">Unidades</TableHead>
-                      <TableHead className="text-right">Alunos</TableHead>
-                      <TableHead className="text-right">Ocupação</TableHead>
-                      <TableHead className="text-right">Profissionais</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {escolasPorModalidade.map((item) => (
-                      <TableRow key={item.modalidade}>
-                        <TableCell className="font-medium">{item.modalidade}</TableCell>
-                        <TableCell className="text-right">{item.unidades}</TableCell>
-                        <TableCell className="text-right">{formatNumber(item.alunos)}</TableCell>
-                        <TableCell className="text-right">
-                          <span className={item.ocupacao > 90 ? "font-semibold text-amber-600" : ""}>
-                            {item.ocupacao.toFixed(1)}%
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right">{item.profissionais}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={ChartLineData02Icon} strokeWidth={2} className="size-5" />
-                  Evolução de Matrículas
-                </CardTitle>
-                <CardDescription>
-                  Acompanhamento histórico de matrículas por modalidade de ensino.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartMatriculas} className="h-[320px] w-full">
-                  <BarChart data={matriculasPorAno} margin={{ left: 12, right: 12 }}>
-                    <CartesianGrid vertical={false} />
-                    <XAxis dataKey="ano" tickLine={false} axisLine={false} />
-                    <YAxis tickLine={false} axisLine={false} />
-                    <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatNumber(Number(value))} />} />
-                    <ChartLegend content={<ChartLegendContent />} />
-                    <Bar dataKey="infantil" fill="var(--color-infantil)" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="fundamental" fill="var(--color-fundamental)" radius={[6, 6, 0, 0]} />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </div>
-
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
+                <HugeiconsIcon
+                  icon={Target01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
                 Desempenho por Escola
               </CardTitle>
               <CardDescription>
-                Ranking das escolas municipais com indicadores de qualidade e fluxo escolar.
+                Ranking das escolas municipais com indicadores de qualidade e
+                fluxo escolar.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -846,20 +2599,44 @@ export function Educacao() {
                 <TableBody>
                   {desempenhoEscolar.map((item) => (
                     <TableRow key={item.escola}>
-                      <TableCell className="font-medium">{item.escola}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.escola}
+                      </TableCell>
                       <TableCell className="text-right">
-                        <span className={item.ideb >= 6.0 ? "font-semibold text-emerald-600" : item.ideb < 5.0 ? "font-semibold text-amber-600" : ""}>
+                        <span
+                          className={
+                            item.ideb >= 6.0
+                              ? "font-semibold text-emerald-600"
+                              : item.ideb < 5.0
+                                ? "font-semibold text-amber-600"
+                                : ""
+                          }
+                        >
                           {item.ideb.toFixed(1)}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right">{item.aprovacao.toFixed(1)}%</TableCell>
                       <TableCell className="text-right">
-                        <span className={item.evasao > 2.0 ? "font-semibold text-amber-600" : ""}>
+                        {item.aprovacao.toFixed(1)}%
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span
+                          className={
+                            item.evasao > 2.0
+                              ? "font-semibold text-amber-600"
+                              : ""
+                          }
+                        >
                           {item.evasao.toFixed(1)}%
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
-                        <span className={item.distorcao > 10 ? "font-semibold text-amber-600" : ""}>
+                        <span
+                          className={
+                            item.distorcao > 10
+                              ? "font-semibold text-amber-600"
+                              : ""
+                          }
+                        >
                           {item.distorcao.toFixed(1)}%
                         </span>
                       </TableCell>
@@ -874,11 +2651,16 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={UserMultipleIcon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={UserMultipleIcon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Profissionais da Educação
                 </CardTitle>
                 <CardDescription>
-                  Quadro de profissionais por categoria, formação e remuneração média.
+                  Quadro de profissionais por categoria, formação e remuneração
+                  média.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -887,17 +2669,29 @@ export function Educacao() {
                     <TableRow>
                       <TableHead>Categoria</TableHead>
                       <TableHead className="text-right">Qtd</TableHead>
-                      <TableHead className="text-right">Formação Sup.</TableHead>
-                      <TableHead className="text-right">Média Salarial</TableHead>
+                      <TableHead className="text-right">
+                        Formação Sup.
+                      </TableHead>
+                      <TableHead className="text-right">
+                        Média Salarial
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {profissionaisEducacao.map((item) => (
                       <TableRow key={item.categoria}>
-                        <TableCell className="font-medium">{item.categoria}</TableCell>
-                        <TableCell className="text-right">{item.quantidade}</TableCell>
-                        <TableCell className="text-right">{item.formacaoSuperior.toFixed(1)}%</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.mediaSalarial)}</TableCell>
+                        <TableCell className="font-medium">
+                          {item.categoria}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.quantidade}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.formacaoSuperior.toFixed(1)}%
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.mediaSalarial)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -908,11 +2702,16 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <HugeiconsIcon icon={Target01Icon} strokeWidth={2} className="size-5" />
+                  <HugeiconsIcon
+                    icon={Target01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
                   Programas Educacionais
                 </CardTitle>
                 <CardDescription>
-                  Execução dos programas federais e estaduais vinculados à educação.
+                  Execução dos programas federais e estaduais vinculados à
+                  educação.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -923,10 +2722,19 @@ export function Educacao() {
                         <div>
                           <p className="font-medium">{item.programa}</p>
                           <p className="text-sm text-muted-foreground">
-                            {item.escolas} escolas • Investimento: {formatCurrency(item.valor)}
+                            {item.escolas} escolas • Investimento:{" "}
+                            {formatCurrency(item.valor)}
                           </p>
                         </div>
-                        <Badge variant={item.execucao >= 90 ? "default" : item.execucao >= 75 ? "secondary" : "destructive"}>
+                        <Badge
+                          variant={
+                            item.execucao >= 90
+                              ? "default"
+                              : item.execucao >= 75
+                                ? "secondary"
+                                : "destructive"
+                          }
+                        >
                           {item.execucao.toFixed(1)}% execução
                         </Badge>
                       </div>
@@ -948,7 +2756,9 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle>Transporte Escolar</CardTitle>
-                <CardDescription>Monitoramento das rotas de transporte escolar municipal.</CardDescription>
+                <CardDescription>
+                  Monitoramento das rotas de transporte escolar municipal.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -964,11 +2774,21 @@ export function Educacao() {
                   <TableBody>
                     {transporteEscolar.map((item) => (
                       <TableRow key={item.rota}>
-                        <TableCell className="font-medium">{item.rota}</TableCell>
-                        <TableCell className="text-right">{item.veiculos}</TableCell>
-                        <TableCell className="text-right">{formatNumber(item.alunos)}</TableCell>
-                        <TableCell className="text-right">{item.kmDia}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.custo)}</TableCell>
+                        <TableCell className="font-medium">
+                          {item.rota}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.veiculos}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(item.alunos)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.kmDia}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.custo)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -979,14 +2799,18 @@ export function Educacao() {
             <Card>
               <CardHeader>
                 <CardTitle>Alimentação Escolar</CardTitle>
-                <CardDescription>Controle do Programa Nacional de Alimentação Escolar (PNAE).</CardDescription>
+                <CardDescription>
+                  Controle do Programa Nacional de Alimentação Escolar (PNAE).
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Programa</TableHead>
-                      <TableHead className="text-right">Refeições/Dia</TableHead>
+                      <TableHead className="text-right">
+                        Refeições/Dia
+                      </TableHead>
                       <TableHead className="text-right">Custo/Aluno</TableHead>
                       <TableHead className="text-right">Cobertura</TableHead>
                     </TableRow>
@@ -994,11 +2818,27 @@ export function Educacao() {
                   <TableBody>
                     {alimentacaoEscolar.map((item) => (
                       <TableRow key={item.programa}>
-                        <TableCell className="font-medium">{item.programa}</TableCell>
-                        <TableCell className="text-right">{item.refeicoesDia > 0 ? formatNumber(item.refeicoesDia) : "—"}</TableCell>
-                        <TableCell className="text-right">{item.custoAluno > 0 ? `R$ ${item.custoAluno.toFixed(2)}` : "—"}</TableCell>
+                        <TableCell className="font-medium">
+                          {item.programa}
+                        </TableCell>
                         <TableCell className="text-right">
-                          <span className={item.cobertura < 50 ? "font-semibold text-amber-600" : ""}>
+                          {item.refeicoesDia > 0
+                            ? formatNumber(item.refeicoesDia)
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.custoAluno > 0
+                            ? `R$ ${item.custoAluno.toFixed(2)}`
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span
+                            className={
+                              item.cobertura < 50
+                                ? "font-semibold text-amber-600"
+                                : ""
+                            }
+                          >
                             {item.cobertura.toFixed(1)}%
                           </span>
                         </TableCell>
@@ -1016,35 +2856,70 @@ export function Educacao() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <HugeiconsIcon icon={Calculator01Icon} strokeWidth={2} className="size-5" />
+                <HugeiconsIcon
+                  icon={Calculator01Icon}
+                  strokeWidth={2}
+                  className="size-5"
+                />
                 Resumo Analítico da Educação
               </CardTitle>
-              <CardDescription>Indicadores consolidados de gestão e qualidade da educação pública</CardDescription>
+              <CardDescription>
+                Indicadores consolidados de gestão e qualidade da educação
+                pública
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">Execução Orçamentária</p>
-                  <p className="text-3xl font-bold">{analiseExecutiva.execucaoOrcamentaria}%</p>
-                  <p className="text-xs text-muted-foreground">Meta: 98% até dez/2024</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Execução Orçamentária
+                  </p>
+                  <p className="text-3xl font-bold">
+                    {analiseExecutiva.execucaoOrcamentaria}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Meta: 98% até dez/2024
+                  </p>
                   <Badge variant="outline">Atenção</Badge>
                 </div>
                 <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">Aplicação em MDE</p>
-                  <p className="text-3xl font-bold">{analiseExecutiva.aplicacaoMDE}%</p>
-                  <p className="text-xs text-muted-foreground">Mínimo constitucional: 25%</p>
-                  <Badge variant="secondary" className="text-emerald-600">Atendido</Badge>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Aplicação em MDE
+                  </p>
+                  <p className="text-3xl font-bold">
+                    {analiseExecutiva.aplicacaoMDE}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Mínimo constitucional: 25%
+                  </p>
+                  <Badge variant="secondary" className="text-emerald-600">
+                    Atendido
+                  </Badge>
                 </div>
                 <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">Cobertura de Matrículas</p>
-                  <p className="text-3xl font-bold">{analiseExecutiva.coberturaMatriculas}%</p>
-                  <p className="text-xs text-muted-foreground">Demanda atendida no município</p>
-                  <Badge variant="secondary" className="text-emerald-600">Excelente</Badge>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Cobertura de Matrículas
+                  </p>
+                  <p className="text-3xl font-bold">
+                    {analiseExecutiva.coberturaMatriculas}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Demanda atendida no município
+                  </p>
+                  <Badge variant="secondary" className="text-emerald-600">
+                    Excelente
+                  </Badge>
                 </div>
                 <div className="space-y-2 rounded-lg bg-muted/50 p-4 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">IDEB Médio</p>
-                  <p className="text-3xl font-bold">{analiseExecutiva.idebMedio}</p>
-                  <p className="text-xs text-muted-foreground">Acima da média estadual (5,3)</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    IDEB Médio
+                  </p>
+                  <p className="text-3xl font-bold">
+                    {analiseExecutiva.idebMedio}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Acima da média estadual (5,3)
+                  </p>
                   <Badge variant="outline">Adequado</Badge>
                 </div>
               </div>
@@ -1055,18 +2930,42 @@ export function Educacao() {
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
-                  <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-5 text-primary" />
+                  <HugeiconsIcon
+                    icon={BulbIcon}
+                    strokeWidth={2}
+                    className="size-5 text-primary"
+                  />
                 </div>
                 <div>
-                  <CardTitle>Análise Inteligente da Gestão de Educação</CardTitle>
-                  <CardDescription>Insights gerados com base nos dados do exercício corrente</CardDescription>
+                  <CardTitle>
+                    Análise Inteligente da Gestão de Educação
+                  </CardTitle>
+                  <CardDescription>
+                    Insights gerados com base nos dados do exercício corrente
+                  </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="prose prose-sm dark:prose-invert max-w-none">
                 <p className="leading-relaxed text-foreground">
-                  A gestão educacional municipal apresenta <strong>desempenho consistente nos indicadores de qualidade e acesso</strong>. O IDEB dos anos iniciais alcança <strong>6,2</strong>, superando a meta de 6,0 e a média estadual de 5,8. O orçamento totaliza <strong>{formatCurrency(educacaoResumo.orcamentoTotal)}</strong>, com execução de <strong>92,8%</strong> e aplicação em MDE de <strong>27,4%</strong>, acima do mínimo constitucional de 25%. Pontos de atenção incluem o IDEB dos anos finais (5,1, abaixo da meta de 5,5), distorção idade-série em 3 escolas acima de 9%, e compra da agricultura familiar abaixo dos 30% exigidos pelo PNAE. A taxa de evasão de <strong>1,8%</strong> demonstra efetividade das políticas de permanência escolar.
+                  A gestão educacional municipal apresenta{" "}
+                  <strong>
+                    desempenho consistente nos indicadores de qualidade e acesso
+                  </strong>
+                  . O IDEB dos anos iniciais alcança <strong>6,2</strong>,
+                  superando a meta de 6,0 e a média estadual de 5,8. O orçamento
+                  totaliza{" "}
+                  <strong>
+                    {formatCurrency(educacaoResumo.orcamentoTotal)}
+                  </strong>
+                  , com execução de <strong>92,8%</strong> e aplicação em MDE de{" "}
+                  <strong>27,4%</strong>, acima do mínimo constitucional de 25%.
+                  Pontos de atenção incluem o IDEB dos anos finais (5,1, abaixo
+                  da meta de 5,5), distorção idade-série em 3 escolas acima de
+                  9%, e compra da agricultura familiar abaixo dos 30% exigidos
+                  pelo PNAE. A taxa de evasão de <strong>1,8%</strong> demonstra
+                  efetividade das políticas de permanência escolar.
                 </p>
               </div>
 
@@ -1076,38 +2975,77 @@ export function Educacao() {
                 <AccordionItem value="pontos-fortes">
                   <AccordionTrigger>
                     <div className="flex items-center gap-2">
-                      <HugeiconsIcon icon={Flag01Icon} strokeWidth={2} className="size-4 text-emerald-600" />
+                      <HugeiconsIcon
+                        icon={Flag01Icon}
+                        strokeWidth={2}
+                        className="size-4 text-emerald-600"
+                      />
                       <span>Pontos Fortes da Gestão Educacional</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-3 pl-6">
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                        <HugeiconsIcon
+                          icon={CheckmarkCircle02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">IDEB anos iniciais acima da meta:</strong>{" "}
-                          Com 6,2, o município supera a meta de 6,0 e posiciona-se acima da média estadual (5,8), evidenciando qualidade no ciclo de alfabetização e anos iniciais do fundamental.
+                          <strong className="text-foreground">
+                            IDEB anos iniciais acima da meta:
+                          </strong>{" "}
+                          Com 6,2, o município supera a meta de 6,0 e
+                          posiciona-se acima da média estadual (5,8),
+                          evidenciando qualidade no ciclo de alfabetização e
+                          anos iniciais do fundamental.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                        <HugeiconsIcon
+                          icon={CheckmarkCircle02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">Evasão escolar controlada:</strong>{" "}
-                          Taxa de 1,8% está abaixo da meta de 2,0%, demonstrando efetividade das políticas de busca ativa, acompanhamento pedagógico e suporte social às famílias.
+                          <strong className="text-foreground">
+                            Evasão escolar controlada:
+                          </strong>{" "}
+                          Taxa de 1,8% está abaixo da meta de 2,0%, demonstrando
+                          efetividade das políticas de busca ativa,
+                          acompanhamento pedagógico e suporte social às
+                          famílias.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                        <HugeiconsIcon
+                          icon={CheckmarkCircle02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">Aplicação em MDE acima do mínimo:</strong>{" "}
-                          27,4% da receita aplicada em Manutenção e Desenvolvimento do Ensino, superando o piso constitucional de 25% e garantindo conformidade legal e investimento contínuo.
+                          <strong className="text-foreground">
+                            Aplicação em MDE acima do mínimo:
+                          </strong>{" "}
+                          27,4% da receita aplicada em Manutenção e
+                          Desenvolvimento do Ensino, superando o piso
+                          constitucional de 25% e garantindo conformidade legal
+                          e investimento contínuo.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                        <HugeiconsIcon
+                          icon={CheckmarkCircle02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-emerald-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">PNAE com alta execução:</strong>{" "}
-                          96,2% de execução na alimentação escolar, com cobertura de 98,4% no ensino fundamental, garantindo segurança alimentar e nutricional dos estudantes.
+                          <strong className="text-foreground">
+                            PNAE com alta execução:
+                          </strong>{" "}
+                          96,2% de execução na alimentação escolar, com
+                          cobertura de 98,4% no ensino fundamental, garantindo
+                          segurança alimentar e nutricional dos estudantes.
                         </p>
                       </div>
                     </div>
@@ -1117,38 +3055,77 @@ export function Educacao() {
                 <AccordionItem value="pontos-atencao">
                   <AccordionTrigger>
                     <div className="flex items-center gap-2">
-                      <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 text-amber-600" />
+                      <HugeiconsIcon
+                        icon={AlertCircleIcon}
+                        strokeWidth={2}
+                        className="size-4 text-amber-600"
+                      />
                       <span>Pontos de Atenção</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-3 pl-6">
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                        <HugeiconsIcon
+                          icon={Alert02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-amber-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">IDEB dos anos finais abaixo da meta:</strong>{" "}
-                          5,1 contra meta de 5,5 indica necessidade de reforço pedagógico em Língua Portuguesa e Matemática nos 6º ao 9º anos, com foco em metodologias ativas e avaliação formativa.
+                          <strong className="text-foreground">
+                            IDEB dos anos finais abaixo da meta:
+                          </strong>{" "}
+                          5,1 contra meta de 5,5 indica necessidade de reforço
+                          pedagógico em Língua Portuguesa e Matemática nos 6º ao
+                          9º anos, com foco em metodologias ativas e avaliação
+                          formativa.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                        <HugeiconsIcon
+                          icon={Alert02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-amber-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">Distorção idade-série elevada:</strong>{" "}
-                          8,4% médio, com 3 escolas acima de 9%. EMEF Anísio Teixeira apresenta 14,8%, demandando programas de correção de fluxo, aceleração de aprendizagem e busca ativa de alunos com defasagem.
+                          <strong className="text-foreground">
+                            Distorção idade-série elevada:
+                          </strong>{" "}
+                          8,4% médio, com 3 escolas acima de 9%. EMEF Anísio
+                          Teixeira apresenta 14,8%, demandando programas de
+                          correção de fluxo, aceleração de aprendizagem e busca
+                          ativa de alunos com defasagem.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                        <HugeiconsIcon
+                          icon={Alert02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-amber-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">Agricultura familiar no PNAE insuficiente:</strong>{" "}
-                          Apenas 42,8% da meta de 30% está sendo cumprida. Necessário ampliar chamadas públicas, capacitar agricultores locais e diversificar cardápios com produtos regionais.
+                          <strong className="text-foreground">
+                            Agricultura familiar no PNAE insuficiente:
+                          </strong>{" "}
+                          Apenas 42,8% da meta de 30% está sendo cumprida.
+                          Necessário ampliar chamadas públicas, capacitar
+                          agricultores locais e diversificar cardápios com
+                          produtos regionais.
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="mt-0.5 size-4 shrink-0 text-amber-600" />
+                        <HugeiconsIcon
+                          icon={Alert02Icon}
+                          strokeWidth={2}
+                          className="mt-0.5 size-4 shrink-0 text-amber-600"
+                        />
                         <p className="text-sm text-muted-foreground">
-                          <strong className="text-foreground">Educação Conectada com baixa execução:</strong>{" "}
-                          68,9% de execução no programa Educação Conectada, com atrasos na aquisição de equipamentos e contratação de serviços de conectividade para as escolas rurais.
+                          <strong className="text-foreground">
+                            Educação Conectada com baixa execução:
+                          </strong>{" "}
+                          68,9% de execução no programa Educação Conectada, com
+                          atrasos na aquisição de equipamentos e contratação de
+                          serviços de conectividade para as escolas rurais.
                         </p>
                       </div>
                     </div>
@@ -1158,40 +3135,68 @@ export function Educacao() {
                 <AccordionItem value="recomendacoes">
                   <AccordionTrigger>
                     <div className="flex items-center gap-2">
-                      <HugeiconsIcon icon={BulbIcon} strokeWidth={2} className="size-4 text-blue-600" />
+                      <HugeiconsIcon
+                        icon={BulbIcon}
+                        strokeWidth={2}
+                        className="size-4 text-blue-600"
+                      />
                       <span>Recomendações Estratégicas</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-3 pl-6">
                       <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">1. Programa de Reforço nos Anos Finais</p>
+                        <p className="mb-1 text-sm font-medium text-foreground">
+                          1. Programa de Reforço nos Anos Finais
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Implementar programa de tutoria em Língua Portuguesa e Matemática para os 6º ao 9º anos, com foco nas escolas com IDEB abaixo de 5,5 e uso de avaliações diagnósticas bimestrais.
+                          Implementar programa de tutoria em Língua Portuguesa e
+                          Matemática para os 6º ao 9º anos, com foco nas escolas
+                          com IDEB abaixo de 5,5 e uso de avaliações
+                          diagnósticas bimestrais.
                         </p>
                       </div>
                       <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">2. Correção de Fluxo Escolar</p>
+                        <p className="mb-1 text-sm font-medium text-foreground">
+                          2. Correção de Fluxo Escolar
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Implantar turmas de aceleração de aprendizagem nas 3 escolas com distorção idade-série acima de 9%, priorizando EMEF Anísio Teixeira (14,8%) e Paulo Freire (11,6%).
+                          Implantar turmas de aceleração de aprendizagem nas 3
+                          escolas com distorção idade-série acima de 9%,
+                          priorizando EMEF Anísio Teixeira (14,8%) e Paulo
+                          Freire (11,6%).
                         </p>
                       </div>
                       <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">3. Ampliação da Agricultura Familiar</p>
+                        <p className="mb-1 text-sm font-medium text-foreground">
+                          3. Ampliação da Agricultura Familiar
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Realizar novas chamadas públicas com lotes menores e assistência técnica aos agricultores, visando atingir os 30% exigidos pelo PNAE e evitar sanções do FNDE.
+                          Realizar novas chamadas públicas com lotes menores e
+                          assistência técnica aos agricultores, visando atingir
+                          os 30% exigidos pelo PNAE e evitar sanções do FNDE.
                         </p>
                       </div>
                       <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">4. Aceleração do Educação Conectada</p>
+                        <p className="mb-1 text-sm font-medium text-foreground">
+                          4. Aceleração do Educação Conectada
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Priorizar a aquisição de equipamentos de TI e contratação de internet banda larga para as 10 escolas sem conectividade adequada, garantindo inclusão digital e uso pedagógico de tecnologias.
+                          Priorizar a aquisição de equipamentos de TI e
+                          contratação de internet banda larga para as 10 escolas
+                          sem conectividade adequada, garantindo inclusão
+                          digital e uso pedagógico de tecnologias.
                         </p>
                       </div>
                       <div className="rounded-lg border bg-blue-50/50 p-3 dark:bg-blue-950/20">
-                        <p className="mb-1 text-sm font-medium text-foreground">5. Execução Orçamentária do FUNDEB</p>
+                        <p className="mb-1 text-sm font-medium text-foreground">
+                          5. Execução Orçamentária do FUNDEB
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Acelerar empenho dos R$ 1,84M restantes do FUNDEB 70% até novembro para evitar devolução de recursos e garantir pagamento do piso do magistério conforme legislação vigente.
+                          Acelerar empenho dos R$ 1,84M restantes do FUNDEB 70%
+                          até novembro para evitar devolução de recursos e
+                          garantir pagamento do piso do magistério conforme
+                          legislação vigente.
                         </p>
                       </div>
                     </div>
@@ -1203,11 +3208,39 @@ export function Educacao() {
 
               <div className="rounded-lg border bg-muted/50 p-4">
                 <div className="flex gap-3">
-                  <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="mt-0.5 size-5 shrink-0 text-primary" />
+                  <HugeiconsIcon
+                    icon={InformationCircleIcon}
+                    strokeWidth={2}
+                    className="mt-0.5 size-5 shrink-0 text-primary"
+                  />
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-foreground">Conclusão Analítica</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Conclusão Analítica
+                    </p>
                     <p className="text-sm leading-relaxed text-muted-foreground">
-                      A gestão educacional municipal demonstra <strong className="text-foreground">solidez nos indicadores de acesso e permanência</strong>, com taxa de evasão controlada e IDEB dos anos iniciais acima da meta. Os principais desafios concentram-se na <strong className="text-foreground">melhoria da qualidade nos anos finais do fundamental</strong> (IDEB 5,1 vs. meta 5,5), <strong className="text-foreground">correção da distorção idade-série</strong> em 3 escolas críticas e <strong className="text-foreground">cumprimento da exigência de 30% de agricultura familiar no PNAE</strong>. A adoção das recomendações propostas — especialmente o programa de reforço nos anos finais, turmas de aceleração e ampliação da agricultura familiar — pode elevar significativamente a qualidade do ensino e garantir conformidade com as exigências legais e regulatórias.
+                      A gestão educacional municipal demonstra{" "}
+                      <strong className="text-foreground">
+                        solidez nos indicadores de acesso e permanência
+                      </strong>
+                      , com taxa de evasão controlada e IDEB dos anos iniciais
+                      acima da meta. Os principais desafios concentram-se na{" "}
+                      <strong className="text-foreground">
+                        melhoria da qualidade nos anos finais do fundamental
+                      </strong>{" "}
+                      (IDEB 5,1 vs. meta 5,5),{" "}
+                      <strong className="text-foreground">
+                        correção da distorção idade-série
+                      </strong>{" "}
+                      em 3 escolas críticas e{" "}
+                      <strong className="text-foreground">
+                        cumprimento da exigência de 30% de agricultura familiar
+                        no PNAE
+                      </strong>
+                      . A adoção das recomendações propostas — especialmente o
+                      programa de reforço nos anos finais, turmas de aceleração
+                      e ampliação da agricultura familiar — pode elevar
+                      significativamente a qualidade do ensino e garantir
+                      conformidade com as exigências legais e regulatórias.
                     </p>
                   </div>
                 </div>
@@ -1215,13 +3248,141 @@ export function Educacao() {
             </CardContent>
           </Card>
 
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={Agreement01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Conselhos de Controle Social
+                </CardTitle>
+                <CardDescription>
+                  Acompanhamento dos conselhos vinculados à política educacional
+                  do município.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Conselho</TableHead>
+                      <TableHead className="text-right">Membros</TableHead>
+                      <TableHead className="text-right">
+                        Reuniões Previstas
+                      </TableHead>
+                      <TableHead className="text-right">Realizadas</TableHead>
+                      <TableHead className="text-center">Situação</TableHead>
+                      <TableHead className="text-right">Mandato</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {conselhosEducacao.map((item) => (
+                      <TableRow key={item.conselho}>
+                        <TableCell className="font-medium">
+                          {item.conselho}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.membros}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.reunioesAno}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.reunioesRealizadas}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Badge
+                            variant={
+                              item.situacao === "Regular"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
+                            {item.situacao}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.mandatoAte}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <HugeiconsIcon
+                    icon={Shield01Icon}
+                    strokeWidth={2}
+                    className="size-5"
+                  />
+                  Compliance Legal e Regulatório
+                </CardTitle>
+                <CardDescription>
+                  Verificação do cumprimento das obrigações legais da educação
+                  municipal.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Obrigação</TableHead>
+                      <TableHead className="text-right">Valor</TableHead>
+                      <TableHead className="text-center">Situação</TableHead>
+                      <TableHead>Referência</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {complianceLegal.map((item) => (
+                      <TableRow key={item.obrigacao}>
+                        <TableCell className="font-medium">
+                          {item.obrigacao}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {item.valor}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Badge
+                            variant={
+                              item.situacao === "Cumprido"
+                                ? "default"
+                                : item.situacao === "Atenção"
+                                  ? "secondary"
+                                  : "destructive"
+                            }
+                          >
+                            {item.situacao}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {item.referencia}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-foreground">Alertas e Notificações</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              Alertas e Notificações
+            </h3>
             <div className="grid gap-3 lg:grid-cols-2">
               {alertasAnalise.map((alerta, index) => (
                 <Alert
                   key={index}
-                  variant={alerta.tipo === "warning" ? "destructive" : "default"}
+                  variant={
+                    alerta.tipo === "warning" ? "destructive" : "default"
+                  }
                 >
                   <HugeiconsIcon
                     icon={
@@ -1236,7 +3397,9 @@ export function Educacao() {
                   />
                   <AlertTitle className="flex items-center gap-2">
                     {alerta.titulo}
-                    <Badge variant="outline" className="text-xs">{alerta.badge}</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {alerta.badge}
+                    </Badge>
                   </AlertTitle>
                   <AlertDescription>{alerta.descricao}</AlertDescription>
                 </Alert>
@@ -1246,5 +3409,5 @@ export function Educacao() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
