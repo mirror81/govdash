@@ -15,7 +15,9 @@ import {
   MoneyBag02Icon,
   Building06Icon,
   CloudIcon,
+  Analytics01Icon,
 } from "@hugeicons/core-free-icons";
+import { AnaliseSaneamento } from "./analise-saneamento";
 
 export function Saneamento() {
   const [activeTab, setActiveTab] = useState("abastecimento");
@@ -37,7 +39,7 @@ export function Saneamento() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 h-auto p-1 bg-muted/50 rounded-lg">
+        <TabsList className="grid w-full grid-cols-6 h-auto p-1 bg-muted/50 rounded-lg">
           <TabsTrigger
             value="abastecimento"
             className="flex items-center gap-2 py-2.5"
@@ -70,6 +72,13 @@ export function Saneamento() {
             <HugeiconsIcon icon={CloudIcon} className="h-4 w-4" />
             <span className="hidden sm:inline">Drenagem</span>
           </TabsTrigger>
+          <TabsTrigger
+            value="analise"
+            className="flex items-center gap-2 py-2.5"
+          >
+            <HugeiconsIcon icon={Analytics01Icon} className="h-4 w-4" />
+            <span className="hidden sm:inline">Análise</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="abastecimento" className="mt-6">
@@ -90,6 +99,10 @@ export function Saneamento() {
 
         <TabsContent value="drenagem" className="mt-6">
           <DrenagemUrbana />
+        </TabsContent>
+
+        <TabsContent value="analise" className="mt-6">
+          <AnaliseSaneamento />
         </TabsContent>
       </Tabs>
     </div>

@@ -115,7 +115,7 @@ export function OrcamentoTreemapOrcado({ variant, title, description, itens, fmt
       </CardHeader>
       <CardContent>
         <ChartContainer config={treemapConfig} className="h-[320px] w-full">
-            <Treemap data={root} dataKey="size" nameKey="name" stroke="transparent" content={OrcadoTreemapCell}>
+            <Treemap data={root} dataKey="size" nameKey="name" stroke="transparent" content={OrcadoTreemapCell as unknown as React.ReactElement}>
             <Tooltip content={<TreemapTooltipContent fmtCurrency={fmtCurrency} />} />
           </Treemap>
         </ChartContainer>

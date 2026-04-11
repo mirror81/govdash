@@ -67,7 +67,7 @@ import {
   Clock01Icon,
   Building01Icon,
   Calendar01Icon,
-  MoneyDollarCircleIcon,
+  DollarCircleIcon,
   UserIcon,
   WaveIcon,
   Target01Icon,

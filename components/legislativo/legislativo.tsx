@@ -19,6 +19,8 @@ import {
   InvoiceIcon,
 } from "@hugeicons/core-free-icons";
 import { DATA_VEREADORES } from "@/lib/demo-legislativo";
+import { AnaliseLesgislativo } from "./analise-legislativo";
+import { Analytics01Icon } from "@hugeicons/core-free-icons";
 
 export function Legislativo() {
   const [activeTab, setActiveTab] = useState("vereadores");
@@ -40,7 +42,7 @@ export function Legislativo() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6 h-auto p-1 bg-muted/50 rounded-lg">
+        <TabsList className="grid w-full grid-cols-7 h-auto p-1 bg-muted/50 rounded-lg">
           <TabsTrigger
             value="vereadores"
             className="flex items-center gap-2 py-2.5"
@@ -77,6 +79,13 @@ export function Legislativo() {
             <span className="hidden sm:inline">Presenças</span>
           </TabsTrigger>
           <TabsTrigger
+            value="analise"
+            className="flex items-center gap-2 py-2.5"
+          >
+            <HugeiconsIcon icon={Analytics01Icon} className="h-4 w-4" />
+            <span className="hidden sm:inline">Análise</span>
+          </TabsTrigger>
+          <TabsTrigger
             value="despesas"
             className="flex items-center gap-2 py-2.5"
           >
@@ -107,6 +116,10 @@ export function Legislativo() {
 
         <TabsContent value="despesas" className="mt-6">
           <DespesasLegislativo />
+        </TabsContent>
+
+        <TabsContent value="analise" className="mt-6">
+          <AnaliseLesgislativo />
         </TabsContent>
       </Tabs>
     </div>

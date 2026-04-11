@@ -1772,7 +1772,7 @@ export function TributacaoMunicipal() {
                     content={
                       <ChartTooltipContent
                         indicator="line"
-                        formatter={(value: number) =>
+                        formatter={(value) =>
                           formatCurrency(value as number)
                         }
                       />
@@ -1928,7 +1928,7 @@ export function TributacaoMunicipal() {
                   <ChartTooltip
                     content={
                       <ChartTooltipContent
-                        formatter={(value: number) =>
+                        formatter={(value) =>
                           formatCurrency(value as number)
                         }
                       />
@@ -2063,7 +2063,7 @@ export function TributacaoMunicipal() {
                   <ChartTooltip
                     content={
                       <ChartTooltipContent
-                        formatter={(value: number) =>
+                        formatter={(value) =>
                           formatCurrency(value as number)
                         }
                       />
@@ -3556,7 +3556,7 @@ export function TributacaoMunicipal() {
                   <ChartTooltip
                     content={
                       <ChartTooltipContent
-                        formatter={(value: number) =>
+                        formatter={(value) =>
                           formatCurrency(value as number)
                         }
                       />
@@ -4455,7 +4455,7 @@ export function TributacaoMunicipal() {
                     <ChartTooltip
                       content={
                         <ChartTooltipContent
-                          formatter={(value: number) =>
+                          formatter={(value) =>
                             formatCurrency(value as number)
                           }
                         />
