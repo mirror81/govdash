@@ -1,7 +1,9 @@
 export const TOTAL_PARTICIPANTES_ATIVOS = 1247;
 export const TOTAL_APOSENTADOS = 368;
 export const TOTAL_PENSIONISTAS = 199;
-export const TOTAL_BENEFICIARIOS = TOTAL_APOSENTADOS + TOTAL_PENSIONISTAS;
+export const TOTAL_AUXILIOS = 64;
+export const TOTAL_BENEFICIARIOS =
+  TOTAL_APOSENTADOS + TOTAL_PENSIONISTAS + TOTAL_AUXILIOS;
 
 export const RECEITA_CONTRIBUICOES = 2_450_000;
 export const RECEITA_INVESTIMENTOS = 1_890_000;
@@ -21,7 +23,6 @@ export const RENTABILIDADE_ACUMULADA = 12.5;
 export const META_ATUARIAL = 6.0;
 
 export const INDICE_SOLVENCIA = 86.5;
-export const INDICE_COBERTURA = 91.2;
 
 export type CategoriaParticipante =
   | "Efetivo"
@@ -39,7 +40,9 @@ export type SituacaoBeneficio =
   | "Ativo"
   | "Suspenso"
   | "Cancelado"
-  | "Em Análise";
+  | "Em Análise"
+  | "Deferido"
+  | "Indeferido";
 
 export interface Participante {
   id: string;
@@ -83,14 +86,6 @@ export interface Beneficiario {
   valorTotal: number;
 }
 
-export interface Provento {
-  mes: string;
-  salario: number;
-  aposentadoria: number;
-  pensao: number;
-  Auxilio: number;
-}
-
 export interface DadosMensais {
   mes: string;
   receitas: number;
@@ -104,14 +99,6 @@ export interface ProjecaoAtuarial {
   passivo: number;
   resultado: number;
 }
-
-export const CORES_VERDE = {
-  verdeEscuro: "#059669",
-  verdeMedio: "#10B981",
-  verdeClaro: "#34D399",
-  verdeMuitoClaro: "#D1FAE5",
-  verdeSuave: "#6EE7B7",
-};
 
 export const DATA_PARTICIPANTES: Participante[] = [
   {
@@ -644,10 +631,108 @@ export function formatCurrencyCompact(value: number): string {
   return formatCurrency(value);
 }
 
-export function formatPercent(value: number): string {
-  return `${value.toFixed(1)}%`;
-}
-
 export function formatNumber(value: number): string {
   return new Intl.NumberFormat("pt-BR").format(value);
 }
+
+// Provisões por tipo (para DemonstrativoAtuarial)
+export const PROVISAO_APOSENTADORIAS = 32_500_000;
+export const PROVISAO_PENSOES = 14_200_000;
+export const PROVISAO_AUXILIOS = 2_200_000;
+
+// Distribuição etária dos participantes ativos
+export const DATA_DISTRIBUICAO_ETARIA = [
+  { faixa: "18-25", quantidade: 52 },
+  { faixa: "26-30", quantidade: 128 },
+  { faixa: "31-35", quantidade: 189 },
+  { faixa: "36-40", quantidade: 221 },
+  { faixa: "41-45", quantidade: 198 },
+  { faixa: "46-50", quantidade: 176 },
+  { faixa: "51-55", quantidade: 134 },
+  { faixa: "56-60", quantidade: 89 },
+  { faixa: "61-65", quantidade: 42 },
+  { faixa: "66+", quantidade: 18 },
+];
+
+// Carteira de investimentos por classe de ativo
+export const DATA_CARTEIRA_INVESTIMENTOS = [
+  {
+    classe: "Renda Fixa",
+    valor: 27_360_000,
+    percentual: 60.0,
+    meta: 60,
+    benchmarkAnual: 11.8,
+  },
+  {
+    classe: "Renda Variável",
+    valor: 6_840_000,
+    percentual: 15.0,
+    meta: 15,
+    benchmarkAnual: 18.2,
+  },
+  {
+    classe: "Fundos Imobiliários",
+    valor: 4_560_000,
+    percentual: 10.0,
+    meta: 10,
+    benchmarkAnual: 8.5,
+  },
+  {
+    classe: "Fundos Multimercado",
+    valor: 4_560_000,
+    percentual: 10.0,
+    meta: 10,
+    benchmarkAnual: 13.1,
+  },
+  {
+    classe: "Exterior",
+    valor: 2_280_000,
+    percentual: 5.0,
+    meta: 5,
+    benchmarkAnual: 15.4,
+  },
+];
+
+// Indicadores CRP e compliance
+export const CRP_VALIDADE = "2025-12-31";
+export const CRP_STATUS: "Regular" | "Irregular" | "Em Análise" = "Regular";
+export const CRP_NUMERO = "CRP-2025/001234";
+
+export const DATA_COMPLIANCE = [
+  {
+    item: "Envio do DAIR",
+    status: "Regular" as const,
+    prazo: "2025-03-31",
+    enviado: "2025-03-28",
+  },
+  {
+    item: "Envio do DRAA",
+    status: "Regular" as const,
+    prazo: "2025-03-31",
+    enviado: "2025-03-25",
+  },
+  {
+    item: "Repasse Contribuições",
+    status: "Regular" as const,
+    prazo: "Mensal até dia 20",
+    enviado: "Em dia",
+  },
+  {
+    item: "Prestação de Contas TCE",
+    status: "Regular" as const,
+    prazo: "2025-06-30",
+    enviado: "Pendente",
+  },
+  {
+    item: "Avaliação Atuarial",
+    status: "Regular" as const,
+    prazo: "2025-12-31",
+    enviado: "2025-01-15",
+  },
+  {
+    item: "Política de Investimentos",
+    status: "Regular" as const,
+    prazo: "2025-01-31",
+    enviado: "2025-01-10",
+  },
+];

@@ -27,6 +27,7 @@ import {
   DATA_RECEITAS_MENSAL,
   DATA_EVOLUCAO_BENEFICIARIOS,
   DATA_ORGAOS,
+  DATA_CARTEIRA_INVESTIMENTOS,
   formatCurrency,
   formatCurrencyCompact,
 } from "@/lib/demo-previdencia";
@@ -329,6 +330,43 @@ function DemonstrativoReceitas() {
   );
 }
 
+function CarteiraInvestimentos() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Carteira de Investimentos</CardTitle>
+        <CardDescription>Alocação por classe de ativo</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {DATA_CARTEIRA_INVESTIMENTOS.map(
+            ({ classe, valor, percentual, meta, benchmarkAnual }) => (
+              <div key={classe}>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{classe}</span>
+                  <span className="font-medium">
+                    {formatCurrencyCompact(valor)}
+                  </span>
+                </div>
+                <Progress
+                  value={percentual}
+                  className="h-3 [&>div]:bg-emerald-500"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>
+                    Alocação: {percentual}% (meta: {meta}%)
+                  </span>
+                  <span>Benchmark: {benchmarkAnual}% a.a.</span>
+                </div>
+              </div>
+            ),
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function EquilibrioFinanceiroCard() {
   const saldoMensal = RECEITA_TOTAL - DESPESA_TOTAL;
   const dependenciaInvestimentos =
@@ -344,12 +382,18 @@ function EquilibrioFinanceiroCard() {
           Separação entre custeio assistencial e administrativo
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-          <p className="text-sm font-medium text-emerald-800">
+      <CardContent className="grid gap-3 md:grid-cols-2">
+        <div
+          className={`rounded-lg border p-3 ${saldoMensal >= 0 ? "border-emerald-200 bg-emerald-50" : "border-red-200 bg-red-50"}`}
+        >
+          <p
+            className={`text-sm font-medium ${saldoMensal >= 0 ? "text-emerald-800" : "text-red-800"}`}
+          >
             Resultado do período
           </p>
-          <p className="text-sm text-emerald-700">
+          <p
+            className={`text-sm ${saldoMensal >= 0 ? "text-emerald-700" : "text-red-700"}`}
+          >
             O RPPS apresenta resultado de {formatCurrency(saldoMensal)} entre
             receitas e despesas, com a despesa administrativa mantida apartada
             da despesa com beneficiários.
@@ -462,6 +506,8 @@ export function AnaliseFinanceira() {
         <ContribuicoesPorOrgao />
         <DemonstrativoReceitas />
       </div>
+
+      <CarteiraInvestimentos />
 
       <EquilibrioFinanceiroCard />
     </div>

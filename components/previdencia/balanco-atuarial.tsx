@@ -12,7 +12,6 @@ import { KpiCard } from "@/components/ui/kpi-card";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import {
-  SALDO_FUNDO,
   PATRIMONIO_LIQUIDO,
   PROVISOES_MATEMATICAS,
   INDICE_SOLVENCIA,
@@ -20,6 +19,13 @@ import {
   META_ATUARIAL,
   DATA_PROJECAO_ATUARIAL,
   DATA_SOLVENCIA,
+  PROVISAO_APOSENTADORIAS,
+  PROVISAO_PENSOES,
+  PROVISAO_AUXILIOS,
+  CRP_VALIDADE,
+  CRP_STATUS,
+  CRP_NUMERO,
+  DATA_COMPLIANCE,
   formatCurrency,
   formatCurrencyCompact,
 } from "@/lib/demo-previdencia";
@@ -34,9 +40,6 @@ import {
 } from "@hugeicons/core-free-icons";
 
 function ProjecaoAtuarialChart() {
-  const maxAtivo = Math.max(...DATA_PROJECAO_ATUARIAL.map((d) => d.ativo));
-  const maxPassivo = Math.max(...DATA_PROJECAO_ATUARIAL.map((d) => d.passivo));
-
   return (
     <Card>
       <CardHeader>
@@ -99,7 +102,6 @@ function ProjecaoAtuarialChart() {
 
 function IndiceSolvencia() {
   const resultado = PATRIMONIO_LIQUIDO - PROVISOES_MATEMATICAS;
-  const cobertura = (PATRIMONIO_LIQUIDO / PROVISOES_MATEMATICAS) * 100;
 
   return (
     <Card>
@@ -152,7 +154,7 @@ function IndiceSolvencia() {
   );
 }
 
-function EvoluacaoSolvencia() {
+function EvolucaoSolvencia() {
   return (
     <Card>
       <CardHeader>
@@ -171,7 +173,9 @@ function EvoluacaoSolvencia() {
               >
                 <div
                   className={`w-full rounded-t transition-all ${indice >= 100 ? "bg-emerald-500" : "bg-yellow-500"}`}
-                  style={{ height: `${Math.min(indice - 80, 100)}px` }}
+                  style={{
+                    height: `${Math.max(((indice - 85) / (120 - 85)) * 180, 10)}px`,
+                  }}
                 />
                 <span className="text-xs text-muted-foreground">{ano}</span>
                 <span
@@ -234,15 +238,21 @@ function DemonstrativoAtuarial() {
             <div className="space-y-1 pl-4 border-l-2 border-muted">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Aposentadorias</span>
-                <span className="font-medium">R$ 32.500.000</span>
+                <span className="font-medium">
+                  {formatCurrency(PROVISAO_APOSENTADORIAS)}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Pensões</span>
-                <span className="font-medium">R$ 14.200.000</span>
+                <span className="font-medium">
+                  {formatCurrency(PROVISAO_PENSOES)}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Auxílios</span>
-                <span className="font-medium">R$ 2.200.000</span>
+                <span className="font-medium">
+                  {formatCurrency(PROVISAO_AUXILIOS)}
+                </span>
               </div>
             </div>
             <div className="flex justify-between font-medium pt-2 border-t">
@@ -420,7 +430,7 @@ function RiscoAtuarialCard() {
           Déficit corrente e horizonte de recuperação
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
           <p className="text-sm font-medium text-yellow-800">Exposição atual</p>
           <p className="text-sm text-yellow-700">
@@ -435,6 +445,61 @@ function RiscoAtuarialCard() {
             partir de {anoEquilibrio ?? "ano não estimado"}, exigindo disciplina
             no plano de custeio e na política de investimentos.
           </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function CrpComplianceCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">CRP e Compliance</CardTitle>
+        <CardDescription>
+          Certificado de Regularidade Previdenciária e obrigações
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="text-center p-3 rounded-lg bg-emerald-50 border border-emerald-200">
+            <p className="text-xs text-emerald-700 mb-1">Status CRP</p>
+            <p className="text-lg font-bold text-emerald-600">{CRP_STATUS}</p>
+          </div>
+          <div className="text-center p-3 rounded-lg bg-slate-50 border">
+            <p className="text-xs text-muted-foreground mb-1">Número</p>
+            <p className="text-sm font-bold">{CRP_NUMERO}</p>
+          </div>
+          <div className="text-center p-3 rounded-lg bg-slate-50 border">
+            <p className="text-xs text-muted-foreground mb-1">Validade</p>
+            <p className="text-sm font-bold">
+              {CRP_VALIDADE.split("-").reverse().join("/")}
+            </p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          {DATA_COMPLIANCE.map(({ item, status, prazo, enviado }) => (
+            <div
+              key={item}
+              className="flex items-center justify-between p-2 rounded hover:bg-muted/50"
+            >
+              <div>
+                <p className="text-sm font-medium">{item}</p>
+                <p className="text-xs text-muted-foreground">Prazo: {prazo}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">{enviado}</span>
+                <HugeiconsIcon
+                  icon={
+                    status === "Regular"
+                      ? CheckmarkCircle02Icon
+                      : AlertCircleIcon
+                  }
+                  className={`h-4 w-4 ${status === "Regular" ? "text-emerald-600" : "text-yellow-600"}`}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
@@ -531,7 +596,7 @@ export function BalancoAtuarial() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <ProjecaoAtuarialChart />
-        <EvoluacaoSolvencia />
+        <EvolucaoSolvencia />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -544,7 +609,10 @@ export function BalancoAtuarial() {
 
       <RiscoAtuarialCard />
 
-      <VariaveisAtuariais />
+      <div className="grid gap-6 lg:grid-cols-2">
+        <VariaveisAtuariais />
+        <CrpComplianceCard />
+      </div>
     </div>
   );
 }

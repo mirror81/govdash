@@ -29,6 +29,7 @@ import {
   DATA_PENSIONISTAS,
   DATA_BENEFICIARIOS,
   DATA_BENEFICIARIOS_MES,
+  DATA_DISTRIBUICAO_ETARIA,
   formatCurrency,
   formatNumber,
 } from "@/lib/demo-previdencia";
@@ -37,16 +38,8 @@ import {
   UserMultipleIcon,
   UserCheckIcon,
   WalletIcon,
-  TrendingUp,
 } from "@hugeicons/core-free-icons";
-
-function getInitials(nome: string) {
-  return nome
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
-}
+import { getInitials } from "@/lib/utils";
 
 function ComposicaoChart() {
   const total = TOTAL_BENEFICIARIOS;
@@ -292,6 +285,36 @@ function PensionistasTable() {
   );
 }
 
+function DistribuicaoEtariaChart() {
+  const max = Math.max(...DATA_DISTRIBUICAO_ETARIA.map((d) => d.quantidade));
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Distribuição Etária</CardTitle>
+        <CardDescription>Pirâmide dos participantes ativos</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-end gap-2 h-[200px]">
+          {DATA_DISTRIBUICAO_ETARIA.map(({ faixa, quantidade }) => (
+            <div
+              key={faixa}
+              className="flex-1 flex flex-col items-center gap-1"
+            >
+              <span className="text-xs font-medium">{quantidade}</span>
+              <div
+                className="w-full bg-emerald-500 rounded-t transition-all"
+                style={{ height: `${(quantidade / max) * 160}px` }}
+              />
+              <span className="text-xs text-muted-foreground">{faixa}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function PerfilPrevidenciarioCard() {
   const razaoDependencia = TOTAL_BENEFICIARIOS / TOTAL_PARTICIPANTES_ATIVOS;
   const mediaBeneficio =
@@ -311,7 +334,7 @@ function PerfilPrevidenciarioCard() {
           Estrutura atual da massa segurada e assistida
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
           <p className="text-sm font-medium text-emerald-800">
             Razão de dependência
@@ -338,6 +361,10 @@ function PerfilPrevidenciarioCard() {
 }
 
 export function GestaoBeneficios() {
+  const maxBeneficiariosMes = Math.max(
+    ...DATA_BENEFICIARIOS_MES.map((item) => item.quantidade),
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -405,10 +432,7 @@ export function GestaoBeneficios() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2 h-[200px]">
-              {DATA_BENEFICIARIOS_MES.map(({ mes, quantidade }, i) => {
-                const max = Math.max(
-                  ...DATA_BENEFICIARIOS_MES.map((d) => d.quantidade),
-                );
+              {DATA_BENEFICIARIOS_MES.map(({ mes, quantidade }) => {
                 return (
                   <div
                     key={mes}
@@ -417,7 +441,7 @@ export function GestaoBeneficios() {
                     <div
                       className="w-full bg-emerald-500 rounded-t transition-all"
                       style={{
-                        height: `${((quantidade - (max - 50)) / 50) * 160}px`,
+                        height: `${(quantidade / maxBeneficiariosMes) * 160}px`,
                       }}
                     />
                     <span className="text-xs text-muted-foreground">{mes}</span>
@@ -428,6 +452,8 @@ export function GestaoBeneficios() {
           </CardContent>
         </Card>
       </div>
+
+      <DistribuicaoEtariaChart />
 
       <PerfilPrevidenciarioCard />
 

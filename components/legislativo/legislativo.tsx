@@ -18,6 +18,7 @@ import {
   UserCheckIcon,
   InvoiceIcon,
 } from "@hugeicons/core-free-icons";
+import { DATA_VEREADORES } from "@/lib/demo-legislativo";
 
 export function Legislativo() {
   const [activeTab, setActiveTab] = useState("vereadores");
@@ -34,7 +35,7 @@ export function Legislativo() {
           </p>
         </div>
         <Badge variant="outline" className="text-lg px-4 py-2">
-          9 Vereadores
+          {DATA_VEREADORES.length} Vereadores
         </Badge>
       </div>
 

@@ -26,7 +26,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   CalendarIcon,
-  ClockIcon,
   FileValidationIcon,
   CheckmarkCircle02Icon,
   Cancel01Icon,
@@ -306,6 +305,56 @@ function DistribuicaoTipoChart() {
   );
 }
 
+function SessoesPorMesChart() {
+  const meses = [
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
+  ];
+  const countPorMes = meses.map((mes, i) => {
+    const mesNum = String(i + 1).padStart(2, "0");
+    const count = DATA_SESSOES_COMPLETO.filter(
+      (s) => s.data.slice(5, 7) === mesNum,
+    ).length;
+    return { mes, count };
+  });
+  const max = Math.max(...countPorMes.map((m) => m.count), 1);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Sessões por Mês</CardTitle>
+        <CardDescription>
+          Distribuição do calendário ao longo do ano
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-end gap-2 h-[200px]">
+          {countPorMes.map(({ mes, count }) => (
+            <div key={mes} className="flex-1 flex flex-col items-center gap-1">
+              <span className="text-xs font-medium">{count}</span>
+              <div
+                className="w-full bg-blue-500 rounded-t transition-all"
+                style={{ height: `${(count / max) * 160}px` }}
+              />
+              <span className="text-xs text-muted-foreground">{mes}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function Sessoes() {
   return (
     <div className="space-y-6">
@@ -322,7 +371,10 @@ export function Sessoes() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <SessoesTable />
-        <DistribuicaoTipoChart />
+        <div className="space-y-6">
+          <DistribuicaoTipoChart />
+          <SessoesPorMesChart />
+        </div>
       </div>
 
       <AgendaExecutivaCard />

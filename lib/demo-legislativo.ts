@@ -121,8 +121,6 @@ export const PartidoCores: Record<Partido, string> = {
   PODE: "#84CC16",
 };
 
-export const DATA_ATUAL = "2025";
-
 export const DATA_SESSOES = [
   {
     data: "2025-02-03",
@@ -645,67 +643,47 @@ export const DATA_COMISSOES: Comissao[] = [
 ];
 
 export const DATA_PRESENCAS: Presenca[] = [
+  // Sessão s01 - 2025-02-03 (7 presentes, 2 ausentes)
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v01",
-    vereadorNome: "Maria Silva Santos",
     presente: true,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v02",
-    vereadorNome: "José Carlos Pereira",
     presente: true,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v03",
-    vereadorNome: "Ana Paula Ferreira",
     presente: true,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v04",
-    vereadorNome: undefined,
     presente: false,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v05",
-    vereadorNome: "Carmen Lucia Costa",
     presente: true,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v06",
-    vereadorNome: "Paulo Roberto Almeida",
     presente: true,
   },
   {
     sessaoId: "s01",
     sessaoData: "2025-02-03",
     vereadorId: "v07",
-    vereadorNome: "Fernanda Lima Souza",
-    presente: false,
-  },
-  {
-    sessaoId: "s01",
-    sessaoData: "2025-02-03",
-    vereadorId: "v04",
-    vereadorNome: "Roberto Mendes Oliveira",
-    presente: false,
-  },
-  {
-    sessaoId: "s01",
-    sessaoData: "2025-02-03",
-    vereadorId: "v07",
-    vereadorNome: "Fernanda Lima Souza",
     presente: false,
   },
   {
@@ -715,6 +693,19 @@ export const DATA_PRESENCAS: Presenca[] = [
     presente: true,
   },
   {
+    sessaoId: "s01",
+    sessaoData: "2025-02-03",
+    vereadorId: "v09",
+    presente: true,
+  },
+  // Sessão s02 - 2025-02-17 (8 presentes, 1 ausente)
+  {
+    sessaoId: "s02",
+    sessaoData: "2025-02-17",
+    vereadorId: "v01",
+    presente: true,
+  },
+  {
     sessaoId: "s02",
     sessaoData: "2025-02-17",
     vereadorId: "v02",
@@ -729,8 +720,14 @@ export const DATA_PRESENCAS: Presenca[] = [
   {
     sessaoId: "s02",
     sessaoData: "2025-02-17",
-    vereadorId: "v05",
+    vereadorId: "v04",
     presente: true,
+  },
+  {
+    sessaoId: "s02",
+    sessaoData: "2025-02-17",
+    vereadorId: "v05",
+    presente: false,
   },
   {
     sessaoId: "s02",
@@ -756,6 +753,7 @@ export const DATA_PRESENCAS: Presenca[] = [
     vereadorId: "v09",
     presente: true,
   },
+  // Sessão s03 - 2025-03-03 (7 presentes, 2 ausentes)
   {
     sessaoId: "s03",
     sessaoData: "2025-03-03",
@@ -810,6 +808,7 @@ export const DATA_PRESENCAS: Presenca[] = [
     vereadorId: "v09",
     presente: false,
   },
+  // Sessão s04 - 2025-03-17 (8 presentes, 1 ausente)
   {
     sessaoId: "s04",
     sessaoData: "2025-03-17",
@@ -864,6 +863,7 @@ export const DATA_PRESENCAS: Presenca[] = [
     vereadorId: "v09",
     presente: true,
   },
+  // Sessão s05 - 2025-04-07 (7 presentes, 2 ausentes)
   {
     sessaoId: "s05",
     sessaoData: "2025-04-07",
@@ -918,265 +918,67 @@ export const DATA_PRESENCAS: Presenca[] = [
     vereadorId: "v09",
     presente: true,
   },
+];
+
+export interface DespesaCategoria {
+  nome: string;
+  empenhado: number;
+  liquidado: number;
+  pago: number;
+}
+
+export const DATA_DESPESAS_CATEGORIAS: DespesaCategoria[] = [
   {
-    sessaoId: "s01",
-    sessaoData: "2025-02-03",
-    vereadorId: "v09",
-    vereadorNome: "Marcos Antônio Ribeiro",
-    presente: true,
+    nome: "Pessoal e Encargos",
+    empenhado: 6_396_000,
+    liquidado: 6_200_000,
+    pago: 6_100_000,
   },
   {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v01",
-    vereadorNome: "Maria Silva Santos",
-    presente: true,
+    nome: "Diárias e Locomoção",
+    empenhado: 45_000,
+    liquidado: 42_000,
+    pago: 40_000,
   },
   {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v02",
-    vereadorNome: undefined,
-    presente: true,
+    nome: "Material de Consumo",
+    empenhado: 180_000,
+    liquidado: 165_000,
+    pago: 158_000,
   },
   {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v03",
-    vereadorNome: undefined,
-    presente: true,
+    nome: "Serviços de Terceiros",
+    empenhado: 2_100_000,
+    liquidado: 1_980_000,
+    pago: 1_900_000,
   },
   {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v04",
-    vereadorNome: "Roberto Mendes Oliveira",
-    presente: true,
+    nome: "Investimentos",
+    empenhado: 819_000,
+    liquidado: 750_000,
+    pago: 700_000,
   },
   {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v05",
-    vereadorNome: undefined,
-    presente: false,
+    nome: "Outras Despesas",
+    empenhado: 300_000,
+    liquidado: 280_000,
+    pago: 260_000,
   },
-  {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v06",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v07",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v08",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s02",
-    sessaoData: "2025-02-17",
-    vereadorId: "v09",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v01",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v02",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v03",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v04",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v05",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v06",
-    vereadorNome: undefined,
-    presente: false,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v07",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v08",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s03",
-    sessaoData: "2025-03-03",
-    vereadorId: "v09",
-    vereadorNome: undefined,
-    presente: false,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v01",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v02",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v03",
-    vereadorNome: undefined,
-    presente: false,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v04",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v05",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v06",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v07",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v08",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s04",
-    sessaoData: "2025-03-17",
-    vereadorId: "v09",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v01",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v02",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v03",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v04",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v05",
-    vereadorNome: undefined,
-    presente: false,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v06",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v07",
-    vereadorNome: undefined,
-    presente: false,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v08",
-    vereadorNome: undefined,
-    presente: true,
-  },
-  {
-    sessaoId: "s05",
-    sessaoData: "2025-04-07",
-    vereadorId: "v09",
-    vereadorNome: undefined,
-    presente: true,
-  },
+];
+
+export const DATA_DIARIAS_MES = [
+  { mes: "Jan", valor: 3500 },
+  { mes: "Fev", valor: 4200 },
+  { mes: "Mar", valor: 3800 },
+  { mes: "Abr", valor: 5100 },
+  { mes: "Mai", valor: 4500 },
+  { mes: "Jun", valor: 4000 },
+  { mes: "Jul", valor: 3200 },
+  { mes: "Ago", valor: 3800 },
+  { mes: "Set", valor: 4200 },
+  { mes: "Out", valor: 3500 },
+  { mes: "Nov", valor: 2800 },
+  { mes: "Dez", valor: 2400 },
 ];
 
 export function calcularPresencaVereador(vereadorId: string): number {

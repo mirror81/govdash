@@ -19,6 +19,8 @@ import {
   MEDIA_DIARIAS,
   GASTO_PESSOAL_PORCENTO,
   LIMITE_GASTO_PESSOAL,
+  DATA_DESPESAS_CATEGORIAS,
+  DATA_DIARIAS_MES,
   formatCurrency,
 } from "@/lib/demo-legislativo";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -104,47 +106,71 @@ function DespesasKpis() {
 }
 
 function ResumoDespesas() {
-  const categorias = [
-    {
-      nome: "Pessoal e Encargos",
-      valor: DESPESA_EMPENHADA_LEGISLATIVO * 0.65,
-      porcento: 65,
-    },
-    {
-      nome: "Diárias e Locomoção",
-      valor: TOTAL_DIARIAS_LEGISLATIVO,
-      porcento: 0.5,
-    },
-    { nome: "Material de Consumo", valor: 180000, porcento: 2 },
-    { nome: "Serviços de Terceiros", valor: 450000, porcento: 5 },
-    { nome: "Investimentos", valor: 280000, porcento: 3 },
-    { nome: "Outras Despesas", valor: 200000, porcento: 2.2 },
-  ];
+  const totalEmpenhado = DATA_DESPESAS_CATEGORIAS.reduce(
+    (acc, c) => acc + c.empenhado,
+    0,
+  );
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Composição das Despesas</CardTitle>
-        <CardDescription>Execução orçamentária por categoria</CardDescription>
+        <CardDescription>
+          Execução orçamentária por categoria — Empenhado / Liquidado / Pago
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {categorias.map(({ nome, valor, porcento }) => (
-            <div key={nome}>
-              <div className="flex justify-between text-sm mb-1">
-                <span>{nome}</span>
-                <span className="font-medium">{formatCurrency(valor)}</span>
+          {DATA_DESPESAS_CATEGORIAS.map(
+            ({ nome, empenhado, liquidado, pago }) => (
+              <div key={nome}>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{nome}</span>
+                  <span className="font-medium">
+                    {formatCurrency(empenhado)}
+                  </span>
+                </div>
+                <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-muted">
+                  <div
+                    className="bg-blue-500 rounded-l"
+                    style={{ width: `${(empenhado / totalEmpenhado) * 100}%` }}
+                    title={`Empenhado: ${formatCurrency(empenhado)}`}
+                  />
+                </div>
+                <div className="flex gap-3 text-xs text-muted-foreground mt-1">
+                  <span>Emp. {formatCurrency(empenhado)}</span>
+                  <span>Liq. {formatCurrency(liquidado)}</span>
+                  <span>Pago {formatCurrency(pago)}</span>
+                </div>
               </div>
-              <Progress value={porcento} className="h-2" />
-            </div>
-          ))}
+            ),
+          )}
         </div>
         <Separator className="my-4" />
-        <div className="flex justify-between">
-          <span className="font-semibold">Total Empenhado</span>
-          <span className="font-bold">
-            {formatCurrency(DESPESA_EMPENHADA_LEGISLATIVO)}
-          </span>
+        <div className="space-y-1">
+          <div className="flex justify-between text-sm">
+            <span className="font-semibold">Total Empenhado</span>
+            <span className="font-bold">{formatCurrency(totalEmpenhado)}</span>
+          </div>
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>Total Liquidado</span>
+            <span>
+              {formatCurrency(
+                DATA_DESPESAS_CATEGORIAS.reduce(
+                  (acc, c) => acc + c.liquidado,
+                  0,
+                ),
+              )}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>Total Pago</span>
+            <span>
+              {formatCurrency(
+                DATA_DESPESAS_CATEGORIAS.reduce((acc, c) => acc + c.pago, 0),
+              )}
+            </span>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -152,22 +178,7 @@ function ResumoDespesas() {
 }
 
 function DiariasPorMesChart() {
-  const meses = [
-    { mes: "Jan", valor: 3500 },
-    { mes: "Fev", valor: 4200 },
-    { mes: "Mar", valor: 3800 },
-    { mes: "Abr", valor: 5100 },
-    { mes: "Mai", valor: 4500 },
-    { mes: "Jun", valor: 4000 },
-    { mes: "Jul", valor: 3200 },
-    { mes: "Ago", valor: 3800 },
-    { mes: "Set", valor: 4200 },
-    { mes: "Out", valor: 3500 },
-    { mes: "Nov", valor: 2800 },
-    { mes: "Dez", valor: 2400 },
-  ];
-
-  const maxValor = Math.max(...meses.map((m) => m.valor));
+  const maxValor = Math.max(...DATA_DIARIAS_MES.map((m) => m.valor));
 
   return (
     <Card>
@@ -177,7 +188,7 @@ function DiariasPorMesChart() {
       </CardHeader>
       <CardContent>
         <div className="flex items-end gap-2 h-[200px]">
-          {meses.map(({ mes, valor }) => (
+          {DATA_DIARIAS_MES.map(({ mes, valor }) => (
             <div key={mes} className="flex-1 flex flex-col items-center gap-1">
               <div
                 className="w-full bg-orange-500 rounded-t transition-all"
@@ -252,7 +263,7 @@ function PainelExecutivoFinanceiro() {
           Separação do orçamento próprio do Legislativo
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
           <p className="text-sm font-medium text-emerald-800">
             Estrutura de gasto

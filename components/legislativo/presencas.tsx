@@ -16,20 +16,13 @@ import {
   calcularPresencaVereador,
   calcularPresencaGeral,
 } from "@/lib/demo-legislativo";
+import { getInitials } from "@/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserCheckIcon,
   UserMultipleIcon,
   TrendingUp,
 } from "@hugeicons/core-free-icons";
-
-function getInitials(nome: string) {
-  return nome
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
-}
 
 function VereadorPresencaCard({
   vereadorId,

@@ -26,6 +26,7 @@ import {
   type Partido,
   type Vereador,
 } from "@/lib/demo-legislativo";
+import { getInitials } from "@/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserIcon,
@@ -65,11 +66,7 @@ function CargoBadge({ cargo }: { cargo: string }) {
 }
 
 function VereadorCard({ vereador }: { vereador: Vereador }) {
-  const initials = vereador.nome
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
+  const initials = getInitials(vereador.nome);
 
   return (
     <Card className="overflow-hidden">
@@ -127,7 +124,7 @@ function VereadoresKpis() {
       <KpiCard
         title="Mesa Diretora"
         icon={CalendarIcon}
-        value={4}
+        value={Object.keys(MESA_DIRETORA).length}
         borderColor="border-l-amber-500"
         footer={
           <p className="text-xs text-muted-foreground">
@@ -163,7 +160,7 @@ function ObservacoesPlenarioCard() {
           Aspectos institucionais relevantes para governança
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="grid gap-3 md:grid-cols-3">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
           <p className="text-sm font-medium text-emerald-800">
             Mandato em início de ciclo
@@ -198,13 +195,6 @@ function ObservacoesPlenarioCard() {
 function MesaDiretoraCard() {
   const { presidente, vice, primeiraSecretaria, segundaSecretaria } =
     MESA_DIRETORA;
-
-  const getInitials = (nome: string) =>
-    nome
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .slice(0, 2);
 
   const membros = [
     { cargo: "Presidente", pessoa: presidente },
@@ -245,7 +235,7 @@ function VereadoresTable() {
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Lista de Vereadores</CardTitle>
-        <CardDescription>Composicão da Câmara Municipal</CardDescription>
+        <CardDescription>Composição da Câmara Municipal</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
@@ -297,8 +287,10 @@ function ComposicaoPartidoChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Composicão por Partido</CardTitle>
-        <CardDescription>Distribuição dos 9 vereadores</CardDescription>
+        <CardTitle className="text-lg">Composição por Partido</CardTitle>
+        <CardDescription>
+          Distribuição dos {DATA_VEREADORES.length} vereadores
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -331,7 +323,7 @@ export function Vereadores() {
       <div className="flex items-center gap-2">
         <h2 className="text-2xl font-bold tracking-tight">Vereadores</h2>
         <Badge variant="outline" className="ml-2">
-          9 membros
+          {DATA_VEREADORES.length} membros
         </Badge>
       </div>
 

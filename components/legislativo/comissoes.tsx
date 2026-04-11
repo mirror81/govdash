@@ -20,9 +20,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DATA_COMISSOES,
+  formatDate,
   type Comissao,
   type TipoComissao,
 } from "@/lib/demo-legislativo";
+import { getInitials } from "@/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserMultipleIcon,
@@ -48,14 +50,6 @@ function StatusBadge({ ativo }: { ativo: boolean }) {
       {ativo ? "Ativa" : "Inativa"}
     </Badge>
   );
-}
-
-function getInitials(nome: string) {
-  return nome
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
 }
 
 function ComissaoCard({ comissao }: { comissao: Comissao }) {
@@ -114,8 +108,9 @@ function ComissaoCard({ comissao }: { comissao: Comissao }) {
           </div>
           <div className="pt-2 border-t">
             <p className="text-xs text-muted-foreground">
-              Criada em: {comissao.dataCriacao}
-              {comissao.dataFim && ` • Término: ${comissao.dataFim}`}
+              Criada em: {formatDate(comissao.dataCriacao)}
+              {comissao.dataFim &&
+                ` • Término: ${formatDate(comissao.dataFim)}`}
             </p>
           </div>
         </div>
@@ -264,7 +259,7 @@ function PainelComissoesCard() {
           Distribuição e funcionamento das comissões
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
           <p className="text-sm font-medium text-emerald-800">
             Coordenação política

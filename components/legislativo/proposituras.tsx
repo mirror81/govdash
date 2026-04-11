@@ -238,7 +238,7 @@ function LeituraTramitacaoCard() {
         <CardTitle className="text-lg">Leitura de Tramitação</CardTitle>
         <CardDescription>Visão executiva do fluxo legislativo</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
           <p className="text-sm font-medium text-emerald-800">
             Produção normativa
@@ -253,8 +253,8 @@ function LeituraTramitacaoCard() {
           <p className="text-sm font-medium">Capacidade de instrução</p>
           <p className="text-sm text-muted-foreground">
             {comParecer} matérias já passaram por comissão e{" "}
-            {encaminhadasExecutivo}
-            chegaram à etapa de encaminhamento ao Executivo ou sanção.
+            {encaminhadasExecutivo} chegaram à etapa de encaminhamento ao
+            Executivo ou sanção.
           </p>
         </div>
       </CardContent>
@@ -320,11 +320,7 @@ function DistribuicaoSituacaoChart() {
   const situacaoCount = DATA_PROPOSITURAS.reduce(
     (acc, p) => {
       const situacao =
-        p.situacao === "Sanção Positiva"
-          ? "Aprovada"
-          : p.situacao === "Rejeitada"
-            ? "Arquivada"
-            : p.situacao;
+        p.situacao === "Sanção Positiva" ? "Aprovada" : p.situacao;
       acc[situacao] = (acc[situacao] || 0) + 1;
       return acc;
     },
@@ -335,6 +331,10 @@ function DistribuicaoSituacaoChart() {
     Aprovada: "bg-green-500",
     "Em Tramitação": "bg-blue-500",
     Arquivada: "bg-gray-500",
+    Rejeitada: "bg-red-500",
+    "Encaminhada ao Executivo": "bg-indigo-500",
+    Respondido: "bg-teal-500",
+    "Retirada de Pauta": "bg-yellow-500",
   };
 
   const data = Object.entries(situacaoCount).map(([situacao, count]) => ({
@@ -373,6 +373,51 @@ function DistribuicaoSituacaoChart() {
   );
 }
 
+function RankingProdutividade() {
+  const autores = DATA_PROPOSITURAS.reduce(
+    (acc, p) => {
+      acc[p.autor] = (acc[p.autor] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const ranking = Object.entries(autores)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+  const max = ranking[0]?.[1] || 1;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Ranking de Produtividade</CardTitle>
+        <CardDescription>Proposituras por autor no exercício</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {ranking.map(([autor, count], i) => (
+            <div key={autor} className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">
+                {i + 1}
+              </div>
+              <div className="w-40 text-sm font-medium truncate">{autor}</div>
+              <div className="flex-1 bg-muted rounded-full h-5 overflow-hidden">
+                <div
+                  className="h-full bg-blue-500 rounded-full"
+                  style={{ width: `${(count / max) * 100}%` }}
+                />
+              </div>
+              <div className="w-6 text-sm text-muted-foreground text-right">
+                {count}
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function Proposituras() {
   return (
     <div className="space-y-6">
@@ -389,6 +434,8 @@ export function Proposituras() {
         <DistribuicaoTipoChart />
         <DistribuicaoSituacaoChart />
       </div>
+
+      <RankingProdutividade />
 
       <LeituraTramitacaoCard />
 
