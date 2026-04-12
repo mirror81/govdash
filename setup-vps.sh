@@ -2,7 +2,8 @@
 # ==============================================================================
 # setup-vps.sh
 # Script de instalação para Ubuntu Server 22.04/24.04 (VPS)
-# Instala Docker, Docker Compose, Git, UFW, swap; clona o repositório e sobe a stack.
+# Instala Docker, Docker Compose, Git, UFW, swap; clona o repositório,
+# sobe a stack e configura reinício automático via systemd.
 #
 # Uso (repositório padrão deste projeto; sobrescreva com REPO_URL):
 #   curl -fsSL ... | sudo bash
@@ -10,8 +11,8 @@
 #
 # Variáveis opcionais:
 #   REPO_URL              owner/repo ou URL git (padrão: vagnerrods/dash)
+#   APP_DIR               diretório de instalação (padrão: /opt/app)
 #   BUILD_NO_CACHE        1 = docker compose build --no-cache
-#   INSTALL_NGROK         1 = instala ngrok (opcional; falha não aborta o script)
 #   INSTALL_GH            1 = instala GitHub CLI (opcional)
 # ==============================================================================
 
@@ -24,7 +25,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 log()  { echo -e "${GREEN}[✔]${NC} $1"; }
 warn() { echo -e "${YELLOW}[!]${NC} $1"; }
@@ -42,11 +43,9 @@ if ! grep -qi "ubuntu" /etc/os-release 2>/dev/null; then
 fi
 
 # ── Variáveis configuráveis ───────────────────────────────────────────────────
-APP_DIR="/opt/app"
-# Repositório padrão alinhado ao README; use REPO_URL para fork ou outro remoto.
+APP_DIR="${APP_DIR:-/opt/app}"
 REPO_URL="${REPO_URL:-vagnerrods/dash}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
-INSTALL_NGROK="${INSTALL_NGROK:-0}"
 INSTALL_GH="${INSTALL_GH:-0}"
 
 echo ""
@@ -120,33 +119,7 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 5. ngrok (opcional)
-# ══════════════════════════════════════════════════════════════════════════════
-if [[ "${INSTALL_NGROK}" == "1" ]]; then
-  if command -v ngrok &>/dev/null; then
-    warn "ngrok já instalado: $(ngrok --version)"
-  else
-    info "Instalando ngrok..."
-    install -m 0755 -d /etc/apt/keyrings
-    if curl -fsSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc -o /etc/apt/keyrings/ngrok.asc &&
-       chmod a+r /etc/apt/keyrings/ngrok.asc &&
-       echo "deb [signed-by=/etc/apt/keyrings/ngrok.asc] https://ngrok-agent.s3.amazonaws.com bookworm main" | \
-         tee /etc/apt/sources.list.d/ngrok.list > /dev/null &&
-       apt-get update -y &&
-       apt-get install -y ngrok; then
-      log "ngrok instalado: $(ngrok --version)"
-    else
-      warn "Instalação do ngrok falhou (opcional). Removendo fonte apt do ngrok, se existir."
-      rm -f /etc/apt/sources.list.d/ngrok.list
-      apt-get update -y || true
-    fi
-  fi
-else
-  info "Instalação do ngrok ignorada (defina INSTALL_NGROK=1 para habilitar)."
-fi
-
-# ══════════════════════════════════════════════════════════════════════════════
-# 6. GitHub CLI (gh) — opcional
+# 5. GitHub CLI (gh) — opcional
 # ══════════════════════════════════════════════════════════════════════════════
 if [[ "${INSTALL_GH}" == "1" ]]; then
   if command -v gh &>/dev/null; then
@@ -164,27 +137,29 @@ if [[ "${INSTALL_GH}" == "1" ]]; then
     apt-get install -y gh
     log "GitHub CLI instalado: $(gh --version | head -1)"
   fi
+else
+  info "Instalação do GitHub CLI ignorada (defina INSTALL_GH=1 para habilitar)."
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 7. Firewall (UFW)
+# 6. Firewall (UFW)
+# — Adiciona apenas as regras necessárias, sem apagar configurações existentes.
 # ══════════════════════════════════════════════════════════════════════════════
 info "Configurando firewall (UFW)..."
-ufw --force reset
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow 22/tcp   comment "SSH"
 ufw allow 3000/tcp comment "Dashboard App"
 ufw --force enable
-log "Firewall configurado (SSH, 3000)."
+log "Firewall configurado (SSH: 22, App: 3000)."
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 8. Swap (recomendado para VPS com pouca RAM)
+# 7. Swap (recomendado para VPS com pouca RAM)
 # ══════════════════════════════════════════════════════════════════════════════
 if swapon --show | grep -q "/swapfile"; then
   warn "Swap já configurado."
 else
-  info "Criando 2GB de swap (recomendado para build do Next.js)..."
+  info "Criando 2 GB de swap (recomendado para build do Next.js)..."
   if fallocate -l 2G /swapfile 2>/dev/null || dd if=/dev/zero of=/swapfile bs=1M count=2048 status=none; then
     chmod 600 /swapfile
     mkswap /swapfile
@@ -192,14 +167,14 @@ else
     if ! grep -q '^/swapfile[[:space:]]' /etc/fstab 2>/dev/null; then
       echo '/swapfile none swap sw 0 0' >> /etc/fstab
     fi
-    log "Swap de 2GB criado e ativado."
+    log "Swap de 2 GB criado e ativado."
   else
     warn "Não foi possível criar /swapfile (disco cheio ou filesystem?). Continuando sem swap extra."
   fi
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 9. Clonar repositório (HTTPS público ou URL completa para privado/SSH)
+# 8. Clonar repositório (HTTPS público ou URL completa para privado/SSH)
 # ══════════════════════════════════════════════════════════════════════════════
 if [[ -z "${REPO_URL// }" ]]; then
   err "REPO_URL está vazio. Defina REPO_URL=owner/repo ou a URL completa do repositório."
@@ -220,14 +195,31 @@ info "Clonando repositório em ${APP_DIR} (origem: ${CLONE_URL})..."
 rm -rf "${APP_DIR}.new"
 if ! git clone --depth 1 "${CLONE_URL}" "${APP_DIR}.new"; then
   rm -rf "${APP_DIR}.new"
-  err "git clone falhou. Repositório privado? Use REPO_URL=https://<token>@github.com/org/repo.git ou git@github.com:org/repo.git (chave SSH), ou instale o gh (INSTALL_GH=1), faça gh auth login e gh auth setup-git, e clone manualmente em ${APP_DIR}."
+  echo ""
+  echo "  ─────────────────────────────────────────────────────────"
+  echo "  REPOSITÓRIO PRIVADO? Escolha uma das opções:"
+  echo ""
+  echo "  Opção A — Token HTTPS:"
+  echo "    REPO_URL=https://<token>@github.com/org/repo.git sudo ./setup-vps.sh"
+  echo ""
+  echo "  Opção B — GitHub CLI (recomendado):"
+  echo "    INSTALL_GH=1 sudo ./setup-vps.sh   # instala gh"
+  echo "    gh auth login                       # autentica (interativo)"
+  echo "    gh auth setup-git                   # configura credential helper"
+  echo "    REPO_URL=owner/repo sudo ./setup-vps.sh"
+  echo ""
+  echo "  Opção C — Chave SSH:"
+  echo "    REPO_URL=git@github.com:org/repo.git sudo ./setup-vps.sh"
+  echo "  ─────────────────────────────────────────────────────────"
+  echo ""
+  err "git clone falhou. Veja as opções acima para repositórios privados."
 fi
 rm -rf "${APP_DIR}"
 mv "${APP_DIR}.new" "${APP_DIR}"
 log "Repositório clonado em ${APP_DIR}."
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 10. Build e start com Docker Compose
+# 9. Build e start com Docker Compose
 # ══════════════════════════════════════════════════════════════════════════════
 if [[ -f "${APP_DIR}/docker-compose.yml" ]]; then
   info "Construindo e iniciando a aplicação com Docker Compose..."
@@ -246,9 +238,44 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════════════
+# 10. Serviço systemd — reinício automático da aplicação no boot
+# ══════════════════════════════════════════════════════════════════════════════
+info "Configurando serviço systemd para iniciar a aplicação automaticamente no boot..."
+
+cat > /etc/systemd/system/dash-app.service << EOF
+[Unit]
+Description=Dashboard Municipal — Docker Compose
+Documentation=https://github.com/vagnerrods/dash
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=${APP_DIR}
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
+TimeoutStartSec=120
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable dash-app
+log "Serviço 'dash-app' habilitado — a aplicação iniciará automaticamente com o sistema."
+
+# ══════════════════════════════════════════════════════════════════════════════
 # 11. Resumo final
 # ══════════════════════════════════════════════════════════════════════════════
-VPS_IP=$(curl -4s --max-time 10 ifconfig.me 2>/dev/null || curl -4s --max-time 10 icanhazip.com 2>/dev/null || echo "<ip-da-vps>")
+VPS_IP=$(
+  curl -4s --max-time 8 ifconfig.me 2>/dev/null ||
+  curl -4s --max-time 8 icanhazip.com 2>/dev/null ||
+  hostname -I 2>/dev/null | awk '{print $1}' ||
+  echo "<ip-da-vps>"
+)
 
 echo ""
 echo "============================================================"
@@ -264,13 +291,9 @@ if command -v gh &>/dev/null; then
 else
   echo "  GitHub CLI:      (não instalado; INSTALL_GH=1 para instalar)"
 fi
-if command -v ngrok &>/dev/null; then
-  echo "  ngrok:           $(ngrok --version 2>/dev/null || echo 'N/A')"
-else
-  echo "  ngrok:           (não instalado; INSTALL_NGROK=1 para instalar)"
-fi
 echo "  Firewall:        UFW ativo (22, 3000)"
-echo "  Swap:            $(swapon --show --bytes 2>/dev/null | tail -1 | awk '{print $3/1024/1024/1024 " GB"}' 2>/dev/null || echo 'N/A')"
+echo "  Swap:            $(swapon --show --bytes 2>/dev/null | tail -1 | awk '{printf "%.0f GB", $3/1024/1024/1024}' 2>/dev/null || echo 'N/A')"
+echo "  Auto-start:      systemd dash-app.service habilitado"
 echo "  App dir:         ${APP_DIR}"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
@@ -280,7 +303,7 @@ echo ""
 echo "  1. Acessar a aplicação:"
 echo "     http://${VPS_IP}:3000"
 echo ""
-echo "  2. Repositório privado: use gh auth login (se INSTALL_GH=1) ou clone via URL com credenciais."
+echo "  2. Repositório privado: use INSTALL_GH=1 + gh auth login, ou clone com token/SSH."
 echo ""
 echo "  3. Comandos úteis:"
 echo "     cd ${APP_DIR}"
@@ -293,5 +316,10 @@ echo "  4. Para atualizar a aplicação:"
 echo "     cd ${APP_DIR}"
 echo "     git pull"
 echo "     docker compose up -d --build"
+echo ""
+echo "  5. Gerenciamento do serviço systemd:"
+echo "     systemctl status dash-app"
+echo "     systemctl restart dash-app"
+echo "     systemctl stop dash-app"
 echo ""
 echo "============================================================"

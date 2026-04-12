@@ -2,7 +2,8 @@
 # ==============================================================================
 # setup-macos.sh
 # Script de instalacao para macOS 26 em Apple Silicon (ex.: MacBook Air M1)
-# Instala Homebrew, Docker CLI, Colima, Git; clona o repositorio e sobe a stack.
+# Instala Homebrew, Docker CLI, Colima, Git; clona o repositorio, sobe a stack
+# e configura inicializacao automatica no login via brew services + LaunchAgent.
 #
 # Uso:
 #   chmod +x ./setup-macos.sh
@@ -12,7 +13,7 @@
 #   REPO_URL           owner/repo ou URL git completa (padrao: vagnerrods/dash)
 #   APP_DIR            diretorio local do projeto (padrao: $HOME/app)
 #   BUILD_NO_CACHE     1 = docker compose build --no-cache
-#   INSTALL_NGROK      1 = instala ngrok (opcional)
+#   INSTALL_NGROK      1 = instala ngrok (recomendado para desenvolvimento)
 #   INSTALL_GH         1 = instala GitHub CLI (opcional)
 #   COLIMA_CPU         CPUs da VM Colima (padrao: 4)
 #   COLIMA_MEMORY      Memoria em GB da VM Colima (padrao: 8)
@@ -201,7 +202,24 @@ clone_repo() {
 
   if ! git clone --depth 1 "${clone_url}" "${APP_DIR}.new"; then
     rm -rf "${APP_DIR}.new"
-    err "git clone falhou. Se o repositorio for privado, use REPO_URL com HTTPS autenticado ou SSH."
+    echo ""
+    echo "  ─────────────────────────────────────────────────────────"
+    echo "  REPOSITÓRIO PRIVADO? Escolha uma das opções:"
+    echo ""
+    echo "  Opção A — Token HTTPS:"
+    echo "    REPO_URL=https://<token>@github.com/org/repo.git ./setup-macos.sh"
+    echo ""
+    echo "  Opção B — GitHub CLI (recomendado):"
+    echo "    INSTALL_GH=1 ./setup-macos.sh   # instala gh"
+    echo "    gh auth login                   # autentica (interativo)"
+    echo "    gh auth setup-git               # configura credential helper"
+    echo "    REPO_URL=owner/repo ./setup-macos.sh"
+    echo ""
+    echo "  Opção C — Chave SSH:"
+    echo "    REPO_URL=git@github.com:org/repo.git ./setup-macos.sh"
+    echo "  ─────────────────────────────────────────────────────────"
+    echo ""
+    err "git clone falhou. Veja as opções acima para repositórios privados."
   fi
 
   rm -rf "${APP_DIR}"
@@ -225,6 +243,45 @@ build_and_start() {
   log "Aplicacao em execucao na porta 3000."
 }
 
+setup_autostart() {
+  info "Configurando Colima para iniciar automaticamente no login..."
+  brew services start colima
+  log "Colima registrado como brew service (inicia no login)."
+
+  # LaunchAgent: inicia 'docker compose up -d' apos o login
+  local plist_dir="$HOME/Library/LaunchAgents"
+  local plist_path="${plist_dir}/com.dash.app.plist"
+  local log_dir="${APP_DIR}/logs"
+  mkdir -p "${plist_dir}" "${log_dir}"
+
+  cat > "${plist_path}" << PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.dash.app</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>sleep 20 &amp;&amp; cd ${APP_DIR} &amp;&amp; docker compose up -d</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>${log_dir}/launch.log</string>
+  <key>StandardErrorPath</key>
+  <string>${log_dir}/launch.log</string>
+</dict>
+</plist>
+PLIST
+
+  # Carrega o agente na sessao atual (ignora erro se ja carregado)
+  launchctl load "${plist_path}" 2>/dev/null || true
+  log "LaunchAgent registrado: a aplicacao iniciara automaticamente no proximo login."
+}
+
 get_local_ip() {
   ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo "localhost"
 }
@@ -241,6 +298,7 @@ wait_for_docker
 resolve_compose_cmd
 clone_repo
 build_and_start
+setup_autostart
 
 LOCAL_IP="$(get_local_ip)"
 
@@ -273,6 +331,7 @@ if command -v ngrok >/dev/null 2>&1; then
 else
   echo "  ngrok:           (nao instalado; INSTALL_NGROK=1 para instalar)"
 fi
+echo "  Auto-start:      brew services colima + LaunchAgent com.dash.app"
 echo "  App dir:         ${APP_DIR}"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
@@ -299,5 +358,10 @@ echo "  4. Gerenciamento do runtime Docker:"
 echo "     colima status"
 echo "     colima stop"
 echo "     colima start"
+echo "     brew services list | grep colima  # status do auto-start"
+echo ""
+echo "  5. LaunchAgent (auto-start da app):"
+echo "     launchctl list com.dash.app       # verificar status"
+echo "     launchctl unload ~/Library/LaunchAgents/com.dash.app.plist  # desativar"
 echo ""
 echo "============================================================"
