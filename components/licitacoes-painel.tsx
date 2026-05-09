@@ -2,7 +2,7 @@
 
 /**
  * Painel estilo TV: licitações em aberto em carrossel automático,
- * área ~80vh × 90vw; clique entra em tela cheia; ESC sai.
+ * área ~80vh × 90vw; clique entra em tela cheia; ESC sai. Tecla P pausa/retoma.
  */
 
 import * as React from "react";
@@ -20,10 +20,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { LICITACOES_ABERTAS } from "@/lib/demo-licitacoes-abertas";
+import { LICITACOES_PAINEL } from "@/lib/demo-licitacoes-painel";
 import { cn } from "@/lib/utils";
 
-const AUTOPLAY_MS = 10_000;
+const AUTOPLAY_MS = 12_000;
 
 const brl = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -58,14 +58,23 @@ function exitFullscreenDoc() {
   return Promise.resolve();
 }
 
-export function LicitacoesAbertas() {
+function isTypingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  const tag = target.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  if (target.isContentEditable) return true;
+  return false;
+}
+
+export function LicitacoesPainel() {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
   const [fsHint, setFsHint] = React.useState<string | null>(null);
 
-  const slides = LICITACOES_ABERTAS;
+  const slides = LICITACOES_PAINEL;
   const total = slides.length;
 
   React.useEffect(() => {
@@ -79,14 +88,16 @@ export function LicitacoesAbertas() {
   }, [api]);
 
   React.useEffect(() => {
-    if (!api) return;
+    if (!api || paused) return;
     const id = window.setInterval(() => {
       api.scrollNext();
     }, AUTOPLAY_MS);
     return () => window.clearInterval(id);
-  }, [api]);
+  }, [api, paused]);
 
   React.useEffect(() => {
+    if (paused) return;
+
     setProgress(0);
     const start = performance.now();
     let frame: number;
@@ -100,7 +111,7 @@ export function LicitacoesAbertas() {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [current]);
+  }, [current, paused]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -111,6 +122,17 @@ export function LicitacoesAbertas() {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "p" && e.key !== "P") return;
+      if (isTypingTarget(e.target)) return;
+      e.preventDefault();
+      setPaused((p) => !p);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   const handlePanelClick = () => {
@@ -125,15 +147,20 @@ export function LicitacoesAbertas() {
     });
   };
 
+  const secondsLeft = Math.ceil(
+    ((100 - progress) / 100) * (AUTOPLAY_MS / 1000),
+  );
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+        <h2 className="text-3xl font-semibold tracking-tight text-foreground">
           Licitações em aberto
         </h2>
-        <p className="text-sm text-muted-foreground">
-          Painel para exibição em telão: rotação automática. Clique no painel
-          para tela cheia; use ESC para sair.
+        <p className="text-base text-muted-foreground">
+          Painel para exibição em telão: rotação automática a cada 12&nbsp;s.
+          Tecla <span className="font-medium text-foreground">P</span> pausa ou
+          retoma. Clique no painel para tela cheia; use ESC para sair.
         </p>
       </div>
 
@@ -152,7 +179,7 @@ export function LicitacoesAbertas() {
           "relative mx-auto flex w-[90vw] max-w-[90vw] flex-col overflow-hidden rounded-3xl border border-border/80 bg-card shadow-lg ring-1 ring-foreground/5 outline-none transition-shadow",
           "h-[80vh] min-h-[320px] cursor-pointer hover:ring-2 hover:ring-primary/25 focus-visible:ring-2 focus-visible:ring-ring",
         )}
-        aria-label="Painel de licitações em aberto. Clique para tela cheia."
+        aria-label="Painel de licitações em aberto. Tecla P pausa ou retoma a rotação. Clique para tela cheia."
       >
         <div className="absolute left-0 right-0 top-0 z-10 h-1.5 bg-muted">
           <div
@@ -173,56 +200,56 @@ export function LicitacoesAbertas() {
                   <Card className="flex w-full flex-col justify-center border-0 bg-transparent shadow-none">
                     <CardHeader className="gap-3 space-y-4 pb-4">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant="secondary" className="text-sm">
+                        <Badge variant="secondary" className="text-base">
                           Em aberto
                         </Badge>
-                        <span className="font-mono text-lg text-muted-foreground sm:text-xl">
+                        <span className="font-mono text-xl text-muted-foreground sm:text-2xl">
                           {lic.processo}
                         </span>
                       </div>
-                      <CardTitle className="text-balance text-3xl leading-tight sm:text-4xl lg:text-5xl">
+                      <CardTitle className="text-balance text-4xl leading-tight sm:text-5xl lg:text-6xl">
                         {lic.objeto}
                       </CardTitle>
-                      <CardDescription className="text-base text-muted-foreground sm:text-lg">
+                      <CardDescription className="text-lg text-muted-foreground sm:text-xl">
                         {lic.orgao}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-6 pt-2 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                           Modalidade
                         </p>
-                        <p className="text-xl font-semibold sm:text-2xl">
+                        <p className="text-2xl font-semibold sm:text-3xl">
                           {lic.modalidade}
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                           Valor estimado
                         </p>
-                        <p className="text-xl font-semibold tabular-nums sm:text-2xl">
+                        <p className="text-2xl font-semibold tabular-nums sm:text-3xl">
                           {brl.format(lic.valorEstimado)}
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                           Abertura do processo
                         </p>
-                        <p className="text-lg sm:text-xl">{lic.dataAbertura}</p>
+                        <p className="text-xl sm:text-2xl">{lic.dataAbertura}</p>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                           Limite para propostas
                         </p>
-                        <p className="text-lg font-medium text-amber-700 dark:text-amber-400 sm:text-xl">
+                        <p className="text-xl font-medium text-amber-700 dark:text-amber-400 sm:text-2xl">
                           {lic.dataLimitePropostas}
                         </p>
                       </div>
                       <div className="sm:col-span-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                           Publicação / portal
                         </p>
-                        <p className="mt-1 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                        <p className="mt-1 text-lg leading-relaxed text-muted-foreground sm:text-xl">
                           {lic.portal}
                         </p>
                       </div>
@@ -235,15 +262,25 @@ export function LicitacoesAbertas() {
         </Carousel>
 
         <div className="pointer-events-none absolute bottom-4 left-0 right-0 flex justify-center px-4">
-          <p className="rounded-full bg-background/90 px-4 py-1.5 text-center text-xs text-muted-foreground shadow-sm backdrop-blur-sm">
-            Slide {current + 1} de {total} · próximo em{" "}
-            {Math.ceil(((100 - progress) / 100) * (AUTOPLAY_MS / 1000))}s
+          <p className="max-w-[95%] rounded-full bg-background/90 px-4 py-1.5 text-center text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+            {paused ? (
+              <>
+                Pausado · slide {current + 1} de {total} · tecla{" "}
+                <span className="font-medium text-foreground">P</span> para
+                retomar
+              </>
+            ) : (
+              <>
+                Slide {current + 1} de {total} · próximo em {secondsLeft}s ·{" "}
+                <span className="font-medium text-foreground">P</span> pausa
+              </>
+            )}
           </p>
         </div>
       </div>
 
       {fsHint ? (
-        <p className="text-center text-sm text-amber-700 dark:text-amber-400">
+        <p className="text-center text-base text-amber-700 dark:text-amber-400">
           {fsHint}
         </p>
       ) : null}

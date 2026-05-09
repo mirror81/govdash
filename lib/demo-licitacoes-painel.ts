@@ -1,4 +1,4 @@
-export type LicitacaoAberta = {
+export type LicitacaoPainel = {
   id: string;
   processo: string;
   objeto: string;
@@ -10,8 +10,8 @@ export type LicitacaoAberta = {
   portal: string;
 };
 
-/** Dados fictícios para demonstração — licitações em aberto. */
-export const LICITACOES_ABERTAS: LicitacaoAberta[] = [
+/** Dados fictícios para demonstração — licitações em aberto (painel TV). */
+export const LICITACOES_PAINEL: LicitacaoPainel[] = [
   {
     id: "1",
     processo: "PE 014/2026",

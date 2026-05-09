@@ -7,7 +7,7 @@ import { DespesaMunicipal } from "@/components/despesa-municipal";
 import { ReceitaMunicipal } from "@/components/receita-municipal";
 import { FinanceiroMunicipal } from "@/components/financeiro-municipal";
 import { ComprasMunicipais } from "@/components/compras-municipais";
-import { LicitacoesAbertas } from "@/components/licitacoes-abertas";
+import { LicitacoesPainel } from "@/components/licitacoes-painel";
 import { RHMunicipal } from "@/components/rh-municipal";
 import { PrestacaoContas } from "@/components/prestacao-contas";
 import { Frotas } from "@/components/frotas";
@@ -69,7 +69,7 @@ const TAB_ORDER = [
   "financeiro",
   "tributacao",
   "compras",
-  "licitacoes-abertas",
+  "licitacoes-painel",
   "rh",
   "orcamento",
   "saude",
@@ -290,13 +290,13 @@ export default function Page() {
               />
               Licitações e Contratos
             </TabsTrigger>
-            <TabsTrigger value="licitacoes-abertas" className="gap-2">
+            <TabsTrigger value="licitacoes-painel" className="gap-2">
               <HugeiconsIcon
                 icon={FileClockIcon}
                 strokeWidth={2}
                 className="size-4"
               />
-              Licitações abertas
+              Painel de licitações
             </TabsTrigger>
             <TabsTrigger value="rh" className="gap-2">
               <HugeiconsIcon
@@ -428,8 +428,8 @@ export default function Page() {
             <ComprasMunicipais />
           </TabsContent>
 
-          <TabsContent value="licitacoes-abertas" className="mt-6">
-            <LicitacoesAbertas />
+          <TabsContent value="licitacoes-painel" className="mt-6">
+            <LicitacoesPainel />
           </TabsContent>
 
           <TabsContent value="rh" className="mt-6">
