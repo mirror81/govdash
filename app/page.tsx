@@ -22,6 +22,7 @@ import { OrcamentoMunicipal } from "@/components/orcamento-municipal";
 import { Legislativo } from "@/components/legislativo/legislativo";
 import { Previdencia } from "@/components/previdencia/previdencia";
 import { Saneamento } from "@/components/saneamento/saneamento";
+import { DefesaCivil } from "@/components/defesa-civil";
 import { ThemeSelector } from "@/components/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,6 +61,7 @@ import {
   SavingsIcon,
   DropletIcon,
   FileClockIcon,
+  Alert02Icon,
 } from "@hugeicons/core-free-icons";
 
 const TAB_ORDER = [
@@ -83,6 +85,7 @@ const TAB_ORDER = [
   "legislativo",
   "previdencia",
   "saneamento",
+  "defesa-civil",
 ];
 const SCROLL_DELAY_MS = 5000;
 const SCROLL_SPEED_PX = 0.75;
@@ -402,6 +405,14 @@ export default function Page() {
               />
               Saneamento
             </TabsTrigger>
+            <TabsTrigger value="defesa-civil" className="gap-2">
+              <HugeiconsIcon
+                icon={Alert02Icon}
+                strokeWidth={2}
+                className="size-4"
+              />
+              Defesa Civil
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="visao-geral" className="mt-6">
@@ -482,6 +493,10 @@ export default function Page() {
 
           <TabsContent value="saneamento" className="mt-6">
             <Saneamento />
+          </TabsContent>
+
+          <TabsContent value="defesa-civil" className="mt-6">
+            <DefesaCivil />
           </TabsContent>
         </Tabs>
       </div>

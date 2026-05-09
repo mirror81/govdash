@@ -69,3 +69,15 @@ Cookie `auth=1` with 8-hour expiry. Credentials hardcoded in `middleware.ts` and
 ### Build Notes
 
 `next.config.mjs` sets `output: 'standalone'` (for Docker) and `ignoreBuildErrors: true`. TypeScript errors won't fail the build, but `npm run typecheck` should be run to catch them.
+
+## Documentação e planejamento
+
+Todos os planos de implementação e listas de tarefas devem ser salvos na pasta `docs/`. Nunca usar arquivos temporários ou raiz do projeto para isso.
+
+## Slack
+
+Todas as mensagens enviadas ao Slack neste repositório devem ser enviadas para o canal **#analytics**.
+
+- Canal: `#analytics`
+- Channel ID: `C0B18NPV886`
+- Workspace: `code42dev.slack.com`
