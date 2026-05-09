@@ -21,7 +21,7 @@ import { OrcamentoMunicipal } from "@/components/orcamento-municipal";
 import { Legislativo } from "@/components/legislativo/legislativo";
 import { Previdencia } from "@/components/previdencia/previdencia";
 import { Saneamento } from "@/components/saneamento/saneamento";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeSelector } from "@/components/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -232,7 +232,7 @@ export default function Page() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <ThemeToggle />
+            <ThemeSelector />
           </div>
         </div>
 
