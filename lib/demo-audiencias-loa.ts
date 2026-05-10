@@ -333,11 +333,60 @@ export const gastosSociais = [
   },
 ];
 
+/** SAAE — detalhamento alinhado ao quadro da apresentação LOA 2025 */
+export const saaeReceitasDetalhe = [
+  { nome: "Patrimonial", orcado2024: 42_754.0, orcado2025: 50_000.0 },
+  { nome: "Serviços", orcado2024: 4_178_884.0, orcado2025: 4_342_486.0 },
+  { nome: "Alienação de bens", orcado2024: 61_578.0, orcado2025: 60_000.0 },
+];
+
+export const saaeDespesasDetalhe = [
+  {
+    nome: "Pessoal e encargos sociais",
+    orcado2024: 42_754.0,
+    orcado2025: 1_489_000.0,
+  },
+  {
+    nome: "Outras despesas correntes",
+    orcado2024: 4_178_884.0,
+    orcado2025: 2_113_486.0,
+  },
+  {
+    nome: "Investimentos",
+    orcado2024: 61_578.0,
+    orcado2025: 850_000.0,
+  },
+];
+
 export const saneamentoAutarquia = {
+  receita2024: 4_283_216.0,
   receita2025: 4_452_486.0,
+  despesa2024: 4_283_216.0,
   despesa2025: 4_452_486.0,
   investimentos2025: 850_000.0,
   variacaoTotalPct: 3.95,
+};
+
+/** Fundo Municipal de Previdência — receitas vs despesas (demonstrativo para audiência) */
+export const previdenciaRPPS = {
+  receita2024: 2_498_000.0,
+  receita2025: 2_631_000.0,
+  despesa2024: 2_623_000.0,
+  despesa2025: 2_754_150.25,
+  receitasDetalhe2025: [
+    { nome: "Contribuição dos segurados", valor: 985_000.0 },
+    { nome: "Contribuição patronal — Prefeitura", valor: 892_500.0 },
+    { nome: "Complementação municipal / patronal adicional", valor: 418_750.0 },
+    { nome: "Outras receitas patrimoniais e compensações", valor: 334_750.0 },
+  ],
+  despesasDetalhe2025: [
+    { nome: "Benefícios e complementação de aposentadorias", valor: 1_612_000.0 },
+    { nome: "Manutenção administrativa e custeio do RPPS", valor: 428_900.0 },
+    {
+      nome: "Encargos sociais, complementares e reservas atuariais",
+      valor: 713_250.25,
+    },
+  ],
 };
 
 export const participacaoCidada = [

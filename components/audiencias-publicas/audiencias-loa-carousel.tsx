@@ -28,6 +28,8 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  Line,
+  LineChart,
   Pie,
   PieChart,
   XAxis,
@@ -52,6 +54,15 @@ import {
 } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 import * as d from "@/lib/demo-audiencias-loa";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const AUTOPLAY_MS = 20_000;
 
@@ -84,6 +95,12 @@ function variacaoFmt(atual: number, anterior: number): string {
   })}%`;
 }
 
+function fmtEvolucaoReal(atual: number, anterior: number): string {
+  const delta = atual - anterior;
+  const s = delta >= 0 ? "+" : "";
+  return `${s}${brl.format(delta)}`;
+}
+
 function VariacaoBadge({
   atual,
   anterior,
@@ -105,6 +122,68 @@ function VariacaoBadge({
   );
 }
 
+function OrcamentoComparativoTable({
+  rows,
+  className,
+}: {
+  rows: { nome: string; orcado2024: number; orcado2025: number }[];
+  className?: string;
+}) {
+  const tot24 = rows.reduce((acc, r) => acc + r.orcado2024, 0);
+  const tot25 = rows.reduce((acc, r) => acc + r.orcado2025, 0);
+  return (
+    <div className={cn("max-h-full overflow-auto rounded-md border", className)}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Item</TableHead>
+            <TableHead className="text-right">Orçado 2024</TableHead>
+            <TableHead className="text-right">Orçado 2025</TableHead>
+            <TableHead className="text-right">Var. %</TableHead>
+            <TableHead className="text-right">Evolução (R$)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((r) => (
+            <TableRow key={r.nome}>
+              <TableCell className="font-medium">{r.nome}</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {brl.format(r.orcado2024)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {brl.format(r.orcado2025)}
+              </TableCell>
+              <TableCell className="text-right">
+                <VariacaoBadge atual={r.orcado2025} anterior={r.orcado2024} />
+              </TableCell>
+              <TableCell className="text-right tabular-nums text-muted-foreground">
+                {fmtEvolucaoReal(r.orcado2025, r.orcado2024)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell>Totais</TableCell>
+            <TableCell className="text-right tabular-nums">
+              {brl.format(tot24)}
+            </TableCell>
+            <TableCell className="text-right tabular-nums">
+              {brl.format(tot25)}
+            </TableCell>
+            <TableCell className="text-right">
+              <VariacaoBadge atual={tot25} anterior={tot24} />
+            </TableCell>
+            <TableCell className="text-right tabular-nums">
+              {fmtEvolucaoReal(tot25, tot24)}
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </div>
+  );
+}
+
 function KpiBox({
   label,
   value,
@@ -117,11 +196,11 @@ function KpiBox({
   tone?: "primary" | "blue" | "green" | "amber" | "purple";
 }) {
   const border = {
-    primary: "border-l-primary",
-    blue: "border-l-blue-500",
-    green: "border-l-green-500",
-    amber: "border-l-amber-500",
-    purple: "border-l-purple-500",
+    primary: "border-l-[color:var(--chart-1)]",
+    blue: "border-l-[color:var(--chart-2)]",
+    green: "border-l-[color:var(--chart-3)]",
+    amber: "border-l-[color:var(--chart-4)]",
+    purple: "border-l-[color:var(--chart-5)]",
   }[tone];
 
   return (
@@ -427,63 +506,43 @@ function Slide02Agenda() {
     },
     {
       icon: Target01Icon,
-      titulo: "Ciclo de Planejamento",
-      desc: "PPA orienta, LDO prioriza e LOA executa",
+      titulo: "Peças Orçamentárias e Ciclo PPA · LDO · LOA",
+      desc: "Planejar, orientar e executar — sequência das peças e papéis",
     },
     {
       icon: Analytics01Icon,
-      titulo: "Premissas e Cenários",
-      desc: "Hipóteses macrofiscais, risco de frustração e resposta fiscal",
-    },
-    {
-      icon: MoneyAdd01Icon,
-      titulo: "Receita Total",
-      desc: "Natureza e composição das receitas",
-    },
-    {
-      icon: BankIcon,
-      titulo: "Receitas por Origem",
-      desc: "Próprias, federais, estaduais e outras",
+      titulo: "Premissas, série da receita e composição",
+      desc: "Macrofiscais, evolução anual, natureza e origem da receita",
     },
     {
       icon: Invoice01Icon,
-      titulo: "Tributos Próprios",
-      desc: "IPTU, ISSQN, ITBI, IRRF e taxas",
+      titulo: "Tributos e transferências",
+      desc: "Próprias, federais e estaduais com quadros 2024 x 2025",
     },
     {
       icon: Home01Icon,
-      titulo: "Transferências",
-      desc: "FPM, FUNDEB, SUS, ICMS, IPVA",
-    },
-    {
-      icon: Analytics01Icon,
-      titulo: "Fixação das Despesas",
-      desc: "Secretarias, funções e natureza econômica",
-    },
-    {
-      icon: BookOpen02Icon,
-      titulo: "Gastos com Educação",
-      desc: "MDE — mínimo 25% (Art. 212 CF)",
-    },
-    {
-      icon: Stethoscope02Icon,
-      titulo: "Gastos com Saúde",
-      desc: "ASPS — mínimo 15% (LC 141/2012)",
+      titulo: "Fixação e classificação da despesa",
+      desc: "Por órgão, natureza, secretaria e função de governo",
     },
     {
       icon: UserMultipleIcon,
-      titulo: "Gastos com Pessoal",
-      desc: "LRF — limite 60% RCL (LC 101/2000)",
+      titulo: "Gastos sociais, SAAE e Previdência",
+      desc: "Políticas sociais, autarquia de saneamento e RPPS municipal",
+    },
+    {
+      icon: BookOpen02Icon,
+      titulo: "Mínimos constitucionais (MDE, ASPS) e pessoal (LRF)",
+      desc: "Educação, saúde e limites de folha em relação à RCL",
     },
     {
       icon: ConstructionIcon,
-      titulo: "Investimentos e Prioridades",
-      desc: "Obras, gastos sociais e participação cidadã",
+      titulo: "Investimentos, participação e riscos",
+      desc: "Obras prioritárias, voz do cidadão e cenários fiscais",
     },
     {
       icon: SecurityCheckIcon,
-      titulo: "Governança da Execução",
-      desc: "Bimestral, quadrimestral e monitoramento de entregas",
+      titulo: "Governança e fechamento",
+      desc: "Execução monitorada, série receita vs despesa e encerramento",
     },
   ];
   return (
@@ -541,7 +600,10 @@ function Slide03BaseLegalTransparencia() {
       <div className="grid flex-1 grid-cols-[1.1fr_0.9fr] gap-5 pt-4">
         <div className="grid grid-cols-2 gap-3 content-start">
           {marcos.map((item) => (
-            <Card key={item.titulo} className="border-l-4 border-l-primary">
+            <Card
+              key={item.titulo}
+              className="border-l-4 border-l-[color:var(--chart-1)]"
+            >
               <CardHeader className="px-4 pb-1 pt-3">
                 <CardTitle className="text-lg">{item.titulo}</CardTitle>
               </CardHeader>
@@ -573,6 +635,91 @@ function Slide03BaseLegalTransparencia() {
             tone="amber"
           />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function SlidePeçasOrcamentarias() {
+  const ldos = ["2022", "2023", "2024", "2025"];
+  const loas = ["2022", "2023", "2024", "2025"];
+  return (
+    <div className="flex h-full flex-col px-8 pt-6 pb-4">
+      <SlideHeader
+        titulo="Peças Orçamentárias"
+        subtitulo="Encadeamento do planejamento plurianual à execução orçamentária anual"
+      />
+      <div className="flex min-h-0 flex-1 flex-col justify-center gap-6 pt-2">
+        <div className="flex justify-center">
+          <div className="relative flex flex-col items-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Planejar
+            </span>
+            <Card className="border-l-4 border-l-[color:var(--chart-1)] px-8 py-4 text-center shadow-sm">
+              <CardTitle className="text-2xl">PPA 2022 — 2025</CardTitle>
+              <CardDescription className="text-base">
+                Diretrizes plurianuais, programas e indicadores de resultado
+              </CardDescription>
+            </Card>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="h-8 w-px bg-[color:var(--chart-4)]" aria-hidden />
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Orientar
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {ldos.map((ano, i) => (
+              <Card
+                key={ano}
+                className={cn(
+                  "border-l-4 py-3 text-center shadow-sm",
+                  i % 2 === 0
+                    ? "border-l-[color:var(--chart-2)]"
+                    : "border-l-[color:var(--chart-3)]",
+                )}
+              >
+                <CardDescription>LDO</CardDescription>
+                <CardTitle className="text-lg">{ano}</CardTitle>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="h-8 w-px bg-[color:var(--chart-4)]" aria-hidden />
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Executar
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {loas.map((ano, i) => (
+              <Card
+                key={`loa-${ano}`}
+                className={cn(
+                  "border-l-4 py-3 text-center shadow-sm",
+                  i % 2 === 0
+                    ? "border-l-[color:var(--chart-4)]"
+                    : "border-l-[color:var(--chart-5)]",
+                )}
+              >
+                <CardDescription>LOA</CardDescription>
+                <CardTitle className="text-lg">{ano}</CardTitle>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-center text-sm text-muted-foreground">
+          A LOA do exercício deve ser compatível com o PPA vigente e com as
+          metas da LDO do mesmo ano — fundamento dos arts. 165 a 169 da CF/88.
+        </p>
       </div>
     </div>
   );
@@ -681,7 +828,10 @@ function Slide04PremissasMacrofiscais() {
       <div className="min-h-0 flex-1 pt-4">
         <div className="grid h-full grid-cols-2 gap-4">
           {d.premissasLoa.map((item) => (
-            <Card key={item.indicador} className="border-l-4 border-l-primary">
+            <Card
+              key={item.indicador}
+              className="border-l-4 border-l-[color:var(--chart-1)]"
+            >
               <CardHeader className="px-4 pb-2 pt-3">
                 <CardDescription className="text-xs uppercase tracking-wide">
                   Premissa
@@ -689,7 +839,7 @@ function Slide04PremissasMacrofiscais() {
                 <CardTitle className="text-xl">{item.indicador}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 px-4 pb-4">
-                <p className="text-2xl font-bold tabular-nums text-primary">
+                <p className="text-2xl font-bold tabular-nums text-[color:var(--chart-1)]">
                   {item.valor}
                 </p>
                 <p className="text-sm text-muted-foreground">{item.impacto}</p>
@@ -697,6 +847,67 @@ function Slide04PremissasMacrofiscais() {
             </Card>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+const cfgLinhaReceita: ChartConfig = {
+  receita: { label: "Receita orçada", color: "var(--chart-1)" },
+};
+
+function SlideEvolucaoReceitaAnual() {
+  const serie = d.historicoOrcamento.map((h) => ({
+    ano: h.ano,
+    receita: h.receita,
+  }));
+  return (
+    <div className="flex h-full flex-col px-8 pt-6 pb-4">
+      <SlideHeader
+        titulo="Evolução anual da receita"
+        subtitulo="Série orçamentária recente — tendência de arrecadação prevista na LOA"
+      />
+      <div className="grid flex-none grid-cols-3 gap-3 pt-3">
+        {d.historicoOrcamento.map((h, i) => (
+          <KpiBox
+            key={h.ano}
+            label={`Receita orçada ${h.ano}`}
+            value={brlM(h.receita)}
+            detail={
+              i === 0
+                ? "Ano-base da série"
+                : `Variação vs ${d.historicoOrcamento[i - 1]!.ano}: ${variacaoFmt(h.receita, d.historicoOrcamento[i - 1]!.receita)}`
+            }
+            tone={i === 0 ? "primary" : i === 1 ? "blue" : "green"}
+          />
+        ))}
+      </div>
+      <div className="min-h-0 flex-1 pt-3">
+        <ChartContainer config={cfgLinhaReceita} className="h-full w-full">
+          <LineChart
+            data={serie}
+            margin={{ top: 16, right: 40, bottom: 16, left: 16 }}
+          >
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+            <XAxis dataKey="ano" />
+            <YAxis tickFormatter={(v) => `R$ ${(v / 1_000_000).toFixed(0)}M`} />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  formatter={(v) => brl.format(v as number)}
+                />
+              }
+            />
+            <Line
+              type="monotone"
+              dataKey="receita"
+              stroke="var(--chart-1)"
+              strokeWidth={3}
+              dot={{ fill: "var(--chart-1)", r: 5 }}
+              activeDot={{ r: 7 }}
+            />
+          </LineChart>
+        </ChartContainer>
       </div>
     </div>
   );
@@ -721,7 +932,7 @@ function Slide05ReceitaNatureza() {
       />
       <div className="flex flex-1 min-h-0 gap-6 pt-4">
         <div className="flex w-64 flex-none flex-col gap-3">
-          <Card className="flex-1 border-l-4 border-l-primary">
+          <Card className="flex-1 border-l-4 border-l-[color:var(--chart-1)]">
             <CardHeader className="pb-1">
               <CardDescription>Receita Total</CardDescription>
               <CardTitle className="text-2xl">
@@ -729,7 +940,7 @@ function Slide05ReceitaNatureza() {
               </CardTitle>
             </CardHeader>
           </Card>
-          <Card className="flex-1 border-l-4 border-l-blue-500">
+          <Card className="flex-1 border-l-4 border-l-[color:var(--chart-2)]">
             <CardHeader className="pb-1">
               <CardDescription>Receita Corrente</CardDescription>
               <CardTitle className="text-xl">
@@ -743,7 +954,7 @@ function Slide05ReceitaNatureza() {
               </p>
             </CardContent>
           </Card>
-          <Card className="flex-1 border-l-4 border-l-orange-500">
+          <Card className="flex-1 border-l-4 border-l-[color:var(--chart-3)]">
             <CardHeader className="pb-1">
               <CardDescription>Receita de Capital</CardDescription>
               <CardTitle className="text-xl">
@@ -805,11 +1016,11 @@ function Slide04ReceitasOrigem() {
     pct: pctFmt(item.valor, d.receitaTotalLOA),
   }));
   const colors = [
-    "border-l-blue-500",
-    "border-l-green-500",
-    "border-l-purple-500",
-    "border-l-orange-500",
-    "border-l-amber-500",
+    "border-l-[color:var(--chart-1)]",
+    "border-l-[color:var(--chart-2)]",
+    "border-l-[color:var(--chart-3)]",
+    "border-l-[color:var(--chart-4)]",
+    "border-l-[color:var(--chart-5)]",
   ];
   const fillColors = [
     "var(--chart-1)",
@@ -879,14 +1090,17 @@ function Slide05TributariasProprias() {
       anterior: item.orcado2024,
     }))
     .sort((a, b) => b.valor - a.valor);
+  const tribRows = [...d.receitasPropriasDetalhe].sort(
+    (a, b) => b.orcado2025 - a.orcado2025,
+  );
   return (
     <div className="flex h-full flex-col px-8 pt-6 pb-4">
       <SlideHeader
         titulo="Receitas Tributárias Próprias"
-        subtitulo="Tributos de competência municipal — variação vs 2024"
+        subtitulo="Quadro comparativo e distribuição — mesmo formato da audiência de referência"
       />
-      <div className="flex flex-1 min-h-0 gap-6 pt-3">
-        <div className="min-h-0 flex-1">
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1.15fr)] gap-3 pt-3">
+        <div className="min-h-0">
           <ChartContainer config={cfgTrib} className="h-full w-full">
             <BarChart
               layout="vertical"
@@ -914,26 +1128,10 @@ function Slide05TributariasProprias() {
             </BarChart>
           </ChartContainer>
         </div>
-        <div className="w-52 flex-none space-y-2 pt-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Variação vs 2024
-          </p>
-          {tribData.map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between rounded-lg border px-3 py-2"
-            >
-              <span className="text-sm font-medium">{item.name}</span>
-              <VariacaoBadge atual={item.valor} anterior={item.anterior} />
-            </div>
-          ))}
-          <div className="flex items-center justify-between rounded-lg bg-muted px-3 py-2">
-            <span className="text-sm font-semibold">Total próprio</span>
-            <span className="text-sm font-semibold">
-              {brlM(d.receitasProprias)}
-            </span>
-          </div>
-        </div>
+        <OrcamentoComparativoTable
+          rows={tribRows}
+          className="text-xs [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+        />
       </div>
     </div>
   );
@@ -944,48 +1142,24 @@ const cfgFed: ChartConfig = {
 };
 
 function Slide06TransferenciasFederais() {
-  const descricoes: Record<string, string> = {
-    FPM: "Fundo de Participação dos Municípios",
-    FUNDEB: "Fundo de Manutenção da Educação Básica",
-    SUS: "Saúde — repasses federais",
-    FNDE: "Fundo Nac. de Desenvolvimento da Educação",
-    "ITR/CFEM/Royalties":
-      "Transferências federais por exploração e propriedade",
-    "Convênios e outros": "Convênios, programas e demais repasses",
-  };
   const fedData = d.transferenciasFederaisDetalhe
     .map((item) => ({
       name: item.nome,
       valor: item.orcado2025,
       anterior: item.orcado2024,
-      desc: descricoes[item.nome] ?? "Demais transferências federais",
     }))
     .sort((a, b) => b.valor - a.valor);
+  const fedRows = [...d.transferenciasFederaisDetalhe].sort(
+    (a, b) => b.orcado2025 - a.orcado2025,
+  );
   return (
     <div className="flex h-full flex-col px-8 pt-6 pb-4">
       <SlideHeader
         titulo="Transferências Federais"
-        subtitulo="55,1% da receita total — maior fonte de recursos"
+        subtitulo="55,1% da receita total — quadro comparativo e distribuição por rubrica"
       />
-      <div className="flex flex-1 min-h-0 gap-6 pt-3">
-        <div className="flex w-60 flex-none flex-col gap-2">
-          {fedData.slice(0, 4).map((item, i) => (
-            <Card key={i} className="flex-1 border-l-4 border-l-green-500">
-              <CardHeader className="px-3 pb-0 pt-2">
-                <CardDescription className="text-xs leading-tight">
-                  {item.desc}
-                </CardDescription>
-                <CardTitle className="text-base">
-                  {item.name}: {brlM(item.valor)}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 pb-2">
-                <VariacaoBadge atual={item.valor} anterior={item.anterior} />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="min-h-0 flex-1">
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1.15fr)] gap-3 pt-3">
+        <div className="min-h-0">
           <ChartContainer config={cfgFed} className="h-full w-full">
             <BarChart
               data={fedData}
@@ -1011,6 +1185,10 @@ function Slide06TransferenciasFederais() {
             </BarChart>
           </ChartContainer>
         </div>
+        <OrcamentoComparativoTable
+          rows={fedRows}
+          className="text-xs [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+        />
       </div>
     </div>
   );
@@ -1021,51 +1199,24 @@ const cfgEst: ChartConfig = {
 };
 
 function Slide07TransferenciasEstaduais() {
-  const descricoes: Record<string, string> = {
-    ICMS: "Cota-parte do ICMS — Art. 158 CF",
-    IPVA: "Cota-parte do IPVA — Art. 158 CF",
-    IPI: "Cota-parte sobre exportações",
-    "CIDE/Royalties": "Transferências econômicas específicas",
-    "Convênio e outros": "Demais repasses estaduais",
-  };
   const estData = d.transferenciasEstaduaisDetalhe
     .map((item) => ({
       name: item.nome,
       valor: item.orcado2025,
       anterior: item.orcado2024,
-      desc: descricoes[item.nome] ?? "Demais repasses estaduais",
     }))
     .sort((a, b) => b.valor - a.valor);
+  const estRows = [...d.transferenciasEstaduaisDetalhe].sort(
+    (a, b) => b.orcado2025 - a.orcado2025,
+  );
   return (
     <div className="flex h-full flex-col px-8 pt-6 pb-4">
       <SlideHeader
         titulo="Transferências Estaduais"
-        subtitulo="23,8% da receita total — crescimento significativo em 2025"
+        subtitulo="23,8% da receita total — quadro comparativo por rubrica de repasse"
       />
-      <div className="flex flex-1 min-h-0 gap-6 pt-3">
-        <div className="flex w-72 flex-none flex-col gap-4">
-          {estData.slice(0, 3).map((item, i) => (
-            <Card key={i} className="flex-1 border-l-4 border-l-purple-500">
-              <CardHeader className="px-4 pb-1 pt-3">
-                <CardDescription>{item.desc}</CardDescription>
-                <CardTitle className="text-2xl">{item.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex items-baseline justify-between px-4 pb-3">
-                <span className="text-2xl font-bold">{brlM(item.valor)}</span>
-                <VariacaoBadge atual={item.valor} anterior={item.anterior} />
-              </CardContent>
-            </Card>
-          ))}
-          <Card className="bg-muted">
-            <CardHeader className="px-4 pb-2 pt-3">
-              <CardDescription>Total Estaduais</CardDescription>
-              <CardTitle className="text-2xl">
-                {brlM(d.transferEstaduais)}
-              </CardTitle>
-            </CardHeader>
-          </Card>
-        </div>
-        <div className="min-h-0 flex-1">
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1.15fr)] gap-3 pt-3">
+        <div className="min-h-0">
           <ChartContainer config={cfgEst} className="h-full w-full">
             <BarChart
               data={estData}
@@ -1091,6 +1242,10 @@ function Slide07TransferenciasEstaduais() {
             </BarChart>
           </ChartContainer>
         </div>
+        <OrcamentoComparativoTable
+          rows={estRows}
+          className="text-xs [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+        />
       </div>
     </div>
   );
@@ -1125,7 +1280,7 @@ function Slide08FixacaoDespesas() {
       />
       <div className="flex flex-1 min-h-0 flex-col gap-4 pt-3">
         <div className="flex-none grid grid-cols-2 gap-4">
-          <Card className="border-l-4 border-l-primary">
+          <Card className="border-l-4 border-l-[color:var(--chart-1)]">
             <CardHeader className="pb-1">
               <CardDescription>Despesa Total Fixada</CardDescription>
               <CardTitle className="text-3xl">
@@ -1133,7 +1288,7 @@ function Slide08FixacaoDespesas() {
               </CardTitle>
             </CardHeader>
           </Card>
-          <Card className="border-l-4 border-l-amber-500">
+          <Card className="border-l-4 border-l-[color:var(--chart-4)]">
             <CardHeader className="pb-1">
               <CardDescription>Reserva de Contingência</CardDescription>
               <CardTitle className="text-3xl">
@@ -1171,7 +1326,7 @@ function Slide08FixacaoDespesas() {
                   <td className="py-5 pl-6">
                     <div className="h-4 w-full overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full rounded-full bg-primary"
+                        className="h-full rounded-full bg-[color:var(--chart-1)]"
                         style={{ width: `${item.pctBar}%` }}
                       />
                     </div>
@@ -1278,25 +1433,30 @@ const cfgComparativo: ChartConfig = {
 };
 
 function Slide10DespesaPorSecretaria() {
-  const top = [...d.despesaSecretarias]
-    .sort((a, b) => b.orcado2025 - a.orcado2025)
-    .slice(0, 7)
-    .map((item) => ({
-      ...item,
-      nomeCurto: item.nome
-        .replace("Educação, Cultura, Esportes e Lazer", "Educação/Cultura")
-        .replace(
-          "Serviços Urbanos, Meio Ambiente e Agricultura",
-          "Serviços urbanos",
-        )
-        .replace("Administração e Finanças", "Admin./Finanças"),
-    }));
+  const ordenadas = [...d.despesaSecretarias].sort(
+    (a, b) => b.orcado2025 - a.orcado2025,
+  );
+  const secRows = ordenadas.map((s) => ({
+    nome: s.nome,
+    orcado2024: s.orcado2024,
+    orcado2025: s.orcado2025,
+  }));
+  const top = ordenadas.slice(0, 7).map((item) => ({
+    ...item,
+    nomeCurto: item.nome
+      .replace("Educação, Cultura, Esportes e Lazer", "Educação/Cultura")
+      .replace(
+        "Serviços Urbanos, Meio Ambiente e Agricultura",
+        "Serviços urbanos",
+      )
+      .replace("Administração e Finanças", "Admin./Finanças"),
+  }));
 
   return (
     <div className="flex h-full flex-col px-8 pt-6 pb-4">
       <SlideHeader
         titulo="Despesa por Secretaria"
-        subtitulo="Maiores dotações da administração direta — comparação 2024 x 2025"
+        subtitulo="Quadro completo com variação percentual e evolução em reais — como na LOA de referência"
       />
       <div className="grid flex-none grid-cols-3 gap-3 pt-3">
         <KpiBox
@@ -1321,67 +1481,20 @@ function Slide10DespesaPorSecretaria() {
           tone="amber"
         />
       </div>
-      <div className="min-h-0 flex-1 pt-3">
-        <ChartContainer config={cfgComparativo} className="h-full w-full">
-          <BarChart
-            layout="vertical"
-            data={top}
-            margin={{ top: 10, right: 35, bottom: 10, left: 20 }}
-          >
-            <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-            <XAxis
-              type="number"
-              tickFormatter={(v) => `R$ ${(v / 1_000_000).toFixed(0)}M`}
-            />
-            <YAxis type="category" dataKey="nomeCurto" width={125} />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  formatter={(v) => brl.format(v as number)}
-                />
-              }
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-            <Bar
-              dataKey="orcado2024"
-              fill="var(--chart-4)"
-              radius={[0, 4, 4, 0]}
-            />
-            <Bar
-              dataKey="orcado2025"
-              fill="var(--chart-1)"
-              radius={[0, 4, 4, 0]}
-            />
-          </BarChart>
-        </ChartContainer>
-      </div>
-    </div>
-  );
-}
-
-function Slide11DespesaPorFuncao() {
-  const top = [...d.despesaFuncoes]
-    .sort((a, b) => b.orcado2025 - a.orcado2025)
-    .slice(0, 8);
-
-  return (
-    <div className="flex h-full flex-col px-8 pt-6 pb-4">
-      <SlideHeader
-        titulo="Despesa por Função"
-        subtitulo="Leitura por finalidade pública: onde o orçamento entrega serviço"
-      />
-      <div className="flex flex-1 min-h-0 gap-5 pt-4">
-        <div className="min-h-0 flex-1">
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1.2fr)] gap-3 pt-3">
+        <div className="min-h-0">
           <ChartContainer config={cfgComparativo} className="h-full w-full">
             <BarChart
+              layout="vertical"
               data={top}
-              margin={{ top: 10, right: 20, bottom: 10, left: 20 }}
+              margin={{ top: 10, right: 35, bottom: 10, left: 20 }}
             >
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-              <XAxis dataKey="nome" tick={{ fontSize: 11 }} interval={0} />
-              <YAxis
+              <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+              <XAxis
+                type="number"
                 tickFormatter={(v) => `R$ ${(v / 1_000_000).toFixed(0)}M`}
               />
+              <YAxis type="category" dataKey="nomeCurto" width={125} />
               <ChartTooltip
                 content={
                   <ChartTooltipContent
@@ -1389,29 +1502,350 @@ function Slide11DespesaPorFuncao() {
                   />
                 }
               />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Bar
+                dataKey="orcado2024"
+                fill="var(--chart-4)"
+                radius={[0, 4, 4, 0]}
+              />
               <Bar
                 dataKey="orcado2025"
-                fill="var(--chart-2)"
-                radius={[6, 6, 0, 0]}
+                fill="var(--chart-1)"
+                radius={[0, 4, 4, 0]}
               />
             </BarChart>
           </ChartContainer>
         </div>
-        <div className="w-72 flex-none space-y-2">
-          {top.slice(0, 5).map((item) => (
-            <div key={item.nome} className="rounded-lg border px-3 py-2">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-medium">{item.nome}</p>
-                <VariacaoBadge
-                  atual={item.orcado2025}
-                  anterior={item.orcado2024}
+        <OrcamentoComparativoTable
+          rows={secRows}
+          className="text-[11px] [&_td:first-child]:max-w-[min(280px,36vw)] [&_td:first-child]:whitespace-normal [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Slide11DespesaPorFuncao() {
+  const ordenadas = [...d.despesaFuncoes].sort(
+    (a, b) => b.orcado2025 - a.orcado2025,
+  );
+  const funcRows = ordenadas.map((f) => ({
+    nome: f.nome,
+    orcado2024: f.orcado2024,
+    orcado2025: f.orcado2025,
+  }));
+  const chartRows = ordenadas.slice(0, 7).map((f) => ({
+    ...f,
+    nomeCurto:
+      f.nome.length > 22 ? `${f.nome.slice(0, 20)}…` : f.nome,
+  }));
+
+  return (
+    <div className="flex h-full flex-col px-8 pt-6 pb-4">
+      <SlideHeader
+        titulo="Despesa por Função"
+        subtitulo="Classificação por finalidade — quadro detalhado e maiores rubricas em barras comparativas"
+      />
+      <div className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1.25fr)] gap-3 pt-3">
+        <div className="min-h-0">
+          <ChartContainer config={cfgComparativo} className="h-full w-full">
+            <BarChart
+              layout="vertical"
+              data={chartRows}
+              margin={{ top: 8, right: 28, bottom: 8, left: 8 }}
+            >
+              <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+              <XAxis
+                type="number"
+                tickFormatter={(v) => `R$ ${(v / 1_000_000).toFixed(0)}M`}
+              />
+              <YAxis type="category" dataKey="nomeCurto" width={108} />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(v) => brl.format(v as number)}
+                  />
+                }
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Bar
+                dataKey="orcado2024"
+                fill="var(--chart-4)"
+                radius={[0, 4, 4, 0]}
+              />
+              <Bar
+                dataKey="orcado2025"
+                fill="var(--chart-2)"
+                radius={[0, 4, 4, 0]}
+              />
+            </BarChart>
+          </ChartContainer>
+        </div>
+        <OrcamentoComparativoTable
+          rows={funcRows}
+          className="text-[11px] [&_td:first-child]:max-w-[min(280px,36vw)] [&_td:first-child]:whitespace-normal [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+        />
+      </div>
+    </div>
+  );
+}
+
+const cfgSaaeComp: ChartConfig = {
+  orcado2024: { label: "Orçado 2024", color: "var(--chart-4)" },
+  orcado2025: { label: "Orçado 2025", color: "var(--chart-1)" },
+};
+
+function SlideSaneamentoSAAE() {
+  const recChart = d.saaeReceitasDetalhe.map((r) => ({
+    name: r.nome,
+    orcado2024: r.orcado2024,
+    orcado2025: r.orcado2025,
+  }));
+  const despChart = d.saaeDespesasDetalhe.map((r) => ({
+    name: r.nome,
+    orcado2024: r.orcado2024,
+    orcado2025: r.orcado2025,
+  }));
+  const saldoSaaE =
+    d.saneamentoAutarquia.receita2025 - d.saneamentoAutarquia.despesa2025;
+  return (
+    <div className="flex h-full flex-col px-8 pt-6 pb-4">
+      <SlideHeader
+        titulo="Receitas e Despesas do SAAE"
+        subtitulo="Serviço Autônomo de Água e Esgoto — autarquia em equilíbrio orçamentário"
+      />
+      <div className="grid flex-none grid-cols-3 gap-3 pt-3">
+        <KpiBox
+          label="Receita orçada 2025"
+          value={brlM(d.saneamentoAutarquia.receita2025)}
+          detail={`Var. vs 2024: ${variacaoFmt(d.saneamentoAutarquia.receita2025, d.saneamentoAutarquia.receita2024)}`}
+          tone="green"
+        />
+        <KpiBox
+          label="Despesa fixada 2025"
+          value={brlM(d.saneamentoAutarquia.despesa2025)}
+          detail={`Investimentos: ${brlM(d.saneamentoAutarquia.investimentos2025)}`}
+          tone="blue"
+        />
+        <KpiBox
+          label="Resultado previsto"
+          value={saldoSaaE === 0 ? "Equilibrado" : brlM(saldoSaaE)}
+          detail="Receitas e despesas compatíveis na LOA"
+          tone="amber"
+        />
+      </div>
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 pt-3 lg:grid-cols-2">
+        <div className="flex min-h-0 min-w-0 flex-col gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Receitas por rubrica
+          </p>
+          <div className="h-[min(180px,22vh)] min-h-[100px]">
+            <ChartContainer config={cfgSaaeComp} className="h-full w-full">
+              <BarChart
+                layout="vertical"
+                data={recChart}
+                margin={{ top: 4, right: 16, bottom: 4, left: 4 }}
+              >
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <XAxis
+                  type="number"
+                  tickFormatter={(v) => `R$ ${(v / 1_000).toFixed(0)}K`}
                 />
-              </div>
-              <p className="mt-1 text-lg font-semibold tabular-nums">
-                {brlM(item.orcado2025)}
-              </p>
-            </div>
-          ))}
+                <YAxis type="category" dataKey="name" width={88} />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      formatter={(v) => brl.format(v as number)}
+                    />
+                  }
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  dataKey="orcado2024"
+                  fill="var(--chart-4)"
+                  radius={[0, 4, 4, 0]}
+                />
+                <Bar
+                  dataKey="orcado2025"
+                  fill="var(--chart-1)"
+                  radius={[0, 4, 4, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
+          <OrcamentoComparativoTable
+            rows={d.saaeReceitasDetalhe}
+            className="min-h-0 flex-1 text-[11px] [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+          />
+        </div>
+        <div className="flex min-h-0 min-w-0 flex-col gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Despesas por natureza
+          </p>
+          <div className="h-[min(180px,22vh)] min-h-[100px]">
+            <ChartContainer config={cfgSaaeComp} className="h-full w-full">
+              <BarChart
+                layout="vertical"
+                data={despChart}
+                margin={{ top: 4, right: 16, bottom: 4, left: 4 }}
+              >
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <XAxis
+                  type="number"
+                  tickFormatter={(v) => `R$ ${(v / 1_000_000).toFixed(1)}M`}
+                />
+                <YAxis type="category" dataKey="name" width={100} />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      formatter={(v) => brl.format(v as number)}
+                    />
+                  }
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  dataKey="orcado2024"
+                  fill="var(--chart-4)"
+                  radius={[0, 4, 4, 0]}
+                />
+                <Bar
+                  dataKey="orcado2025"
+                  fill="var(--chart-2)"
+                  radius={[0, 4, 4, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
+          <OrcamentoComparativoTable
+            rows={d.saaeDespesasDetalhe}
+            className="min-h-0 flex-1 text-[11px] [&_th]:h-9 [&_th]:px-2 [&_td]:p-2"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const cfgPrevRec: ChartConfig = {
+  valor: { label: "Valor", color: "var(--chart-1)" },
+};
+
+function SlidePrevidenciaRPPS() {
+  const palette = [
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)",
+    "var(--chart-5)",
+  ];
+  const receitasPie = d.previdenciaRPPS.receitasDetalhe2025.map((r, i) => ({
+    name: r.nome,
+    value: r.valor,
+    fill: palette[i % palette.length]!,
+  }));
+  const despesasPie = d.previdenciaRPPS.despesasDetalhe2025.map((r, i) => ({
+    name: r.nome,
+    value: r.valor,
+    fill: palette[(i + 2) % palette.length]!,
+  }));
+  const saldo =
+    d.previdenciaRPPS.receita2025 - d.previdenciaRPPS.despesa2025;
+  return (
+    <div className="flex h-full flex-col px-8 pt-6 pb-4">
+      <SlideHeader
+        titulo="Receitas e Despesas da Previdência (RPPS)"
+        subtitulo="Fundo municipal — composição da receita estimada e despesa autorizada"
+      />
+      <div className="grid flex-none grid-cols-3 gap-3 pt-3">
+        <KpiBox
+          label="Receita estimada 2025"
+          value={brlM(d.previdenciaRPPS.receita2025)}
+          detail={`Var. vs 2024: ${variacaoFmt(d.previdenciaRPPS.receita2025, d.previdenciaRPPS.receita2024)}`}
+          tone="green"
+        />
+        <KpiBox
+          label="Despesa fixada 2025"
+          value={brlM(d.previdenciaRPPS.despesa2025)}
+          detail={`Função Previdência Social — ${variacaoFmt(d.previdenciaRPPS.despesa2025, d.previdenciaRPPS.despesa2024)} vs 2024`}
+          tone="blue"
+        />
+        <KpiBox
+          label="Saldo técnico previsto"
+          value={brlM(saldo)}
+          detail={
+            saldo >= 0
+              ? "Superávit estimado no conjunto receita/despesa"
+              : "Déficit a monitorar na execução"
+          }
+          tone="amber"
+        />
+      </div>
+      <div className="flex min-h-0 flex-1 gap-4 pt-3">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
+          <p className="text-center text-xs font-semibold uppercase text-muted-foreground">
+            Composição da receita
+          </p>
+          <ChartContainer config={cfgPrevRec} className="min-h-0 flex-1 w-full">
+            <PieChart>
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(v) => brl.format(v as number)}
+                  />
+                }
+              />
+              <Pie
+                data={receitasPie}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius="45%"
+                outerRadius="75%"
+                label={({ percent }) =>
+                  `${((percent ?? 0) * 100).toFixed(1)}%`
+                }
+              >
+                {receitasPie.map((e, i) => (
+                  <Cell key={i} fill={e.fill} />
+                ))}
+              </Pie>
+              <ChartLegend content={<ChartLegendContent />} />
+            </PieChart>
+          </ChartContainer>
+        </div>
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
+          <p className="text-center text-xs font-semibold uppercase text-muted-foreground">
+            Composição da despesa
+          </p>
+          <ChartContainer config={cfgPrevRec} className="min-h-0 flex-1 w-full">
+            <PieChart>
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(v) => brl.format(v as number)}
+                  />
+                }
+              />
+              <Pie
+                data={despesasPie}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius="45%"
+                outerRadius="75%"
+                label={({ percent }) =>
+                  `${((percent ?? 0) * 100).toFixed(1)}%`
+                }
+              >
+                {despesasPie.map((e, i) => (
+                  <Cell key={i} fill={e.fill} />
+                ))}
+              </Pie>
+              <ChartLegend content={<ChartLegendContent />} />
+            </PieChart>
+          </ChartContainer>
         </div>
       </div>
     </div>
@@ -1603,12 +2037,12 @@ function Slide13GastosSociais() {
 
 function Slide13Investimentos() {
   const borderColors = [
-    "border-l-blue-500",
-    "border-l-green-500",
-    "border-l-orange-500",
-    "border-l-purple-500",
-    "border-l-red-500",
-    "border-l-teal-500",
+    "border-l-[color:var(--chart-1)]",
+    "border-l-[color:var(--chart-2)]",
+    "border-l-[color:var(--chart-3)]",
+    "border-l-[color:var(--chart-4)]",
+    "border-l-[color:var(--chart-5)]",
+    "border-l-[color:var(--chart-1)]",
   ];
   const secIcons: Record<string, typeof ConstructionIcon> = {
     Saúde: Stethoscope02Icon,
@@ -1842,7 +2276,10 @@ function Slide16GovernancaExecucao() {
       </div>
       <div className="mt-4 flex-1 grid grid-cols-2 gap-4 content-start">
         {d.marcosGovernanca.map((item) => (
-          <Card key={item.etapa} className="border-l-4 border-l-primary">
+          <Card
+            key={item.etapa}
+            className="border-l-4 border-l-[color:var(--chart-1)]"
+          >
             <CardHeader className="px-4 pb-1 pt-3">
               <CardDescription>Periodicidade</CardDescription>
               <CardTitle className="text-xl">{item.etapa}</CardTitle>
@@ -1982,10 +2419,18 @@ const SLIDES: { titulo: string; node: React.ReactNode }[] = [
     titulo: "Base Legal e Transparência",
     node: <Slide03BaseLegalTransparencia />,
   },
+  {
+    titulo: "Peças Orçamentárias",
+    node: <SlidePeçasOrcamentarias />,
+  },
   { titulo: "Ciclo PPA · LDO · LOA", node: <Slide04CicloPlanejamento /> },
   {
     titulo: "Premissas Macrofiscais",
     node: <Slide04PremissasMacrofiscais />,
+  },
+  {
+    titulo: "Evolução anual da receita",
+    node: <SlideEvolucaoReceitaAnual />,
   },
   { titulo: "Receita Total — Natureza", node: <Slide05ReceitaNatureza /> },
   { titulo: "Receitas por Origem", node: <Slide04ReceitasOrigem /> },
@@ -2005,10 +2450,18 @@ const SLIDES: { titulo: string; node: React.ReactNode }[] = [
   { titulo: "Despesas por Natureza", node: <Slide09DespesasNatureza /> },
   { titulo: "Despesa por Secretaria", node: <Slide10DespesaPorSecretaria /> },
   { titulo: "Despesa por Função", node: <Slide11DespesaPorFuncao /> },
+  { titulo: "Gastos Sociais", node: <Slide13GastosSociais /> },
+  {
+    titulo: "Receitas e Despesas do SAAE",
+    node: <SlideSaneamentoSAAE />,
+  },
+  {
+    titulo: "Receitas e Despesas da Previdência",
+    node: <SlidePrevidenciaRPPS />,
+  },
   { titulo: "Gastos com Educação (MDE)", node: <Slide10GastosEducacao /> },
   { titulo: "Gastos com Saúde (ASPS)", node: <Slide11GastosSaude /> },
   { titulo: "Gastos com Pessoal (LRF)", node: <Slide12GastosPessoal /> },
-  { titulo: "Gastos Sociais", node: <Slide13GastosSociais /> },
   { titulo: "Principais Investimentos", node: <Slide13Investimentos /> },
   { titulo: "Participação Cidadã", node: <Slide14ParticipacaoCidada /> },
   { titulo: "Cenários e Riscos Fiscais", node: <Slide15CenariosERiscos /> },
