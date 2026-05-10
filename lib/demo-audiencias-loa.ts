@@ -159,13 +159,15 @@ export const riscosFiscais = [
     risco: "Frustração de FPM e ICMS",
     probabilidade: "Média",
     impacto: "Alto",
-    resposta: "Decreto de contingenciamento e revisão bimestral da programação.",
+    resposta:
+      "Decreto de contingenciamento e revisão bimestral da programação.",
   },
   {
     risco: "Judicialização em saúde",
     probabilidade: "Alta",
     impacto: "Médio",
-    resposta: "Reserva técnica setorial e protocolos para compras emergenciais.",
+    resposta:
+      "Reserva técnica setorial e protocolos para compras emergenciais.",
   },
   {
     risco: "Eventos climáticos e infraestrutura",
@@ -177,7 +179,8 @@ export const riscosFiscais = [
     risco: "Pressão de folha e encargos",
     probabilidade: "Média",
     impacto: "Alto",
-    resposta: "Gestão de quadro, priorização de reposições essenciais e controle mensal.",
+    resposta:
+      "Gestão de quadro, priorização de reposições essenciais e controle mensal.",
   },
 ];
 
@@ -297,19 +300,13 @@ export const despesaSecretarias = [
 ];
 
 export const despesaFuncoes = [
-  { nome: "Saúde", orcado2024: 11_300_469.97, orcado2025: 15_487_653.7 },
-  { nome: "Educação", orcado2024: 11_421_420.24, orcado2025: 14_181_852.26 },
-  { nome: "Urbanismo", orcado2024: 6_031_955.69, orcado2025: 7_834_457.44 },
+  { nome: "Judiciária", orcado2024: 759_622.5, orcado2025: 797_603.64 },
   { nome: "Administração", orcado2024: 7_085_923.5, orcado2025: 6_739_679.19 },
+  { nome: "Defesa", orcado2024: 100_327.5, orcado2025: 105_343.86 },
   {
-    nome: "Previdência Social",
-    orcado2024: 2_623_000.0,
-    orcado2025: 2_754_150.25,
-  },
-  {
-    nome: "Encargos Especiais",
-    orcado2024: 1_826_291.25,
-    orcado2025: 2_038_793.31,
+    nome: "Segurança Pública",
+    orcado2024: 203_962.5,
+    orcado2025: 214_160.62,
   },
   {
     nome: "Assistência Social",
@@ -317,9 +314,40 @@ export const despesaFuncoes = [
     orcado2025: 1_886_910.63,
   },
   {
+    nome: "Previdência Social",
+    orcado2024: 2_623_000.0,
+    orcado2025: 2_754_150.25,
+  },
+  { nome: "Saúde", orcado2024: 11_300_469.97, orcado2025: 15_487_653.7 },
+  { nome: "Educação", orcado2024: 11_421_420.24, orcado2025: 14_181_852.26 },
+  { nome: "Cultura", orcado2024: 431_077.5, orcado2025: 590_072.63 },
+  { nome: "Urbanismo", orcado2024: 6_031_955.69, orcado2025: 7_834_457.44 },
+  {
     nome: "Gestão Ambiental",
     orcado2024: 694_023.75,
     orcado2025: 1_079_784.33,
+  },
+  { nome: "Agricultura", orcado2024: 160_965.0, orcado2025: 213_225.13 },
+  { nome: "Indústria", orcado2024: 141_750.0, orcado2025: 148_837.5 },
+  {
+    nome: "Comércio e Serviços",
+    orcado2024: 81_375.0,
+    orcado2025: 85_443.75,
+  },
+  {
+    nome: "Desporto e Lazer",
+    orcado2024: 350_595.0,
+    orcado2025: 419_726.62,
+  },
+  {
+    nome: "Encargos Especiais",
+    orcado2024: 1_826_291.25,
+    orcado2025: 2_038_793.31,
+  },
+  {
+    nome: "Reserva Contingência",
+    orcado2024: 66_150.0,
+    orcado2025: 69_457.5,
   },
 ];
 
@@ -380,7 +408,10 @@ export const previdenciaRPPS = {
     { nome: "Outras receitas patrimoniais e compensações", valor: 334_750.0 },
   ],
   despesasDetalhe2025: [
-    { nome: "Benefícios e complementação de aposentadorias", valor: 1_612_000.0 },
+    {
+      nome: "Benefícios e complementação de aposentadorias",
+      valor: 1_612_000.0,
+    },
     { nome: "Manutenção administrativa e custeio do RPPS", valor: 428_900.0 },
     {
       nome: "Encargos sociais, complementares e reservas atuariais",
