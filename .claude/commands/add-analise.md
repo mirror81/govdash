@@ -2,7 +2,7 @@
 description: Adiciona a seção padrão de Análises (Análise Inteligente + Resumo Analítico + Alertas) a um módulo existente
 ---
 
-Adicione a seção de **Análises** ao módulo indicado, seguindo o padrão já implementado nos demais módulos do dashboard Dash.
+Adicione a seção de **Análises** ao módulo indicado, seguindo o padrão já implementado nos demais módulos do dashboard Mirante Painel.
 
 Consulte `docs/plano-implementacao-analises.md` para histórico dos módulos já tratados.
 

@@ -1,8 +1,8 @@
 ---
-description: Cria um novo módulo governamental completo no dashboard Dash (componente, dados demo e registro em page.tsx)
+description: Cria um novo módulo governamental completo no dashboard Mirante Painel (componente, dados demo e registro em page.tsx)
 ---
 
-Crie um novo módulo governamental completo no projeto Dash seguindo rigorosamente o padrão dos módulos existentes (ex: `components/frotas.tsx`, `components/obras.tsx`).
+Crie um novo módulo governamental completo no projeto Mirante Painel seguindo rigorosamente o padrão dos módulos existentes (ex: `components/frotas.tsx`, `components/obras.tsx`).
 
 ## Informações necessárias
 

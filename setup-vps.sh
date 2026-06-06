@@ -10,7 +10,7 @@
 #   sudo REPO_URL=owner/repo ./setup-vps.sh
 #
 # Variáveis opcionais:
-#   REPO_URL              owner/repo ou URL git (padrão: vagnerrods/dash)
+#   REPO_URL              owner/repo ou URL git (padrão: mirantegov/painel)
 #   APP_DIR               diretório de instalação (padrão: /opt/app)
 #   BUILD_NO_CACHE        1 = docker compose build --no-cache
 #   INSTALL_GH            1 = instala GitHub CLI (opcional)
@@ -44,13 +44,13 @@ fi
 
 # ── Variáveis configuráveis ───────────────────────────────────────────────────
 APP_DIR="${APP_DIR:-/opt/app}"
-REPO_URL="${REPO_URL:-vagnerrods/dash}"
+REPO_URL="${REPO_URL:-mirantegov/painel}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
 INSTALL_GH="${INSTALL_GH:-0}"
 
 echo ""
 echo "============================================================"
-echo "  Setup VPS — Dashboard Municipal (Next.js + Docker)"
+echo "  Setup VPS — Mirante Painel (Next.js + Docker)"
 echo "============================================================"
 echo ""
 
@@ -149,7 +149,7 @@ info "Configurando firewall (UFW)..."
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow 22/tcp   comment "SSH"
-ufw allow 3000/tcp comment "Dashboard App"
+ufw allow 3000/tcp comment "Mirante Painel"
 ufw --force enable
 log "Firewall configurado (SSH: 22, App: 3000)."
 
@@ -242,10 +242,10 @@ fi
 # ══════════════════════════════════════════════════════════════════════════════
 info "Configurando serviço systemd para iniciar a aplicação automaticamente no boot..."
 
-cat > /etc/systemd/system/dash-app.service << EOF
+cat > /etc/systemd/system/mirante-painel.service << EOF
 [Unit]
-Description=Dashboard Municipal — Docker Compose
-Documentation=https://github.com/vagnerrods/dash
+Description=Mirante Painel — Docker Compose
+Documentation=https://github.com/mirantegov/painel
 Requires=docker.service
 After=docker.service network-online.target
 
@@ -264,8 +264,8 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enable dash-app
-log "Serviço 'dash-app' habilitado — a aplicação iniciará automaticamente com o sistema."
+systemctl enable mirante-painel
+log "Serviço 'mirante-painel' habilitado — a aplicação iniciará automaticamente com o sistema."
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 11. Resumo final
@@ -293,7 +293,7 @@ else
 fi
 echo "  Firewall:        UFW ativo (22, 3000)"
 echo "  Swap:            $(swapon --show --bytes 2>/dev/null | tail -1 | awk '{printf "%.0f GB", $3/1024/1024/1024}' 2>/dev/null || echo 'N/A')"
-echo "  Auto-start:      systemd dash-app.service habilitado"
+echo "  Auto-start:      systemd mirante-painel.service habilitado"
 echo "  App dir:         ${APP_DIR}"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
@@ -318,8 +318,8 @@ echo "     git pull"
 echo "     docker compose up -d --build"
 echo ""
 echo "  5. Gerenciamento do serviço systemd:"
-echo "     systemctl status dash-app"
-echo "     systemctl restart dash-app"
-echo "     systemctl stop dash-app"
+echo "     systemctl status mirante-painel"
+echo "     systemctl restart mirante-painel"
+echo "     systemctl stop mirante-painel"
 echo ""
 echo "============================================================"

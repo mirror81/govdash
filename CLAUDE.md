@@ -22,7 +22,7 @@ Default credentials: `admin` / `admin`
 
 ## Architecture
 
-**Dash** is a Portuguese-language municipal public management analytics dashboard. It's a Next.js App Router single-page app with tab-based navigation across 19 government modules (expenses, revenue, HR, procurement, health, education, etc.).
+**Mirante Painel** is a Portuguese-language municipal public management analytics dashboard. It's a Next.js App Router single-page app with tab-based navigation across 19 government modules (expenses, revenue, HR, procurement, health, education, etc.).
 
 ### App Structure
 

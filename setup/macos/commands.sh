@@ -7,7 +7,7 @@
 
 # ── Variáveis — ajuste antes de executar ──────────────────────────────────────
 APP_DIR="$HOME/app"
-REPO_URL="vagnerrods/dash"          # ou: https://<token>@github.com/org/repo.git
+REPO_URL="mirantegov/painel"          # ou: https://<token>@github.com/org/repo.git
 COLIMA_CPU=4
 COLIMA_MEMORY=8
 COLIMA_DISK=60
@@ -58,13 +58,13 @@ brew services start colima
 
 # LaunchAgent para docker compose up -d após o login
 mkdir -p "$HOME/Library/LaunchAgents" "${APP_DIR}/logs"
-cat > "$HOME/Library/LaunchAgents/com.dash.app.plist" << PLIST
+cat > "$HOME/Library/LaunchAgents/com.mirante.painel.plist" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.dash.app</string>
+  <string>com.mirante.painel</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -80,7 +80,7 @@ cat > "$HOME/Library/LaunchAgents/com.dash.app.plist" << PLIST
 </dict>
 </plist>
 PLIST
-launchctl load "$HOME/Library/LaunchAgents/com.dash.app.plist"
+launchctl load "$HOME/Library/LaunchAgents/com.mirante.painel.plist"
 
 # ── Teste ─────────────────────────────────────────────────────────────────────
 curl -I http://localhost:3000
@@ -97,5 +97,5 @@ colima stop
 colima start
 brew services list | grep colima
 
-launchctl list com.dash.app
-launchctl unload "$HOME/Library/LaunchAgents/com.dash.app.plist"   # desativar auto-start
+launchctl list com.mirante.painel
+launchctl unload "$HOME/Library/LaunchAgents/com.mirante.painel.plist"   # desativar auto-start

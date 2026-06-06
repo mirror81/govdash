@@ -10,7 +10,7 @@
 #   ./setup-macos.sh
 #
 # Variaveis opcionais:
-#   REPO_URL           owner/repo ou URL git completa (padrao: vagnerrods/dash)
+#   REPO_URL           owner/repo ou URL git completa (padrao: mirantegov/painel)
 #   APP_DIR            diretorio local do projeto (padrao: $HOME/app)
 #   BUILD_NO_CACHE     1 = docker compose build --no-cache
 #   INSTALL_NGROK      1 = instala ngrok (recomendado para desenvolvimento)
@@ -55,7 +55,7 @@ fi
 
 # ── Variaveis configuraveis ───────────────────────────────────────────────────
 APP_DIR="${APP_DIR:-$HOME/app}"
-REPO_URL="${REPO_URL:-vagnerrods/dash}"
+REPO_URL="${REPO_URL:-mirantegov/painel}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
 INSTALL_NGROK="${INSTALL_NGROK:-0}"
 INSTALL_GH="${INSTALL_GH:-0}"
@@ -65,7 +65,7 @@ COLIMA_DISK="${COLIMA_DISK:-60}"
 
 echo ""
 echo "============================================================"
-echo "  Setup macOS — Dashboard Municipal (Docker + Colima)"
+echo "  Setup macOS — Mirante Painel (Docker + Colima)"
 echo "============================================================"
 echo ""
 
@@ -250,7 +250,7 @@ setup_autostart() {
 
   # LaunchAgent: inicia 'docker compose up -d' apos o login
   local plist_dir="$HOME/Library/LaunchAgents"
-  local plist_path="${plist_dir}/com.dash.app.plist"
+  local plist_path="${plist_dir}/com.mirante.painel.plist"
   local log_dir="${APP_DIR}/logs"
   mkdir -p "${plist_dir}" "${log_dir}"
 
@@ -260,7 +260,7 @@ setup_autostart() {
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.dash.app</string>
+  <string>com.mirante.painel</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -331,7 +331,7 @@ if command -v ngrok >/dev/null 2>&1; then
 else
   echo "  ngrok:           (nao instalado; INSTALL_NGROK=1 para instalar)"
 fi
-echo "  Auto-start:      brew services colima + LaunchAgent com.dash.app"
+echo "  Auto-start:      brew services colima + LaunchAgent com.mirante.painel"
 echo "  App dir:         ${APP_DIR}"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
@@ -361,7 +361,7 @@ echo "     colima start"
 echo "     brew services list | grep colima  # status do auto-start"
 echo ""
 echo "  5. LaunchAgent (auto-start da app):"
-echo "     launchctl list com.dash.app       # verificar status"
-echo "     launchctl unload ~/Library/LaunchAgents/com.dash.app.plist  # desativar"
+echo "     launchctl list com.mirante.painel       # verificar status"
+echo "     launchctl unload ~/Library/LaunchAgents/com.mirante.painel.plist  # desativar"
 echo ""
 echo "============================================================"

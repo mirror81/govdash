@@ -2,7 +2,7 @@
 description: Audita consistência estrutural dos 19 módulos do dashboard, verificando presença de KPIs, gráficos, seção Análises e Alertas
 ---
 
-Realize uma auditoria completa de consistência estrutural em todos os módulos ativos do dashboard Dash.
+Realize uma auditoria completa de consistência estrutural em todos os módulos ativos do dashboard Mirante Painel.
 
 ## Passo 1 — Obter lista de módulos
 
@@ -36,7 +36,7 @@ Para cada arquivo de módulo, verifique a presença das seguintes features:
 Produza uma tabela Markdown no formato:
 
 ```markdown
-## Relatório de Auditoria — Módulos Dash
+## Relatório de Auditoria — Módulos Mirante Painel
 *Gerado em: [data]*
 
 | Módulo | Arquivo | KpiCard | Gráficos | Sub-tabs | Análises | Accordion (4) | Resumo | Alertas | Demo lib/ |

@@ -47,7 +47,7 @@ export default function LoginPage() {
               <HugeiconsIcon icon={Analytics01Icon} strokeWidth={2} className="size-5" />
             </div>
             <div>
-              <CardTitle className="text-2xl">Analytics Dash</CardTitle>
+              <CardTitle className="text-2xl">Mirante Painel</CardTitle>
               <CardDescription>Portal de Gestão Pública Municipal</CardDescription>
             </div>
           </div>

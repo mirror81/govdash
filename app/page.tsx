@@ -183,7 +183,7 @@ export default function Page() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground">
-                Analytics Dash
+                Mirante Painel
               </h1>
               <p className="text-sm text-muted-foreground">
                 Portal de Gestão Pública Municipal

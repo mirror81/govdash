@@ -10,7 +10,7 @@ import { getColorPresetBootScript } from "@/lib/color-presets";
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Analytics Dash",
+  title: "Mirante Painel",
   description: "Portal de Gestão Pública Municipal",
 };
 
