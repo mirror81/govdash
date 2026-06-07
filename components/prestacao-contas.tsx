@@ -51,7 +51,6 @@ import {
   Building01Icon,
   Clock01Icon,
   FilterIcon,
-  UserIcon,
   ChartLineData02Icon,
   Cancel01Icon,
   Search01Icon,

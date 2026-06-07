@@ -24,7 +24,6 @@ import {
   calcularPresencaGeral,
 } from "@/lib/demo-legislativo";
 import { getInitials } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserCheckIcon,
   UserMultipleIcon,

@@ -27,7 +27,6 @@ import {
   type Vereador,
 } from "@/lib/demo-legislativo";
 import { getInitials } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserIcon,
   ShieldIcon,

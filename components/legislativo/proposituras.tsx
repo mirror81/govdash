@@ -26,7 +26,6 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   DATA_PROPOSITURAS,
-  type Propositura,
   type TipoPropositura,
   type SituacaoPropositura,
 } from "@/lib/demo-legislativo";

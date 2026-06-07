@@ -44,7 +44,6 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   BankIcon,
   InvoiceIcon,
-  TrendingUp,
   UserMultipleIcon,
   CalendarIcon,
   AlertCircleIcon,

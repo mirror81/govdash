@@ -35,16 +35,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Pie,
-  PieChart,
-  Cell,
-} from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowUp01Icon,
