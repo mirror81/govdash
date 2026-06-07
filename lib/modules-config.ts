@@ -21,7 +21,6 @@ import {
   SavingsIcon,
   DropletIcon,
   Alert02Icon,
-  PresentationBarChart01Icon,
 } from "@hugeicons/core-free-icons";
 import { VisaoGeral } from "@/components/visao-geral";
 import { DespesaMunicipal } from "@/components/despesa-municipal";
@@ -44,7 +43,6 @@ import { Legislativo } from "@/components/legislativo/legislativo";
 import { Previdencia } from "@/components/previdencia/previdencia";
 import { Saneamento } from "@/components/saneamento/saneamento";
 import { DefesaCivil } from "@/components/defesa-civil";
-import { AudienciasPublicas } from "@/components/audiencias-publicas/audiencias-publicas";
 
 export const DISABLED_MODULES_STORAGE_KEY = "dash-disabled-modules";
 
@@ -172,12 +170,6 @@ export const MODULES: ModuleConfig[] = [
     label: "Defesa Civil",
     icon: Alert02Icon,
     component: DefesaCivil,
-  },
-  {
-    id: "audiencias-publicas",
-    label: "Audiências Públicas",
-    icon: PresentationBarChart01Icon,
-    component: AudienciasPublicas,
   },
 ];
 
