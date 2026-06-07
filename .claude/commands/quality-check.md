@@ -2,7 +2,7 @@
 description: Executa o pipeline completo de qualidade do projeto (typecheck → lint → format) e reporta os resultados
 ---
 
-Execute o pipeline de qualidade do projeto Dash na seguinte sequência e reporte os resultados consolidados.
+Execute o pipeline de qualidade do projeto Mirante Painel na seguinte sequência e reporte os resultados consolidados.
 
 ## Passo 1 — TypeScript
 

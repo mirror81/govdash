@@ -1,6 +1,6 @@
-# Estrutura `.claude/` — Dash Municipal Dashboard
+# Estrutura `.claude/` — Mirante Painel Municipal Dashboard
 
-Plano completo para a pasta `.claude/` do projeto Dash, otimizada para uso com Claude Code CLI + Windsurf IDE, cobrindo automação de tarefas recorrentes, proteção de arquivos críticos e padronização entre os 19 módulos.
+Plano completo para a pasta `.claude/` do projeto Mirante Painel, otimizada para uso com Claude Code CLI + Windsurf IDE, cobrindo automação de tarefas recorrentes, proteção de arquivos críticos e padronização entre os 19 módulos.
 
 ---
 

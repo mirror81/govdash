@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: dashboard-app
+    container_name: mirante-painel
     ports:
       - "3000:3000"
     environment:

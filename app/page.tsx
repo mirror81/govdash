@@ -2,28 +2,6 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { VisaoGeral } from "@/components/visao-geral";
-import { DespesaMunicipal } from "@/components/despesa-municipal";
-import { ReceitaMunicipal } from "@/components/receita-municipal";
-import { FinanceiroMunicipal } from "@/components/financeiro-municipal";
-import { ComprasMunicipais } from "@/components/compras-municipais";
-import { LicitacoesPainel } from "@/components/licitacoes-painel";
-import { RHMunicipal } from "@/components/rh-municipal";
-import { PrestacaoContas } from "@/components/prestacao-contas";
-import { Frotas } from "@/components/frotas";
-import { Obras } from "@/components/obras";
-import { Educacao } from "@/components/educacao";
-import { Saude } from "@/components/saude";
-import { Patrimonio } from "@/components/patrimonio";
-import { Processos } from "@/components/processos";
-import { AssistenciaSocial } from "@/components/assistencia-social";
-import { TributacaoMunicipal } from "@/components/tributacao-municipal";
-import { OrcamentoMunicipal } from "@/components/orcamento-municipal";
-import { Legislativo } from "@/components/legislativo/legislativo";
-import { Previdencia } from "@/components/previdencia/previdencia";
-import { Saneamento } from "@/components/saneamento/saneamento";
-import { DefesaCivil } from "@/components/defesa-civil";
-import { AudienciasPublicas } from "@/components/audiencias-publicas/audiencias-publicas";
 import { ThemeSelector } from "@/components/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,55 +19,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Analytics01Icon,
-  MoneyAdd01Icon,
-  BankIcon,
-  ShoppingCartIcon,
-  UserMultipleIcon,
-  SecurityCheckIcon,
-  Invoice01Icon,
-  Home01Icon,
   UserIcon,
   Cancel01Icon,
   Settings01Icon,
-  Wallet01Icon,
-  DeliveryTruck01Icon,
-  ConstructionIcon,
-  BookOpen02Icon,
-  Stethoscope02Icon,
-  Archive02Icon,
-  CourtLawIcon,
-  HandHelpingIcon,
-  SavingsIcon,
-  DropletIcon,
-  FileClockIcon,
-  Alert02Icon,
-  PresentationBarChart01Icon,
+  GridIcon,
 } from "@hugeicons/core-free-icons";
+import { MODULES } from "@/lib/modules-config";
+import { useModuleVisibility } from "@/components/module-visibility-provider";
 
-const TAB_ORDER = [
-  "visao-geral",
-  "despesa",
-  "receita",
-  "financeiro",
-  "tributacao",
-  "compras",
-  "licitacoes-painel",
-  "rh",
-  "orcamento",
-  "saude",
-  "educacao",
-  "assistencia-social",
-  "obras",
-  "frotas",
-  "patrimonio",
-  "processos",
-  "prestacao-contas",
-  "legislativo",
-  "previdencia",
-  "saneamento",
-  "defesa-civil",
-  "audiencias-publicas",
-];
 const SCROLL_DELAY_MS = 5000;
 const SCROLL_SPEED_PX = 0.75;
 
@@ -101,8 +38,20 @@ export default function Page() {
     router.replace("/login");
   };
 
+  const { visibleModules, isVisible, toggle } = useModuleVisibility();
+
   const [activeTab, setActiveTab] = React.useState("visao-geral");
   const [autoScrollEnabled, setAutoScrollEnabled] = React.useState(false);
+
+  // Se a aba ativa for desabilitada, volta para o primeiro módulo visível.
+  React.useEffect(() => {
+    if (visibleModules.length === 0) {
+      return;
+    }
+    if (!visibleModules.some((m) => m.id === activeTab)) {
+      setActiveTab(visibleModules[0].id);
+    }
+  }, [visibleModules, activeTab]);
   const scrollTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -131,9 +80,13 @@ export default function Page() {
     let accumulator = 0;
 
     const goToNextTab = () => {
+      const order = visibleModules.map((m) => m.id);
+      if (order.length === 0) {
+        return;
+      }
       setActiveTab((prev) => {
-        const idx = TAB_ORDER.indexOf(prev);
-        return TAB_ORDER[(idx + 1) % TAB_ORDER.length];
+        const idx = order.indexOf(prev);
+        return order[(idx + 1) % order.length];
       });
     };
 
@@ -166,7 +119,7 @@ export default function Page() {
     }, SCROLL_DELAY_MS);
 
     return cleanup;
-  }, [autoScrollEnabled, activeTab]);
+  }, [autoScrollEnabled, activeTab, visibleModules]);
 
   return (
     <div className="flex min-h-screen w-full flex-col items-stretch justify-start bg-muted px-[5%] py-4 sm:py-6 dark:bg-background">
@@ -183,7 +136,7 @@ export default function Page() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground">
-                Analytics Dash
+                Mirante Painel
               </h1>
               <p className="text-sm text-muted-foreground">
                 Portal de Gestão Pública Municipal
@@ -230,6 +183,32 @@ export default function Page() {
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="gap-2">
+                    <HugeiconsIcon
+                      icon={GridIcon}
+                      strokeWidth={2}
+                      className="size-4"
+                    />
+                    Módulos
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="max-h-[70vh] overflow-y-auto">
+                    {MODULES.map((m) => (
+                      <DropdownMenuItem
+                        key={m.id}
+                        onSelect={(e) => e.preventDefault()}
+                        onClick={() => toggle(m.id)}
+                        className="gap-2"
+                      >
+                        <Switch
+                          checked={isVisible(m.id)}
+                          className="pointer-events-none"
+                        />
+                        {m.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={handleLogout} className="gap-2">
                   <HugeiconsIcon
@@ -248,271 +227,26 @@ export default function Page() {
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="flex h-auto w-full flex-wrap gap-2 rounded-2xl p-2">
-            <TabsTrigger value="visao-geral" className="gap-2">
-              <HugeiconsIcon
-                icon={Home01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Geral
-            </TabsTrigger>
-            <TabsTrigger value="despesa" className="gap-2">
-              <HugeiconsIcon
-                icon={Analytics01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Despesas
-            </TabsTrigger>
-            <TabsTrigger value="receita" className="gap-2">
-              <HugeiconsIcon
-                icon={MoneyAdd01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Receitas
-            </TabsTrigger>
-            <TabsTrigger value="financeiro" className="gap-2">
-              <HugeiconsIcon
-                icon={BankIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Financeiro
-            </TabsTrigger>
-            <TabsTrigger value="tributacao" className="gap-2">
-              <HugeiconsIcon
-                icon={Invoice01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Tributos
-            </TabsTrigger>
-            <TabsTrigger value="compras" className="gap-2">
-              <HugeiconsIcon
-                icon={ShoppingCartIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Licitações e Contratos
-            </TabsTrigger>
-            <TabsTrigger value="licitacoes-painel" className="gap-2">
-              <HugeiconsIcon
-                icon={FileClockIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Painel de licitações
-            </TabsTrigger>
-            <TabsTrigger value="rh" className="gap-2">
-              <HugeiconsIcon
-                icon={UserMultipleIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Recursos Humanos
-            </TabsTrigger>
-            <TabsTrigger value="orcamento" className="gap-2">
-              <HugeiconsIcon
-                icon={Wallet01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Planejamento
-            </TabsTrigger>
-            <TabsTrigger value="saude" className="gap-2">
-              <HugeiconsIcon
-                icon={Stethoscope02Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Saúde
-            </TabsTrigger>
-            <TabsTrigger value="educacao" className="gap-2">
-              <HugeiconsIcon
-                icon={BookOpen02Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Educação
-            </TabsTrigger>
-            <TabsTrigger value="assistencia-social" className="gap-2">
-              <HugeiconsIcon
-                icon={HandHelpingIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Assistência Social
-            </TabsTrigger>
-            <TabsTrigger value="obras" className="gap-2">
-              <HugeiconsIcon
-                icon={ConstructionIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Obras
-            </TabsTrigger>
-            <TabsTrigger value="frotas" className="gap-2">
-              <HugeiconsIcon
-                icon={DeliveryTruck01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Frotas
-            </TabsTrigger>
-            <TabsTrigger value="patrimonio" className="gap-2">
-              <HugeiconsIcon
-                icon={Archive02Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Patrimônio
-            </TabsTrigger>
-            <TabsTrigger value="processos" className="gap-2">
-              <HugeiconsIcon
-                icon={CourtLawIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Processos
-            </TabsTrigger>
-            <TabsTrigger value="prestacao-contas" className="gap-2">
-              <HugeiconsIcon
-                icon={SecurityCheckIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Contas Públicas
-            </TabsTrigger>
-            <TabsTrigger value="legislativo" className="gap-2">
-              <HugeiconsIcon
-                icon={BankIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Legislativo
-            </TabsTrigger>
-            <TabsTrigger value="previdencia" className="gap-2">
-              <HugeiconsIcon
-                icon={SavingsIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Previdência
-            </TabsTrigger>
-            <TabsTrigger value="saneamento" className="gap-2">
-              <HugeiconsIcon
-                icon={DropletIcon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Saneamento
-            </TabsTrigger>
-            <TabsTrigger value="defesa-civil" className="gap-2">
-              <HugeiconsIcon
-                icon={Alert02Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Defesa Civil
-            </TabsTrigger>
-            <TabsTrigger value="audiencias-publicas" className="gap-2">
-              <HugeiconsIcon
-                icon={PresentationBarChart01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
-              Audiências Públicas
-            </TabsTrigger>
+            {visibleModules.map((m) => (
+              <TabsTrigger key={m.id} value={m.id} className="gap-2">
+                <HugeiconsIcon
+                  icon={m.icon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
+                {m.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="visao-geral" className="mt-6">
-            <VisaoGeral />
-          </TabsContent>
-
-          <TabsContent value="orcamento" className="mt-6">
-            <OrcamentoMunicipal />
-          </TabsContent>
-
-          <TabsContent value="receita" className="mt-6">
-            <ReceitaMunicipal />
-          </TabsContent>
-
-          <TabsContent value="despesa" className="mt-6">
-            <DespesaMunicipal />
-          </TabsContent>
-
-          <TabsContent value="financeiro" className="mt-6">
-            <FinanceiroMunicipal />
-          </TabsContent>
-
-          <TabsContent value="compras" className="mt-6">
-            <ComprasMunicipais />
-          </TabsContent>
-
-          <TabsContent value="licitacoes-painel" className="mt-6">
-            <LicitacoesPainel />
-          </TabsContent>
-
-          <TabsContent value="rh" className="mt-6">
-            <RHMunicipal />
-          </TabsContent>
-
-          <TabsContent value="tributacao" className="mt-6">
-            <TributacaoMunicipal />
-          </TabsContent>
-
-          <TabsContent value="frotas" className="mt-6">
-            <Frotas />
-          </TabsContent>
-
-          <TabsContent value="obras" className="mt-6">
-            <Obras />
-          </TabsContent>
-
-          <TabsContent value="educacao" className="mt-6">
-            <Educacao />
-          </TabsContent>
-
-          <TabsContent value="assistencia-social" className="mt-6">
-            <AssistenciaSocial />
-          </TabsContent>
-
-          <TabsContent value="saude" className="mt-6">
-            <Saude />
-          </TabsContent>
-
-          <TabsContent value="patrimonio" className="mt-6">
-            <Patrimonio />
-          </TabsContent>
-
-          <TabsContent value="processos" className="mt-6">
-            <Processos />
-          </TabsContent>
-
-          <TabsContent value="prestacao-contas" className="mt-6">
-            <PrestacaoContas />
-          </TabsContent>
-
-          <TabsContent value="legislativo" className="mt-6">
-            <Legislativo />
-          </TabsContent>
-
-          <TabsContent value="previdencia" className="mt-6">
-            <Previdencia />
-          </TabsContent>
-
-          <TabsContent value="saneamento" className="mt-6">
-            <Saneamento />
-          </TabsContent>
-
-          <TabsContent value="defesa-civil" className="mt-6">
-            <DefesaCivil />
-          </TabsContent>
-
-          <TabsContent value="audiencias-publicas" className="mt-6">
-            <AudienciasPublicas />
-          </TabsContent>
+          {visibleModules.map((m) => {
+            const ModuleComponent = m.component;
+            return (
+              <TabsContent key={m.id} value={m.id} className="mt-6">
+                <ModuleComponent />
+              </TabsContent>
+            );
+          })}
         </Tabs>
       </div>
     </div>

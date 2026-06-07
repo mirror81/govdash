@@ -5,12 +5,13 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ColorPresetProvider } from "@/components/color-preset-provider";
+import { ModuleVisibilityProvider } from "@/components/module-visibility-provider";
 import { getColorPresetBootScript } from "@/lib/color-presets";
 
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Analytics Dash",
+  title: "Mirante Painel",
   description: "Portal de Gestão Pública Municipal",
 };
 
@@ -26,7 +27,9 @@ export default function RootLayout({
           {getColorPresetBootScript()}
         </Script>
         <ThemeProvider>
-          <ColorPresetProvider>{children}</ColorPresetProvider>
+          <ColorPresetProvider>
+            <ModuleVisibilityProvider>{children}</ModuleVisibilityProvider>
+          </ColorPresetProvider>
         </ThemeProvider>
         <Analytics />
       </body>

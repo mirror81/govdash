@@ -13,7 +13,7 @@
 # O DNS do domínio deve apontar para esta VPS antes de rodar.
 #
 # Uso:
-#   sudo REPO_URL=vagnerrods/dash DOMAIN=dash.hfgestaopublica.dev CERTBOT_EMAIL=admin@hfgestaopublica.dev ./2-build.sh
+#   sudo REPO_URL=mirantegov/painel DOMAIN=dash.hfgestaopublica.dev CERTBOT_EMAIL=admin@hfgestaopublica.dev ./2-build.sh
 #   sudo REPO_URL=owner/repo APP_DIR=/opt/app BUILD_NO_CACHE=1 ./2-build.sh
 #
 # Para repositório privado, autentique antes de rodar este script:
@@ -21,7 +21,7 @@
 #   gh auth setup-git
 #
 # Variáveis opcionais:
-#   REPO_URL          owner/repo ou URL git (padrão: vagnerrods/dash)
+#   REPO_URL          owner/repo ou URL git (padrão: mirantegov/painel)
 #   APP_DIR           diretório de instalação (padrão: /opt/app)
 #   BUILD_NO_CACHE    1 = docker compose build --no-cache
 #   DOMAIN            domínio configurado no Nginx (padrão: dash.hfgestaopublica.dev)
@@ -44,7 +44,7 @@ docker compose version &>/dev/null || err "Docker Compose não encontrado. Execu
 
 # ── Variáveis ─────────────────────────────────────────────────────────────────
 APP_DIR="${APP_DIR:-/opt/app}"
-REPO_URL="${REPO_URL:-vagnerrods/dash}"
+REPO_URL="${REPO_URL:-mirantegov/painel}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
 DOMAIN="${DOMAIN:-dash.hfgestaopublica.dev}"
 CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"
@@ -113,10 +113,10 @@ log "Aplicação em execução na porta 3000."
 # 3. Serviço systemd — reinício automático no boot
 # ══════════════════════════════════════════════════════════════════════════════
 info "Criando serviço systemd para auto-start no boot..."
-cat > /etc/systemd/system/dash-app.service << EOF
+cat > /etc/systemd/system/mirante-painel.service << EOF
 [Unit]
 Description=Dashboard Municipal — Docker Compose
-Documentation=https://github.com/vagnerrods/dash
+Documentation=https://github.com/mirantegov/painel
 Requires=docker.service
 After=docker.service network-online.target
 
@@ -135,8 +135,8 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enable dash-app
-log "Serviço 'dash-app' habilitado — app inicia automaticamente com o sistema."
+systemctl enable mirante-painel
+log "Serviço 'mirante-painel' habilitado — app inicia automaticamente com o sistema."
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 4. Certificado SSL com Certbot (Let's Encrypt)
@@ -213,7 +213,7 @@ echo "  Docker:         $(docker --version 2>/dev/null || echo 'N/A')"
 echo "  Docker Compose: $(docker compose version 2>/dev/null || echo 'N/A')"
 echo "  Nginx:          $(nginx -v 2>&1)"
 echo "  Certbot/SSL:    ${HTTPS_ACTIVE}"
-echo "  Auto-start:     systemd dash-app.service habilitado"
+echo "  Auto-start:     systemd mirante-painel.service habilitado"
 echo "  App dir:        ${APP_DIR}"
 echo ""
 if [[ "${SKIP_CERTBOT}" != "1" ]] && [[ -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]]; then
@@ -233,14 +233,14 @@ echo ""
 echo "  Nginx:"
 echo "    nginx -t                      # testar configuração"
 echo "    systemctl reload nginx        # recarregar"
-echo "    cat /etc/nginx/sites-available/dash"
+echo "    cat /etc/nginx/sites-available/mirante-painel"
 echo ""
 echo "  Certbot / SSL:"
 echo "    certbot renew --dry-run       # testar renovação"
 echo "    certbot certificates          # listar certificados"
 echo ""
 echo "  Serviço systemd:"
-echo "    systemctl status dash-app"
-echo "    systemctl restart dash-app"
+echo "    systemctl status mirante-painel"
+echo "    systemctl restart mirante-painel"
 echo ""
 echo "============================================================"

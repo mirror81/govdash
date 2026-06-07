@@ -2,7 +2,7 @@
 
 **Data:** 2026-05-09  
 **Projeto:** Analytics (Code42 / Linear)  
-**Repositório:** dash
+**Repositório:** mirantegov/painel
 
 ---
 

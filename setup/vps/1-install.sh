@@ -159,7 +159,7 @@ else
 fi
 
 info "Configurando site Nginx para ${DOMAIN}..."
-NGINX_CONF="/etc/nginx/sites-available/dash"
+NGINX_CONF="/etc/nginx/sites-available/mirante-painel"
 
 cat > "${NGINX_CONF}" << NGINXEOF
 server {
@@ -188,7 +188,7 @@ server {
 NGINXEOF
 
 # Ativa o site e desativa o default
-ln -sf "${NGINX_CONF}" /etc/nginx/sites-enabled/dash
+ln -sf "${NGINX_CONF}" /etc/nginx/sites-enabled/mirante-painel
 rm -f /etc/nginx/sites-enabled/default
 
 nginx -t && systemctl reload nginx

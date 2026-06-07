@@ -20,7 +20,7 @@
 #   gh auth setup-git
 #
 # Variáveis opcionais:
-#   REPO_URL          owner/repo ou URL git (padrão: vagnerrods/dash)
+#   REPO_URL          owner/repo ou URL git (padrão: mirantegov/painel)
 #   APP_DIR           diretório local do projeto (padrão: $HOME/app)
 #   BUILD_NO_CACHE    1 = docker compose build --no-cache
 # ==============================================================================
@@ -45,7 +45,7 @@ docker info >/dev/null 2>&1       || err "Docker daemon não disponível. Execut
 
 # ── Variáveis ─────────────────────────────────────────────────────────────────
 APP_DIR="${APP_DIR:-$HOME/app}"
-REPO_URL="${REPO_URL:-vagnerrods/dash}"
+REPO_URL="${REPO_URL:-mirantegov/painel}"
 BUILD_NO_CACHE="${BUILD_NO_CACHE:-0}"
 
 # Detectar comando do Compose
@@ -124,7 +124,7 @@ brew services start colima
 log "Colima registrado como brew service (inicia no login)."
 
 PLIST_DIR="$HOME/Library/LaunchAgents"
-PLIST_PATH="${PLIST_DIR}/com.dash.app.plist"
+PLIST_PATH="${PLIST_DIR}/com.mirante.painel.plist"
 LOG_DIR="${APP_DIR}/logs"
 mkdir -p "${PLIST_DIR}" "${LOG_DIR}"
 
@@ -135,7 +135,7 @@ cat > "${PLIST_PATH}" << PLIST
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.dash.app</string>
+  <string>com.mirante.painel</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -182,7 +182,7 @@ echo "============================================================"
 echo ""
 echo "  Docker:     $(docker --version 2>/dev/null || echo 'N/A')"
 echo "  Colima:     $(colima version 2>/dev/null | head -1 || echo 'N/A')"
-echo "  Auto-start: brew services colima + LaunchAgent com.dash.app"
+echo "  Auto-start: brew services colima + LaunchAgent com.mirante.painel"
 echo "  App dir:    ${APP_DIR}"
 echo ""
 echo "  Acesse:"
@@ -202,7 +202,7 @@ echo "    colima stop / colima start"
 echo "    brew services list | grep colima"
 echo ""
 echo "  LaunchAgent:"
-echo "    launchctl list com.dash.app"
-echo "    launchctl unload ~/Library/LaunchAgents/com.dash.app.plist  # desativar"
+echo "    launchctl list com.mirante.painel"
+echo "    launchctl unload ~/Library/LaunchAgents/com.mirante.painel.plist  # desativar"
 echo ""
 echo "============================================================"

@@ -9,7 +9,7 @@
 APP_DIR="/opt/app"
 DOMAIN="dash.hfgestaopublica.dev"
 CERTBOT_EMAIL="admin@hfgestaopublica.dev"
-REPO_URL="vagnerrods/dash"          # ou: https://<token>@github.com/org/repo.git
+REPO_URL="mirantegov/painel"          # ou: https://<token>@github.com/org/repo.git
 
 # ── 1. Atualizar o sistema ────────────────────────────────────────────────────
 apt-get update -y && apt-get upgrade -y
@@ -59,7 +59,7 @@ apt-get install -y nginx
 systemctl enable nginx && systemctl start nginx
 
 # Configurar site como reverse proxy para a aplicação
-cat > /etc/nginx/sites-available/dash << NGINXEOF
+cat > /etc/nginx/sites-available/mirante-painel << NGINXEOF
 server {
     listen 80;
     listen [::]:80;
@@ -84,7 +84,7 @@ server {
 }
 NGINXEOF
 
-ln -sf /etc/nginx/sites-available/dash /etc/nginx/sites-enabled/dash
+ln -sf /etc/nginx/sites-available/mirante-painel /etc/nginx/sites-enabled/mirante-painel
 rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
@@ -100,7 +100,7 @@ docker compose build   # adicione --no-cache para rebuild limpo
 docker compose up -d
 
 # ── 12. Serviço systemd (auto-start no boot) ──────────────────────────────────
-cat > /etc/systemd/system/dash-app.service << EOF
+cat > /etc/systemd/system/mirante-painel.service << EOF
 [Unit]
 Description=Dashboard Municipal — Docker Compose
 Requires=docker.service
@@ -119,7 +119,7 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl daemon-reload && systemctl enable dash-app
+systemctl daemon-reload && systemctl enable mirante-painel
 
 # ── 13. Certificado SSL (Let's Encrypt) ───────────────────────────────────────
 # ⚠ Execute apenas após o DNS do domínio estar apontando para esta VPS
@@ -150,5 +150,5 @@ nginx -t && systemctl reload nginx    # testar e recarregar Nginx
 certbot certificates                  # listar certificados ativos
 certbot renew --dry-run               # simular renovação
 
-systemctl status dash-app
-systemctl restart dash-app
+systemctl status mirante-painel
+systemctl restart mirante-painel

@@ -25,7 +25,6 @@ import {
   type TipoComissao,
 } from "@/lib/demo-legislativo";
 import { getInitials } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserMultipleIcon,
   CalendarIcon,

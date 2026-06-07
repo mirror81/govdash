@@ -1,8 +1,8 @@
-# Analytics Dash — Painel de gestão pública municipal
+# Mirante Painel — Painel de gestão pública municipal
 
 ## O que é este sistema
 
-O **Analytics Dash** é uma aplicação web de **Next.js** pensada para **prefeituras, autarquias e equipes de planejamento** que precisam de um **único painel** para acompanhar, de forma didática, **indicadores de gestão pública**: finanças, pessoal, obras, políticas sociais, transparência e mais. A interface está em **português (Brasil)**, com gráficos, tabelas e cartões (KPIs) no estilo *dashboard* executivo.
+O **Mirante Painel** é uma aplicação web de **Next.js** pensada para **prefeituras, autarquias e equipes de planejamento** que precisam de um **único painel** para acompanhar, de forma didática, **indicadores de gestão pública**: finanças, pessoal, obras, políticas sociais, transparência e mais. A interface está em **português (Brasil)**, com gráficos, tabelas e cartões (KPIs) no estilo *dashboard* executivo.
 
 > **Dados de demonstração:** todo o conteúdo numérico e textos são **fictícios e estáticos** — servem para apresentações, treinamento e protótipos, **não** para decisão com informações reais. A arquitetura não inclui integração com ERP, TCE ou APIs governamentais.
 
@@ -136,8 +136,8 @@ docker -v
 ## Desenvolvimento local
 
 ```bash
-git clone https://github.com/vagnerrods/dash.git
-cd dash
+git clone https://github.com/mirantegov/painel.git
+cd painel
 npm install
 npm run dev
 ```
@@ -302,7 +302,7 @@ Para disponibilizar o painel em um domínio com HTTPS, configure o **Nginx** com
 ### 1. Crie o arquivo de configuração do Nginx
 
 ```bash
-sudo nano /etc/nginx/sites-available/dash
+sudo nano /etc/nginx/sites-available/mirante-painel
 ```
 
 Cole o conteúdo abaixo, substituindo `painel.prefeitura.gov.br` pelo seu domínio:
@@ -329,7 +329,7 @@ server {
 ### 2. Ative a configuração
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/dash /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/mirante-painel /etc/nginx/sites-enabled/
 sudo nginx -t          # testar se a configuração está correta
 sudo systemctl reload nginx
 ```
@@ -356,7 +356,7 @@ Após isso, o painel estará acessível em `https://painel.prefeitura.gov.br` se
 ## Estrutura do projeto
 
 ```
-dash/
+painel/
 ├── app/
 │   ├── layout.tsx          # Raiz: fonte Geist, tema, preset de cores
 │   ├── page.tsx            # Dashboard principal (abas dos módulos)
@@ -428,7 +428,7 @@ chmod +x ./setup-macos.sh
 
 | Variável | Padrão | Descrição |
 | --- | --- | --- |
-| `REPO_URL` | `vagnerrods/dash` | Repositório a clonar (`owner/repo` ou URL completa) |
+| `REPO_URL` | `mirantegov/painel` | Repositório a clonar (`owner/repo` ou URL completa) |
 | `APP_DIR` | `~/app` | Diretório local de instalação |
 | `BUILD_NO_CACHE` | `0` | `1` para rebuild sem cache do Docker |
 | `INSTALL_GH` | `0` | `1` para instalar o GitHub CLI |
@@ -442,14 +442,14 @@ chmod +x ./setup-macos.sh
 ## Deploy em VPS Ubuntu (22.04 / 24.04)
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/vagnerrods/dash/main/setup-vps.sh" -o setup-vps.sh
+curl -fsSL "https://raw.githubusercontent.com/mirantegov/painel/main/setup-vps.sh" -o setup-vps.sh
 chmod +x setup-vps.sh
 sudo ./setup-vps.sh
 ```
 
 | Variável | Padrão | Descrição |
 | --- | --- | --- |
-| `REPO_URL` | `vagnerrods/dash` | Repositório a clonar (`owner/repo` ou URL completa) |
+| `REPO_URL` | `mirantegov/painel` | Repositório a clonar (`owner/repo` ou URL completa) |
 | `APP_DIR` | `/opt/app` | Diretório de instalação no servidor |
 | `BUILD_NO_CACHE` | `0` | `1` para rebuild sem cache do Docker |
 | `INSTALL_GH` | `0` | `1` para instalar o GitHub CLI |
@@ -551,8 +551,8 @@ docker compose up -d
 Confirme que o serviço systemd está habilitado:
 
 ```bash
-systemctl status dash-app
-systemctl enable dash-app   # habilita o reinício automático
+systemctl status mirante-painel
+systemctl enable mirante-painel   # habilita o reinício automático
 ```
 
 Em macOS, verifique o Colima e o LaunchAgent:
@@ -560,7 +560,7 @@ Em macOS, verifique o Colima e o LaunchAgent:
 ```bash
 colima status
 brew services list | grep colima
-launchctl list com.dash.app
+launchctl list com.mirante.painel
 ```
 
 ---
